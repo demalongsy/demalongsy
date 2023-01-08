@@ -1,6 +1,6 @@
 import 'package:demalongsy/custom/color.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:demalongsy/custom/widget/font.dart';
 
 class Longin extends StatefulWidget {
   const Longin({super.key});
@@ -12,17 +12,15 @@ class Longin extends StatefulWidget {
 class _LonginState extends State<Longin> {
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_const_constructors
-    return SafeArea(
+    return const SafeArea(
       child: Scaffold(
         body: Center(
-          child: Text(
-            'Demalongsy',
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.spectral(fontSize: 40, color: C.primaryDefault),
-          ),
-        ),
+            child: Spectral(
+          text: "Demalonsy",
+          color: C.primaryDefault,
+          fontWeight: FontWeight.bold,
+          size: 40,
+        )),
       ),
     );
   }

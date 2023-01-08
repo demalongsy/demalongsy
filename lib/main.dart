@@ -1,3 +1,4 @@
+import 'package:demalongsy/pages/navbar.dart';
 import 'package:flutter/material.dart';
 import 'pages/login.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const Longin(),
+      // home: const Navbar(),
     );
   }
 }
-
