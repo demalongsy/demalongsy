@@ -26,7 +26,7 @@ class _LonginState extends State<Longin> {
                 size: 40,
               ),
               const Button(
-                text: "Sign In",
+                text: "Sign In to Demalongsy",
                 fontWeight: FontWeight.bold,
                 color: C.dark2,
                 size: 16,
