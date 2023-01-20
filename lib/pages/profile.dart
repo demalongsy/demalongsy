@@ -1,3 +1,5 @@
+import 'package:demalongsy/pages/favoritepost.dart';
+import 'package:demalongsy/pages/post.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
@@ -84,6 +86,10 @@ class _ProfileScreen extends State<ProfileScreen> {
                   ],
                 ),
               ),
+              Expanded(
+                  child: TabBarView(
+                children: [PostScreen(), FavoritePosts()],
+              ))
             ],
           ),
         ),
