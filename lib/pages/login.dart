@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/custom/widget/component.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class Longin extends StatefulWidget {
-  const Longin({super.key});
+class Login extends StatefulWidget {
+  const Login({super.key});
 
   @override
-  State<Longin> createState() => _LonginState();
+  State<Login> createState() => _LoginState();
 }
 
-class _LonginState extends State<Longin> {
+class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,6 +35,7 @@ class _LonginState extends State<Longin> {
                 boxHeight: 48,
                 haveBorder: false,
               ),
+              SvgPicture.asset("assets/images/circle.svg"),
               // const InputField(
               //   text: 'eiei'
               // )

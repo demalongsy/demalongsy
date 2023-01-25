@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: const Longin(),
-      home: ProfileScreen(),
-      // home: const Navbar(),
+      //home: ProfileScreen(),
+      home: const Navbar(),
     );
   }
 }
