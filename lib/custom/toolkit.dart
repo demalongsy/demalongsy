@@ -38,7 +38,7 @@ class C {
   static const disableText = Color(0xFFFAFAFA);
 }
 
-class FW{
+class FW {
   static const light = FontWeight.w400;
   static const regular = FontWeight.w500;
   static const bold = FontWeight.w700;
