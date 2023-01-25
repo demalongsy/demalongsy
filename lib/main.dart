@@ -1,6 +1,8 @@
 import 'package:demalongsy/pages/navbar.dart';
 import 'package:flutter/material.dart';
 import 'pages/login.dart';
+import 'pages/search.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +19,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Longin(),
+      home: const Search(),
+      // home: const Longin(),
       // home: const Navbar(),
     );
   }
