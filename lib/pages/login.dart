@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/custom/widget/component.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -35,7 +35,7 @@ class _LoginState extends State<Login> {
                 boxHeight: 48,
                 haveBorder: false,
               ),
-              SvgPicture.asset("assets/images/circle.svg"),
+
               // const InputField(
               //   text: 'eiei'
               // )

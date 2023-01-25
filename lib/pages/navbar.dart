@@ -3,7 +3,6 @@ import 'package:demalongsy/pages/profile.dart';
 import 'package:demalongsy/pages/search.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
-import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/pages/home.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -44,56 +43,25 @@ class _NavbarState extends State<Navbar> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _selectedIndex = 0;
-                        });
-                      },
-                      child: _selectedIndex == 0
-                          ? Container(
-                              height: 30,
-                              width: 30,
-                              color: C.darkHover,
-                              child: SvgPicture.asset(
-                                'assets/images/circle.svg',
-                                height: 23,
-                                width: 23,
-                                //alignment: Alignment.center,
-                                fit: BoxFit.contain,
-                                color: C.dark1,
-                                // width: MediaQuery.of(context).size.width,
-                                // height: MediaQuery.of(context).size.height,
-                              ),
-                            )
-                          : Container(
-                              height: 30,
-                              width: 30,
-                              color: C.darkHover,
-                              // child: SvgPicture.asset(
-                              //   'assets/images/homeDe.svg',
-                              //   alignment: Alignment.center,
-                              //   fit: BoxFit.fill,
-                              //   color: C.dark1,
-                              //   // width: MediaQuery.of(context).size.width,
-                              //   // height: MediaQuery.of(context).size.height,
-                              // ),
-                            )
-
-                      // Icon(
-                      //     Icons.home,
-                      //     color: Color(0xFF000000),
-                      //     size: 30.0,
-                      //   )
-                      // : Container(
-                      //     child: SvgPicture.asset(
-                      //       'assets/images/homeFo.svg',
-                      //       alignment: Alignment.center,
-                      //       fit: BoxFit.fill,
-                      //       // width: MediaQuery.of(context).size.width,
-                      //       // height: MediaQuery.of(context).size.height,
-                      //     ),
-                      //   ),
-                      ),
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = 0;
+                      });
+                    },
+                    child: _selectedIndex == 0
+                        ? SvgPicture.asset(
+                            'assets/images/homeFo.svg',
+                            height: 25,
+                            width: 25,
+                            color: C.dark1,
+                          )
+                        : SvgPicture.asset(
+                            'assets/images/homeDe.svg',
+                            height: 25,
+                            width: 25,
+                            color: C.dark1.withOpacity(0.5),
+                          ),
+                  ),
                   GestureDetector(
                     onTap: () {
                       setState(() {
@@ -101,15 +69,17 @@ class _NavbarState extends State<Navbar> {
                       });
                     },
                     child: _selectedIndex == 1
-                        ? const Icon(
-                            Icons.search_rounded,
-                            color: Color(0xFF000000),
-                            size: 30.0,
+                        ? SvgPicture.asset(
+                            'assets/images/magnifying.svg',
+                            height: 25,
+                            width: 25,
+                            color: C.dark1,
                           )
-                        : const Icon(
-                            Icons.search_rounded,
-                            color: C.disableBackground,
-                            size: 30.0,
+                        : SvgPicture.asset(
+                            'assets/images/magnifying.svg',
+                            height: 25,
+                            width: 25,
+                            color: C.dark1.withOpacity(0.5),
                           ),
                   ),
                   GestureDetector(
@@ -118,11 +88,19 @@ class _NavbarState extends State<Navbar> {
                         _selectedIndex = 2;
                       });
                     },
-                    child: const Icon(
-                      Icons.rocket_launch_rounded,
-                      color: C.disableBackground,
-                      size: 30.0,
-                    ),
+                    child: _selectedIndex == 2
+                        ? SvgPicture.asset(
+                            'assets/images/laundryFo.svg',
+                            height: 25,
+                            width: 25,
+                            color: C.dark1,
+                          )
+                        : SvgPicture.asset(
+                            'assets/images/laundryDe.svg',
+                            height: 25,
+                            width: 25,
+                            color: C.dark1.withOpacity(0.5),
+                          ),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -131,15 +109,17 @@ class _NavbarState extends State<Navbar> {
                       });
                     },
                     child: _selectedIndex == 3
-                        ? const Icon(
-                            Icons.person,
-                            color: Color(0xFF000000),
-                            size: 30.0,
+                        ? SvgPicture.asset(
+                            'assets/images/user-solid.svg',
+                            height: 25,
+                            width: 25,
+                            color: C.dark1,
                           )
-                        : const Icon(
-                            Icons.person_outline_rounded,
-                            color: C.disableBackground,
-                            size: 30.0,
+                        : SvgPicture.asset(
+                            'assets/images/user-regular.svg',
+                            height: 25,
+                            width: 25,
+                            color: C.dark1.withOpacity(0.5),
                           ),
                   ),
                 ],
