@@ -1,7 +1,7 @@
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/widget/font.dart';
-import 'package:demalongsy/custom/widget/button.dart';
+import 'package:demalongsy/custom/widget/component.dart';
 
 class Longin extends StatefulWidget {
   const Longin({super.key});
@@ -34,6 +34,9 @@ class _LonginState extends State<Longin> {
                 boxHeight: 48,
                 haveBorder: false,
               ),
+              const InputField(
+                text: 'eiei'
+              )
             ],
           ),
         ),
