@@ -15,7 +15,6 @@ class Button extends StatelessWidget {
   final double? letterspacing;
   final TextAlign? textAlign;
   final bool? haveBorder;
-  final String? stateButton;
 
   const Button(
       {Key? key,
@@ -28,8 +27,7 @@ class Button extends StatelessWidget {
       this.fontStyle = FontStyle.normal,
       this.letterspacing,
       this.haveBorder,
-      this.textAlign,
-      this.stateButton})
+      this.textAlign})
       : super(key: key);
 
   @override
