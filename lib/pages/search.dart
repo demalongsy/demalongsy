@@ -38,8 +38,7 @@ class _SearchState extends State<Search> {
               preferredSize: Size.fromHeight(0),
               child: Padding(
                 padding: EdgeInsets.only(left: 24, right: 24),
-                child: 
-                InputField(
+                child: InputField(
                   color: C.disableTextfield,
                   text: 'Search',
                   size: 16,

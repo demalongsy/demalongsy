@@ -1,6 +1,7 @@
-import 'package:demalongsy/custom/toolkit.dart';
-import 'package:demalongsy/pages/home.dart';
 import 'package:flutter/material.dart';
+import 'package:demalongsy/custom/toolkit.dart';
+import 'package:demalongsy/custom/widget/font.dart';
+import 'package:demalongsy/pages/home.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
