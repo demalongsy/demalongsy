@@ -22,18 +22,21 @@ class _LonginState extends State<Longin> {
               const Spectral(
                 text: "Demalonsy",
                 color: C.primaryDefault,
-                fontWeight: FontWeight.bold,
+                fontWeight: FW.bold,
                 size: 40,
               ),
               const Button(
                 text: "Sign In",
-                fontWeight: FontWeight.bold,
+                fontWeight: FW.bold,
                 color: C.dark2,
                 size: 16,
                 boxColor: C.secondaryDefault,
                 boxHeight: 48,
                 haveBorder: false,
               ),
+              // const InputField(
+              //   text: 'eiei'
+              // )
             ],
           ),
         ),
