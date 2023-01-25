@@ -2,6 +2,8 @@ import 'package:demalongsy/pages/navbar.dart';
 import 'package:demalongsy/widget/showposts.dart';
 import 'package:flutter/material.dart';
 import 'pages/login.dart';
+import 'pages/search.dart';
+
 
 void main() {
   runApp(const MyApp());
