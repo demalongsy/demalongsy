@@ -51,7 +51,7 @@ class _SearchState extends State<Search> {
             padding: const EdgeInsets.symmetric(horizontal: 54),
             child: Column(
               children: [
-                TabBar(
+                const TabBar(
                     // controller: controller,
                     labelColor: Colors.black,
                     // labelPadding: const EdgeInsets.symmetric(horizontal: 2),
