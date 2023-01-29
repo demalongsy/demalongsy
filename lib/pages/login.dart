@@ -1,5 +1,5 @@
+import 'package:demalongsy/pages/home.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/custom/widget/component.dart';
@@ -18,7 +18,6 @@ class _LoginState extends State<Login> {
       child: Scaffold(
         body: Center(
           child: Column(
-            // ignore: prefer_const_literals_to_create_immutables
             children: [
               const Spectral(
                 text: "Demalonsy",
@@ -26,15 +25,34 @@ class _LoginState extends State<Login> {
                 fontWeight: FW.bold,
                 size: 40,
               ),
-              const Button(
-                text: "Sign In",
-                fontWeight: FW.bold,
-                color: C.dark2,
-                size: 16,
-                boxColor: C.secondaryDefault,
-                boxHeight: 48,
-                haveBorder: false,
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => HomePage()));
+                  //------------------------
+                  // Navigator.of(context).push(
+                  //   CupertinoPageRoute<bool>(
+                  //     fullscreenDialog: true,
+                  //     builder: (BuildContext context) => HomePage(),
+                  //   ),
+                  // );
+                },
+                child: const Button(
+                  text: "Sign In",
+                  fontWeight: FW.bold,
+                  color: C.dark2,
+                  size: 16,
+                  boxColor: C.secondaryDefault,
+                  boxHeight: 48,
+                  haveBorder: false,
+                ),
               ),
+
+              Text(
+                'Custom Fonts',
+                style: TextStyle(
+                    fontFamily: 'Poppins', fontSize: 40, fontWeight: FW.bold),
+              )
 
               // const InputField(
               //   text: 'eiei'
