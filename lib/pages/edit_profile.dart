@@ -140,7 +140,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     size: 14,
                     color: C.dark2,
                     fontWeight: FW.light),
-                hintText: "     K. Payoungdech",
+                hintText: "K. Payoungdech",
                 hintStyle: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 16,
@@ -181,8 +181,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     size: 14,
                     color: C.dark2,
                     fontWeight: FW.light),
-                hintText:
-                    placeholder == "" ? "     Name" : "      " + placeholder,
+                hintText: placeholder == "" ? "Name" : "      " + placeholder,
                 hintStyle: placeholder != ""
                     ? const TextStyle(
                         fontFamily: 'Poppins',
@@ -230,8 +229,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     size: 14,
                     color: C.dark2,
                     fontWeight: FW.light),
-                hintText:
-                    placeholder == "" ? "     Email" : "     " + placeholder,
+                hintText: placeholder == "" ? "Email" : placeholder,
                 hintStyle: placeholder != ""
                     ? const TextStyle(
                         fontFamily: 'Poppins',
@@ -279,7 +277,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     size: 14,
                     color: C.dark2,
                     fontWeight: FW.light),
-                hintText: placeholder == "" ? "     Bio" : "    " + placeholder,
+                hintText: placeholder == "" ? "Bio" : "    " + placeholder,
                 hintStyle: placeholder != ""
                     ? const TextStyle(
                         fontFamily: 'Poppins',
