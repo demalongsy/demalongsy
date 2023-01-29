@@ -3,10 +3,10 @@ import '../custom/toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:demalongsy/pages/searchPost.dart';
+import 'package:demalongsy/pages/search_post.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:demalongsy/pages/searchAccount.dart';
+import 'package:demalongsy/pages/search_account.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 
 class Search extends StatefulWidget {
