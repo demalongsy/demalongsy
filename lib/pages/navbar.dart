@@ -7,7 +7,7 @@ import 'package:demalongsy/pages/search.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:demalongsy/pages/profile.dart';
 import 'package:demalongsy/custom/toolkit.dart';
-import 'package:demalongsy/pages/chooseStyle.dart';
+import 'package:demalongsy/pages/choose_style.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 
 class Navbar extends StatefulWidget {
@@ -74,13 +74,20 @@ class _NavbarState extends State<Navbar> {
                 "assets/images/homeDe.svg",
                 width: 23,
                 height: 23,
+                color: C.dark2.withOpacity(0.5),
               ),
             ),
             BottomNavigationBarItem(
+              activeIcon: SvgPicture.asset(
+                "assets/images/magnifying.svg",
+                width: 23,
+                height: 23,
+              ),
               icon: SvgPicture.asset(
                 "assets/images/magnifying.svg",
                 width: 23,
                 height: 23,
+                color: C.dark2.withOpacity(0.5),
               ),
             ),
             BottomNavigationBarItem(
@@ -93,6 +100,7 @@ class _NavbarState extends State<Navbar> {
                 "assets/images/laundryDe.svg",
                 width: 23,
                 height: 23,
+                color: C.dark2.withOpacity(0.5),
               ),
             ),
             BottomNavigationBarItem(
@@ -105,6 +113,7 @@ class _NavbarState extends State<Navbar> {
                 "assets/images/user-regular.svg",
                 width: 23,
                 height: 23,
+                color: C.dark2.withOpacity(0.5),
               ),
             ),
           ],
