@@ -62,7 +62,7 @@ class _SearchState extends State<Search> {
                     indicator: UnderlineTabIndicator(
                       borderSide: BorderSide(width: 2.0),
                       insets:
-                          EdgeInsets.symmetric(horizontal: 90.0, vertical: 0),
+                          EdgeInsets.symmetric(horizontal: 84.0, vertical: 0),
                     ),
                     indicatorColor: C.dark1,
                     labelStyle: TextStyle(fontWeight: FW.bold, fontSize: 14),
