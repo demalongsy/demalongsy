@@ -3,7 +3,7 @@ import '../custom/toolkit.dart';
 import '../custom/widget/font.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import '../models/action_chip_data.dart';
+import '../widget/action_chip_data.dart';
 import 'package:demalongsy/models/action_chips.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';

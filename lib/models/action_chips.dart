@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:demalongsy/models/action_chip_data.dart';
+import 'package:demalongsy/widget/action_chip_data.dart';
 
 class ActionChips {
   static final all = <ActionChipData>[
