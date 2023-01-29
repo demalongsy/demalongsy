@@ -27,8 +27,10 @@ class _LoginState extends State<Login> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(
+                  Navigator.of(context, rootNavigator: true).push(
                       MaterialPageRoute(builder: (context) => HomePage()));
+                  // Navigator.of(context).push(
+                  // MaterialPageRoute(builder: (context) => HomePage()));
                   //------------------------
                   // Navigator.of(context).push(
                   //   CupertinoPageRoute<bool>(

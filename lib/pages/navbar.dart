@@ -6,6 +6,9 @@ import 'package:demalongsy/pages/login.dart';
 import 'package:demalongsy/pages/search.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:demalongsy/pages/profile.dart';
+import 'package:demalongsy/custom/toolkit.dart';
+import 'package:demalongsy/pages/chooseStyle.dart';
+import 'package:demalongsy/custom/widget/font.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -43,7 +46,7 @@ class _NavbarState extends State<Navbar> {
             case 2:
               return CupertinoTabView(
                 navigatorKey: thirdTabNavKey,
-                builder: (BuildContext context) => Login(),
+                builder: (BuildContext context) => ChooseStyle(),
               );
               break;
             case 3:
