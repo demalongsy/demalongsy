@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:demalongsy/pages/home.dart';
+import 'package:demalongsy/pages/login.dart';
+import 'package:demalongsy/pages/search.dart';
+import 'package:demalongsy/pages/profile.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
-import 'package:demalongsy/pages/home.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -13,7 +16,7 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   int _selectedIndex = 0;
 
-  final screen = [HomePage(), Container(), Container(), Container()];
+  final screen = [HomePage(), Search(), Longin(), ProfileScreen()];
 
   @override
   Widget build(BuildContext context) {

@@ -34,6 +34,14 @@ class _LonginState extends State<Longin> {
                 boxHeight: 48,
                 haveBorder: false,
               ),
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Container(
+                  color: C.dangerDefault,
+                  width: MediaQuery.of(context).size.width,
+                  height: 86,
+                ),
+              )
               // const InputField(
               //   text: 'eiei'
               // )

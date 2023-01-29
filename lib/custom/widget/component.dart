@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -89,6 +90,7 @@ class _InputFieldState extends State<InputField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      // width: MediaQuery.of(context).size.width,
       height: 40,
       child: TextField(
         decoration: InputDecoration(
@@ -105,7 +107,9 @@ class _InputFieldState extends State<InputField> {
           ),
           // contentPadding: EdgeInsets.symmetric(vertical: 36),
           hintText: widget.text,
-          hintStyle: TextStyle(color: C.disableTextfield),
+          hintStyle: TextStyle(
+            color: C.disableTextfield,
+          ),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
           prefixIcon: Align(
@@ -134,5 +138,14 @@ class _InputFieldState extends State<InputField> {
         ),
       ),
     );
+  }
+}
+
+class ScaleSize {
+  static double textScaleFactor(BuildContext context,
+      {double maxTextScaleFactor = 2}) {
+    final width = MediaQuery.of(context).size.width;
+    double val = (width / 1400) * maxTextScaleFactor;
+    return max(1, min(val, maxTextScaleFactor));
   }
 }
