@@ -5,6 +5,7 @@ import 'package:demalongsy/pages/post.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/pages/favorite_post.dart';
 import 'package:demalongsy/custom/widget/font.dart';
+import 'package:demalongsy/pages/favorite_post.dart';
 
 class Profile extends StatefulWidget {
   @override
