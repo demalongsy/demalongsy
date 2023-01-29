@@ -1,15 +1,17 @@
+import 'package:demalongsy/pages/edit_profile.dart';
+import 'package:demalongsy/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/pages/post.dart';
 import 'package:demalongsy/custom/toolkit.dart';
-import 'package:demalongsy/pages/favoritepost.dart';
+import 'package:demalongsy/pages/favorite_post.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 
-class ProfileScreen extends StatefulWidget {
+class Profile extends StatefulWidget {
   @override
-  _ProfileScreen createState() => _ProfileScreen();
+  _Profile createState() => _Profile();
 }
 
-class _ProfileScreen extends State<ProfileScreen> {
+class _Profile extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -18,7 +20,7 @@ class _ProfileScreen extends State<ProfileScreen> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(40),
           child: AppBar(
-            backgroundColor: Colors.white,
+            backgroundColor: C.white,
             centerTitle: false,
             elevation: 0,
             actions: [
@@ -49,7 +51,7 @@ class _ProfileScreen extends State<ProfileScreen> {
             body: Column(
               children: const <Widget>[
                 Material(
-                  color: Colors.white,
+                  color: C.white,
                   child: TabBar(
                     indicator: UnderlineTabIndicator(
                       borderSide: BorderSide(width: 2.0),
@@ -103,7 +105,7 @@ class _ProfileScreen extends State<ProfileScreen> {
 Widget profileHeaderWidget(BuildContext context) {
   return Container(
     width: double.infinity,
-    decoration: const BoxDecoration(color: Colors.white),
+    decoration: const BoxDecoration(color: C.white),
     child: Padding(
       padding: const EdgeInsets.only(left: 38, right: 38),
       child: Column(
@@ -132,7 +134,7 @@ Widget profileHeaderWidget(BuildContext context) {
                       text: "K. Payongdech",
                       size: 18,
                       color: C.dark1,
-                      fontWeight: FontWeight.w700),
+                      fontWeight: FW.bold),
                   const SizedBox(
                     height: 10,
                   ),
@@ -140,7 +142,7 @@ Widget profileHeaderWidget(BuildContext context) {
                       text: "@Dekdee2023_",
                       size: 12,
                       color: C.dark1,
-                      fontWeight: FontWeight.w400),
+                      fontWeight: FW.light),
                   const SizedBox(
                     height: 10,
                   ),
@@ -150,12 +152,12 @@ Widget profileHeaderWidget(BuildContext context) {
                           text: "128 ",
                           size: 12,
                           color: C.dark1,
-                          fontWeight: FontWeight.w700),
+                          fontWeight: FW.bold),
                       Poppins(
                           text: "Posts",
                           size: 12,
                           color: C.dark1,
-                          fontWeight: FontWeight.w400),
+                          fontWeight: FW.light),
                       SizedBox(
                         width: 12,
                       ),
@@ -163,12 +165,12 @@ Widget profileHeaderWidget(BuildContext context) {
                           text: "12K ",
                           size: 12,
                           color: C.dark1,
-                          fontWeight: FontWeight.w700),
+                          fontWeight: FW.bold),
                       Poppins(
                           text: "Likes ",
                           size: 12,
                           color: C.dark1,
-                          fontWeight: FontWeight.w400),
+                          fontWeight: FW.light),
                     ],
                   ),
                   const SizedBox(
@@ -185,7 +187,7 @@ Widget profileHeaderWidget(BuildContext context) {
               text: "Fantastic to start to use application!",
               size: 14,
               color: C.dark3,
-              fontWeight: FontWeight.w400),
+              fontWeight: FW.light),
           const SizedBox(
             height: 12,
           ),
@@ -221,9 +223,12 @@ Widget actions(BuildContext context) {
                 text: "Edit Profile",
                 size: 12,
                 color: C.dark1,
-                fontWeight: FontWeight.w700),
+                fontWeight: FW.bold),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(builder: (context) => EditProfilePage()));
+          },
         ),
       ),
     ],
