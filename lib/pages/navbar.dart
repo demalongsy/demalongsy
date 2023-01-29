@@ -7,8 +7,9 @@ import 'package:demalongsy/pages/search.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:demalongsy/pages/profile.dart';
 import 'package:demalongsy/custom/toolkit.dart';
-import 'package:demalongsy/pages/chooseStyle.dart';
+import 'package:demalongsy/pages/choose_style.dart';
 import 'package:demalongsy/custom/widget/font.dart';
+import 'package:demalongsy/pages/edit_profile.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -52,7 +53,7 @@ class _NavbarState extends State<Navbar> {
             case 3:
               return CupertinoTabView(
                 navigatorKey: forthTabNavKey,
-                builder: (BuildContext context) => ProfileScreen(),
+                builder: (BuildContext context) => Profile(),
               );
               break;
           }
