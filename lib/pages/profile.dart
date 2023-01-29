@@ -53,7 +53,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                   child: TabBar(
                     indicator: UnderlineTabIndicator(
                       borderSide: BorderSide(width: 2.0),
-                      insets: EdgeInsets.symmetric(horizontal: 70.0),
+                      insets: EdgeInsets.symmetric(horizontal: 80.0),
                     ),
                     // padding: EdgeInsets.only(left: 50, right: 50),
                     // indicator: BoxDecoration(
