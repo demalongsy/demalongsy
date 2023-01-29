@@ -55,9 +55,9 @@ class _ChooseStyleState extends State<ChooseStyle> {
     return Material(
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: C.backgroundWhiteIvory,
+          backgroundColor: C.white,
           appBar: AppBar(
-            backgroundColor: C.backgroundWhiteIvory,
+            backgroundColor: C.white,
             elevation: 0.0,
             leading: IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.black),

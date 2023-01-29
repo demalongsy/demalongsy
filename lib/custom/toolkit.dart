@@ -25,7 +25,7 @@ class C {
   static const textDefault = Color(0xFF212121);
   static const textDefault2 = Color(0xFF616161);
   static const disableTextfield = Color(0xFF9E9E9E);
-  static const white = Color(0xFFFAFAFA);
+  static const white = Color(0xFFFBFAF8);
   static const backgroundWhiteIvory = Color(0xFFF6F5EE);
   static const disableField = Color(0xFFEEEEEE);
   static const textField = Color(0xFFFFFFFF);
