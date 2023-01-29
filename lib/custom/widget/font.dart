@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -27,6 +29,7 @@ class Poppins extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
+      textScaleFactor: ScaleSize.textScaleFactor(context),
       style: GoogleFonts.poppins(
         fontSize: size,
         color: color,
@@ -63,11 +66,21 @@ class Spectral extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
+      textScaleFactor: ScaleSize.textScaleFactor(context),
       style: GoogleFonts.spectral(
           fontSize: size,
           color: color,
           fontWeight: fontWeight,
           letterSpacing: letterspacing),
     );
+  }
+}
+
+class ScaleSize {
+  static double textScaleFactor(BuildContext context,
+      {double maxTextScaleFactor = 1.5}) {
+    final width = MediaQuery.of(context).size.width;
+    double val = (width / 1400) * maxTextScaleFactor;
+    return max(1, min(val, maxTextScaleFactor));
   }
 }

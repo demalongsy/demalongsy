@@ -1,8 +1,6 @@
-import 'pages/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:demalongsy/pages/navbar.dart';
-import 'package:demalongsy/pages/profile.dart';
-import 'package:demalongsy/pages/chooseStyle.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,17 +9,15 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+//This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        // home: const Longin(),
-        // home: ProfileScreen(),
-        // home: const Navbar(),
-        home: const ChooseStyle());
+    return CupertinoApp(
+      title: 'Flutter Demo',
+
+      // home: const Longin(),
+      //home: ProfileScreen(),
+      home: Navbar(),
+    );
   }
 }
