@@ -98,25 +98,19 @@ class _ChooseStyleState extends State<ChooseStyle> {
                           ),
                           backgroundColor: filterChip.color.withOpacity(0.1),
                           onSelected: (isSelected) => setState(() {
-                            //print(filterChip.isSelected);
                             filterChips = filterChips.map((otherChip) {
-                              //print(otherChip.isSelected);
                               if (filterChip == otherChip &&
                                   filterChip.isSelected == false) {
                                 favUserSelect.add(otherChip.label);
                                 print(favUserSelect);
-                                //print(2);
+
+                                return filterChip.copy(isSelected: isSelected);
+                              } else if (filterChip == otherChip &&
+                                  filterChip.isSelected == true) {
+                                favUserSelect.remove(otherChip.label);
+                                print(favUserSelect);
                                 return filterChip.copy(isSelected: isSelected);
                               } else {
-                                if (filterChip == otherChip &&
-                                    filterChip.isSelected == true) {
-                                  favUserSelect.remove(otherChip.label);
-                                  print(favUserSelect);
-                                  return filterChip.copy(
-                                      isSelected: isSelected);
-                                }
-                                //favUserSelect.remove(otherChip.label);
-                                // print(favUserSelect);
                                 return otherChip;
                               }
                             }).toList();
