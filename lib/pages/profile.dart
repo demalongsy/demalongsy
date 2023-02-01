@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:demalongsy/pages/post.dart';
 import 'package:demalongsy/custom/toolkit.dart';
-import 'package:demalongsy/pages/favoritepost.dart';
+import 'package:demalongsy/pages/favorite_post.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 
 class ProfileScreen extends StatefulWidget {

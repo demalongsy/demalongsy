@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
 
-class ActionChipData {
+class FilterChipData {
   final String label;
-  final IconData icon;
-  final Color iconColor;
+  final Color color;
+  final bool isSelected;
 
-  ActionChipData({
+  const FilterChipData({
     required this.label,
-    required this.icon,
-    required this.iconColor,
+    required this.color,
+    this.isSelected = false,
   });
 
-  ActionChipData copy({
+  FilterChipData copy({
     String? label,
-    IconData? icon,
-    Color? iconColor,
+    Color? color,
+    bool? isSelected,
   }) =>
-      ActionChipData(
+      FilterChipData(
         label: label ?? this.label,
-        icon: icon ?? this.icon,
-        iconColor: iconColor ?? this.iconColor,
+        color: color ?? this.color,
+        isSelected: isSelected ?? this.isSelected,
       );
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ActionChipData &&
+      other is FilterChipData &&
           runtimeType == other.runtimeType &&
           label == other.label &&
-          icon == other.icon &&
-          iconColor == other.iconColor;
+          color == other.color &&
+          isSelected == other.isSelected;
 
   @override
-  int get hashCode => label.hashCode ^ icon.hashCode ^ iconColor.hashCode;
+  int get hashCode => label.hashCode ^ color.hashCode ^ isSelected.hashCode;
 }

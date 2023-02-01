@@ -7,7 +7,7 @@ import 'package:demalongsy/pages/search.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:demalongsy/pages/profile.dart';
 import 'package:demalongsy/custom/toolkit.dart';
-import 'package:demalongsy/pages/chooseStyle.dart';
+import 'package:demalongsy/pages/choose_style.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 
 class Navbar extends StatefulWidget {

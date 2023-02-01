@@ -46,9 +46,10 @@ class _ChooseStyleState extends State<ChooseStyle> {
 
   int index = 0;
   final double spacing = 8;
+  List favUserSelect = [];
 
   // List<ChipData> chips = Chips.all;
-  List<ActionChipData> actionChips = ActionChips.all;
+  List<FilterChipData> filterChips = FilterChips.all;
 
   @override
   Widget build(BuildContext context) {
@@ -88,20 +89,41 @@ class _ChooseStyleState extends State<ChooseStyle> {
               Wrap(
                 runSpacing: spacing,
                 spacing: spacing,
-                children: actionChips
-                    .map((actionChip) => ActionChip(
-                          avatar: Icon(
-                            actionChip.icon,
-                            color: actionChip.iconColor,
-                          ),
-                          backgroundColor: Colors.grey[200],
-                          label: Text(actionChip.label),
+                children: filterChips
+                    .map((filterChip) => FilterChip(
+                          label: Text(filterChip.label),
                           labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.black),
-                          // onPressed: () => Utils.showSnackBar(
-                          //   context,
-                          //   'Do action"${actionChip.label}"...',
-                          // ),
+                            fontWeight: FontWeight.bold,
+                            color: filterChip.color,
+                          ),
+                          backgroundColor: filterChip.color.withOpacity(0.1),
+                          onSelected: (isSelected) => setState(() {
+                            //print(filterChip.isSelected);
+                            filterChips = filterChips.map((otherChip) {
+                              //print(otherChip.isSelected);
+                              if (filterChip == otherChip &&
+                                  filterChip.isSelected == false) {
+                                favUserSelect.add(otherChip.label);
+                                print(favUserSelect);
+                                //print(2);
+                                return filterChip.copy(isSelected: isSelected);
+                              } else {
+                                if (filterChip == otherChip &&
+                                    filterChip.isSelected == true) {
+                                  favUserSelect.remove(otherChip.label);
+                                  print(favUserSelect);
+                                  return filterChip.copy(
+                                      isSelected: isSelected);
+                                }
+                                //favUserSelect.remove(otherChip.label);
+                                // print(favUserSelect);
+                                return otherChip;
+                              }
+                            }).toList();
+                          }),
+                          selected: filterChip.isSelected,
+                          checkmarkColor: filterChip.color,
+                          selectedColor: filterChip.color.withOpacity(0.25),
                         ))
                     .toList(),
               )
