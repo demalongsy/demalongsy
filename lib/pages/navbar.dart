@@ -57,8 +57,6 @@ class _NavbarState extends State<Navbar> {
         tabBar: CupertinoTabBar(
           backgroundColor: C.white,
           height: 76,
-          // ignore: unnecessary_const
-
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               activeIcon: SvgPicture.asset(
