@@ -62,11 +62,9 @@ class _HeaderHomePageState extends State<HeaderHomePage>
                   tabs: [
                     Text(
                       "For you",
-                      textScaleFactor: ScaleSize.textScaleFactor(context),
                     ),
                     Text(
                       "Trending",
-                      textScaleFactor: ScaleSize.textScaleFactor(context),
                     ),
                   ],
                 ),
