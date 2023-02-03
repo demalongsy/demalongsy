@@ -60,6 +60,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
               )),
           body: Container(
+            // width: double.infinity,
             padding: const EdgeInsets.only(left: 30, right: 30),
             child: GestureDetector(
               onTap: () {
@@ -109,7 +110,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   TextFieldUsername(),
                   TextFieldName(""),
                   TextFieldEmail("K. Payoungdech"),
-                  TextFieldBio("payoungdech.k@gmail.com"),
+                  TextFieldBio("Fantastic to start to use application!"),
+                  // TextFieldBio2("payoungdech.k@gmail.com"),
                   // buildTextField("Email", "********"),
                   // buildTextField("Bio", "TLV, Israel"),
                   const SizedBox(
@@ -130,23 +132,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
       child: Column(
         children: [
           TextFormField(
+            enabled: false, // disable a text edit field (default: true)
             keyboardType: TextInputType.multiline,
             minLines: 1, //Normal textInputField will be displayed
             maxLines: 5, // when user presses enter it will adapt to it
 
             decoration: const InputDecoration(
-                icon: Poppins(
-                    text: "Username",
-                    size: 14,
-                    color: C.dark2,
-                    fontWeight: FW.light),
-                hintText: "K. Payoungdech",
-                hintStyle: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 16,
-                  fontWeight: FW.light,
-                  color: C.disableTextfield,
-                )),
+              icon: Poppins(
+                  text: "Username",
+                  size: 14,
+                  color: C.dark2,
+                  fontWeight: FW.light),
+              hintText: "K. Payoungdech",
+              hintStyle: TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 16,
+                fontWeight: FW.light,
+                color: C.disableTextfield,
+              ),
+              disabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: C.disableTextfield),
+              ),
+            ),
             onSaved: (String? value) {
               // This optional block of code can be used to run
               // code when the user saves the form.
@@ -176,25 +183,29 @@ class _EditProfilePageState extends State<EditProfilePage> {
             maxLines: 5, // when user presses enter it will adapt to it
 
             decoration: InputDecoration(
-                icon: const Poppins(
-                    text: "Name        ",
-                    size: 14,
-                    color: C.dark2,
-                    fontWeight: FW.light),
-                hintText: placeholder == "" ? "Name" : "      " + placeholder,
-                hintStyle: placeholder != ""
-                    ? const TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        fontWeight: FW.light,
-                        color: C.textDefault,
-                      )
-                    : const TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        fontWeight: FW.light,
-                        color: C.disableTextfield,
-                      )),
+              icon: const Poppins(
+                  text: "Name        ",
+                  size: 14,
+                  color: C.dark2,
+                  fontWeight: FW.light),
+              hintText: placeholder == "" ? "Name" : "      " + placeholder,
+              hintStyle: placeholder != ""
+                  ? const TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FW.light,
+                      color: C.textDefault,
+                    )
+                  : const TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FW.light,
+                      color: C.disableTextfield,
+                    ),
+              focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: C.disableTextfield),
+              ),
+            ),
             onSaved: (String? value) {
               // This optional block of code can be used to run
               // code when the user saves the form.
@@ -215,7 +226,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Widget TextFieldEmail(String placeholder) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.only(bottom: 28.0),
       child: Column(
         children: [
           TextFormField(
@@ -224,25 +235,29 @@ class _EditProfilePageState extends State<EditProfilePage> {
             maxLines: 5, // when user presses enter it will adapt to it
 
             decoration: InputDecoration(
-                icon: Poppins(
-                    text: "Email         ",
-                    size: 14,
-                    color: C.dark2,
-                    fontWeight: FW.light),
-                hintText: placeholder == "" ? "Email" : placeholder,
-                hintStyle: placeholder != ""
-                    ? const TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        fontWeight: FW.light,
-                        color: C.textDefault,
-                      )
-                    : const TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        fontWeight: FW.light,
-                        color: C.disableTextfield,
-                      )),
+              icon: Poppins(
+                  text: "Email         ",
+                  size: 14,
+                  color: C.dark2,
+                  fontWeight: FW.light),
+              hintText: placeholder == "" ? "Email" : placeholder,
+              hintStyle: placeholder != ""
+                  ? const TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FW.light,
+                      color: C.textDefault,
+                    )
+                  : const TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FW.light,
+                      color: C.disableTextfield,
+                    ),
+              focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: C.disableTextfield),
+              ),
+            ),
             onSaved: (String? value) {
               // This optional block of code can be used to run
               // code when the user saves the form.
@@ -267,38 +282,48 @@ class _EditProfilePageState extends State<EditProfilePage> {
       child: Column(
         children: [
           TextFormField(
+            maxLines: 5,
             keyboardType: TextInputType.multiline,
-            // minLines: 1, //Normal textInputField will be displayed
-            maxLines: 5, // when user presses enter it will adapt to it
-
+            // controller: _content,
             decoration: InputDecoration(
-                icon: Poppins(
-                    text: "Bio              ",
-                    size: 14,
-                    color: C.dark2,
-                    fontWeight: FW.light),
-                hintText: placeholder == "" ? "Bio" : "    " + placeholder,
-                hintStyle: placeholder != ""
-                    ? const TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        fontWeight: FW.light,
-                        color: C.textDefault,
-                      )
-                    : const TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        fontWeight: FW.light,
-                        color: C.disableTextfield,
-                      )),
-            onSaved: (String? value) {
-              // This optional block of code can be used to run
-              // code when the user saves the form.
-            },
-            validator: (String? value) {
-              return (value != null && value.contains('@'))
-                  ? 'Do not use the @ char.'
-                  : null;
+              icon: Poppins(
+                  text: "Bio             ",
+                  size: 14,
+                  color: C.dark2,
+                  fontWeight: FW.light),
+              hintText: placeholder == "" ? "Write your Bio" : placeholder,
+              hintStyle: placeholder != ""
+                  ? const TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FW.light,
+                      color: C.textDefault,
+                    )
+                  : const TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FW.light,
+                      color: C.disableTextfield,
+                    ),
+              // label: Text("Description"),
+              // labelStyle: TextStyle(color: Colors.grey),
+              // alignLabelWithHint: true,
+              enabledBorder: const OutlineInputBorder(
+                // borderRadius: BorderRadius.circular(0),
+                borderSide: BorderSide(color: C.disableField),
+              ),
+              focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: C.dark1),
+              ),
+              filled: true, //<-- SEE HERE
+              fillColor: C.disableField, //<-- SEE HERE
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Please enter forum's content";
+              } else {
+                return null;
+              }
             },
           ),
         ],
