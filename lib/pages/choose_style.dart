@@ -103,12 +103,13 @@ class _ChooseStyleState extends State<ChooseStyle> {
                                   filterChip.isSelected == false) {
                                 favUserSelect.add(otherChip.label);
                                 print(favUserSelect);
-
+                                print(filterChip.isSelected);
                                 return filterChip.copy(isSelected: isSelected);
                               } else if (filterChip == otherChip &&
                                   filterChip.isSelected == true) {
                                 favUserSelect.remove(otherChip.label);
                                 print(favUserSelect);
+                                print(filterChip.isSelected);
                                 return filterChip.copy(isSelected: isSelected);
                               } else {
                                 return otherChip;
