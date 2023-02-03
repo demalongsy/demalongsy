@@ -128,11 +128,13 @@ Widget profileHeaderWidget(BuildContext context) {
               const SizedBox(
                 width: 28,
               ),
-              Column(
+              Expanded(
+                  child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Poppins(
                       text: "K. Payongdech",
+                      maxLines: 1,
                       size: 18,
                       color: C.dark1,
                       fontWeight: FW.bold),
@@ -178,14 +180,16 @@ Widget profileHeaderWidget(BuildContext context) {
                     width: 15,
                   ),
                 ],
-              )
+              ))
             ],
           ),
           const SizedBox(
             height: 16,
           ),
           const Poppins(
-              text: "Fantastic to start to use application!",
+              text:
+                  "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula.",
+              maxLines: 2,
               size: 14,
               color: C.dark3,
               fontWeight: FW.light),
