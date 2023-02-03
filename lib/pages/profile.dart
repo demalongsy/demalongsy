@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:demalongsy/pages/post.dart';
 import 'package:demalongsy/custom/toolkit.dart';
-import 'package:demalongsy/pages/favorite_post.dart';
 import 'package:demalongsy/custom/widget/font.dart';
+import 'package:demalongsy/pages/favorite_post.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -125,56 +125,62 @@ Widget profileHeaderWidget(BuildContext context) {
               const SizedBox(
                 width: 28,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Poppins(
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Poppins(
                       text: "K. Payongdech",
                       size: 18,
                       color: C.dark1,
-                      fontWeight: FontWeight.w700),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Poppins(
+                      fontWeight: FontWeight.w700,
+                      maxLines: 2,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Poppins(
                       text: "@Dekdee2023_",
                       size: 12,
                       color: C.dark1,
-                      fontWeight: FontWeight.w400),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: const [
-                      Poppins(
-                          text: "128 ",
-                          size: 12,
-                          color: C.dark1,
-                          fontWeight: FontWeight.w700),
-                      Poppins(
-                          text: "Posts",
-                          size: 12,
-                          color: C.dark1,
-                          fontWeight: FontWeight.w400),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      Poppins(
-                          text: "12K ",
-                          size: 12,
-                          color: C.dark1,
-                          fontWeight: FontWeight.w700),
-                      Poppins(
-                          text: "Likes ",
-                          size: 12,
-                          color: C.dark1,
-                          fontWeight: FontWeight.w400),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                ],
+                      fontWeight: FontWeight.w400,
+                      maxLines: 2,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: const [
+                        Poppins(
+                            text: "128 ",
+                            size: 12,
+                            color: C.dark1,
+                            fontWeight: FontWeight.w700),
+                        Poppins(
+                            text: "Posts",
+                            size: 12,
+                            color: C.dark1,
+                            fontWeight: FontWeight.w400),
+                        SizedBox(
+                          width: 12,
+                        ),
+                        Poppins(
+                            text: "12K ",
+                            size: 12,
+                            color: C.dark1,
+                            fontWeight: FontWeight.w700),
+                        Poppins(
+                            text: "Likes ",
+                            size: 12,
+                            color: C.dark1,
+                            fontWeight: FontWeight.w400),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                  ],
+                ),
               )
             ],
           ),

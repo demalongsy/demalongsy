@@ -12,6 +12,7 @@ class Poppins extends StatelessWidget {
   final FontStyle? fontStyle;
   final double? letterspacing;
   final TextAlign? textAlign;
+  final int? maxLines;
 
   const Poppins(
       {Key? key,
@@ -21,7 +22,8 @@ class Poppins extends StatelessWidget {
       required this.fontWeight,
       this.fontStyle = FontStyle.normal,
       this.letterspacing,
-      this.textAlign})
+      this.textAlign,
+      this.maxLines})
       : super(key: key);
 
   @override
@@ -29,6 +31,8 @@ class Poppins extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
+      maxLines: maxLines,
+      overflow: TextOverflow.ellipsis,
       textScaleFactor: ScaleSize.textScaleFactor(context),
       style: GoogleFonts.poppins(
         fontSize: size,
@@ -49,6 +53,7 @@ class Spectral extends StatelessWidget {
   final FontStyle? fontStyle;
   final double? letterspacing;
   final TextAlign? textAlign;
+  final int? maxLines;
 
   const Spectral(
       {Key? key,
@@ -58,7 +63,8 @@ class Spectral extends StatelessWidget {
       required this.fontWeight,
       this.fontStyle = FontStyle.normal,
       this.letterspacing,
-      this.textAlign})
+      this.textAlign,
+      this.maxLines})
       : super(key: key);
 
   @override
@@ -66,6 +72,8 @@ class Spectral extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
+      maxLines: maxLines,
+      overflow: TextOverflow.ellipsis,
       textScaleFactor: ScaleSize.textScaleFactor(context),
       style: GoogleFonts.spectral(
           fontSize: size,

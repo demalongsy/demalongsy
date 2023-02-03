@@ -74,13 +74,20 @@ class _NavbarState extends State<Navbar> {
                 "assets/images/homeDe.svg",
                 width: 23,
                 height: 23,
+                color: C.dark2.withOpacity(0.5),
               ),
             ),
             BottomNavigationBarItem(
+              activeIcon: SvgPicture.asset(
+                "assets/images/magnifying.svg",
+                width: 23,
+                height: 23,
+              ),
               icon: SvgPicture.asset(
                 "assets/images/magnifying.svg",
                 width: 23,
                 height: 23,
+                color: C.dark2.withOpacity(0.5),
               ),
             ),
             BottomNavigationBarItem(
@@ -93,6 +100,7 @@ class _NavbarState extends State<Navbar> {
                 "assets/images/laundryDe.svg",
                 width: 23,
                 height: 23,
+                color: C.dark2.withOpacity(0.5),
               ),
             ),
             BottomNavigationBarItem(
@@ -105,6 +113,7 @@ class _NavbarState extends State<Navbar> {
                 "assets/images/user-regular.svg",
                 width: 23,
                 height: 23,
+                color: C.dark2.withOpacity(0.5),
               ),
             ),
           ],
