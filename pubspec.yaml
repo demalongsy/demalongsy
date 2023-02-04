@@ -41,6 +41,7 @@ dependencies:
   salomon_bottom_bar: ^3.3.1
   custom_navigation_bar: ^0.8.2
   flutter_icons: ^1.1.0
+  just_the_tooltip: ^0.0.12
 
 dev_dependencies:
   flutter_test:
