@@ -4,6 +4,7 @@ import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -61,7 +62,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               )),
           body: Container(
             // width: double.infinity,
-            padding: const EdgeInsets.only(left: 30, right: 30),
+            // padding: const EdgeInsets.only(left: 30, right: 30),
             child: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
@@ -107,16 +108,47 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   const SizedBox(
                     height: 30,
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 30),
+                    child: Container(
+                      child: Poppins(
+                          text: "Personal Infomation",
+                          size: 12,
+                          color: C.textDefault,
+                          fontWeight: FW.bold),
+                    ),
+                  ),
+                  Divider(
+                    color: Colors.black,
+                  ),
                   TextFieldUsername(),
                   TextFieldName(""),
                   TextFieldEmail("K. Payoungdech"),
                   TextFieldBio("Fantastic to start to use application!"),
-                  // TextFieldBio2("payoungdech.k@gmail.com"),
-                  // buildTextField("Email", "********"),
-                  // buildTextField("Bio", "TLV, Israel"),
                   const SizedBox(
-                    height: 35,
+                    height: 80,
                   ),
+                  // Tooltip(
+                  //   child: IconButton(
+                  //     icon: Icon(Icons.info, size: 16),
+                  //     onPressed: null,
+                  //   ),
+                  //   message: 'Can not be change',
+                  //   padding: const EdgeInsets.all(10),
+                  //   showDuration: const Duration(seconds: 5),
+                  //   decoration: ShapeDecoration(
+                  //     color: C.disableTextfield,
+                  //     shape: ToolTipCustomShape(),
+                  //   ),
+                  //   textStyle: const TextStyle(
+                  //     fontFamily: 'Poppins',
+                  //     fontSize: 14,
+                  //     fontWeight: FW.regular,
+                  //     color: C.dark1,
+                  //   ),
+                  //   preferBelow: false,
+                  //   verticalOffset: 15,
+                  // ),
                 ],
               ),
             ),
@@ -128,43 +160,81 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Widget TextFieldUsername() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Column(
-        children: [
-          TextFormField(
-            enabled: false, // disable a text edit field (default: true)
-            keyboardType: TextInputType.multiline,
-            minLines: 1, //Normal textInputField will be displayed
-            maxLines: 5, // when user presses enter it will adapt to it
-
-            decoration: const InputDecoration(
-              icon: Poppins(
-                  text: "Username",
-                  size: 14,
-                  color: C.dark2,
-                  fontWeight: FW.light),
-              hintText: "K. Payoungdech",
-              hintStyle: TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 16,
-                fontWeight: FW.light,
-                color: C.disableTextfield,
-              ),
-              disabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: C.disableTextfield),
-              ),
-            ),
-            onSaved: (String? value) {
-              // This optional block of code can be used to run
-              // code when the user saves the form.
-            },
-            validator: (String? value) {
-              return (value != null && value.contains('@'))
-                  ? 'Do not use the @ char.'
-                  : null;
-            },
+      padding: const EdgeInsets.only(bottom: 1, left: 30, right: 30),
+      child: TextFormField(
+        readOnly: true,
+        // showCursor: false,
+        // enabled: false, // disable a text edit field (default: true)
+        // keyboardType: TextInputType.multiline,
+        // minLines: 1, //Normal textInputField will be displayed
+        // maxLines: 5, // when user presses enter it will adapt to it
+        decoration: InputDecoration(
+          icon: Poppins(
+              text: "Username", size: 14, color: C.dark2, fontWeight: FW.light),
+          hintText: "K. Payoungdech",
+          hintStyle: TextStyle(
+            fontFamily: 'Poppins',
+            fontSize: 16,
+            fontWeight: FW.light,
+            color: C.dark3,
           ),
-        ],
+          border: InputBorder.none,
+          suffixIcon: Tooltip(
+            richMessage: WidgetSpan(
+                alignment: PlaceholderAlignment.baseline,
+                baseline: TextBaseline.alphabetic,
+                child: Container(
+                    padding: EdgeInsets.all(4),
+                    constraints: const BoxConstraints(maxWidth: 250),
+                    child: const Poppins(
+                        text: "Can not be change",
+                        size: 14,
+                        color: C.dark1,
+                        fontWeight: FW.regular))),
+            decoration: ShapeDecoration(
+              color: C.disableTextfield,
+              shape: ToolTipCustomShape(),
+            ),
+            preferBelow: false,
+            verticalOffset: 10,
+            child: Icon(
+              Icons.info,
+              size: 16,
+              color: C.dark3,
+            ),
+          ),
+          // Tooltip(
+          //   child: IconButton(
+          //     icon: Icon(Icons.info, size: 16, color: C.dark3),
+          //     onPressed: null,
+          //   ),
+          //   message: 'Can not be changeeeee',
+          //   padding: const EdgeInsets.all(10),
+          //   showDuration: const Duration(seconds: 5),
+          //   decoration: ShapeDecoration(
+          //     color: C.disableTextfield,
+          //     shape: ToolTipCustomShape(),
+          //   ),
+          //   textStyle: const TextStyle(
+          //     fontFamily: 'Poppins',
+          //     fontSize: 14,
+          //     fontWeight: FW.regular,
+          //     color: C.dark1,
+          //     overflow: TextOverflow.ellipsis,
+          //   ),
+          //   preferBelow: false,
+          //   verticalOffset: 10,
+          // ),
+        ),
+        onSaved: (String? value) {
+          // This optional block of code can be used to run
+          // code when the user saves the form.
+        },
+        validator: (String? value) {
+          return (value != null && value.contains('@'))
+              ? 'Do not use the @ char.'
+              : null;
+        },
       ),
       // SizedBox(
       //   width: 20,
@@ -174,49 +244,44 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Widget TextFieldName(String placeholder) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Column(
-        children: [
-          TextFormField(
-            keyboardType: TextInputType.multiline,
-            minLines: 1, //Normal textInputField will be displayed
-            maxLines: 5, // when user presses enter it will adapt to it
-
-            decoration: InputDecoration(
-              icon: const Poppins(
-                  text: "Name        ",
-                  size: 14,
-                  color: C.dark2,
-                  fontWeight: FW.light),
-              hintText: placeholder == "" ? "Name" : "      " + placeholder,
-              hintStyle: placeholder != ""
-                  ? const TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FW.light,
-                      color: C.textDefault,
-                    )
-                  : const TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FW.light,
-                      color: C.disableTextfield,
-                    ),
-              focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: C.disableTextfield),
-              ),
-            ),
-            onSaved: (String? value) {
-              // This optional block of code can be used to run
-              // code when the user saves the form.
-            },
-            validator: (String? value) {
-              return (value != null && value.contains('@'))
-                  ? 'Do not use the @ char.'
-                  : null;
-            },
+      padding: const EdgeInsets.only(bottom: 8, left: 30, right: 30),
+      child: TextFormField(
+        keyboardType: TextInputType.multiline,
+        minLines: 1, //Normal textInputField will be displayed
+        maxLines: 5, // when user presses enter it will adapt to it
+        decoration: InputDecoration(
+          icon: const Poppins(
+              text: "Name        ",
+              size: 14,
+              color: C.dark2,
+              fontWeight: FW.light),
+          hintText: placeholder == "" ? "Name" : "      " + placeholder,
+          hintStyle: placeholder != ""
+              ? const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                  fontWeight: FW.light,
+                  color: C.textDefault,
+                )
+              : const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                  fontWeight: FW.light,
+                  color: C.disableTextfield,
+                ),
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: C.disableTextfield),
           ),
-        ],
+        ),
+        onSaved: (String? value) {
+          // This optional block of code can be used to run
+          // code when the user saves the form.
+        },
+        validator: (String? value) {
+          return (value != null && value.contains('@'))
+              ? 'Do not use the @ char.'
+              : null;
+        },
       ),
       // SizedBox(
       //   width: 20,
@@ -226,49 +291,45 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Widget TextFieldEmail(String placeholder) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 28.0),
-      child: Column(
-        children: [
-          TextFormField(
-            keyboardType: TextInputType.multiline,
-            minLines: 1, //Normal textInputField will be displayed
-            maxLines: 5, // when user presses enter it will adapt to it
+      padding: const EdgeInsets.only(bottom: 28, left: 30, right: 30),
+      child: TextFormField(
+        keyboardType: TextInputType.multiline,
+        minLines: 1, //Normal textInputField will be displayed
+        maxLines: 5, // when user presses enter it will adapt to it
 
-            decoration: InputDecoration(
-              icon: Poppins(
-                  text: "Email         ",
-                  size: 14,
-                  color: C.dark2,
-                  fontWeight: FW.light),
-              hintText: placeholder == "" ? "Email" : placeholder,
-              hintStyle: placeholder != ""
-                  ? const TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FW.light,
-                      color: C.textDefault,
-                    )
-                  : const TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FW.light,
-                      color: C.disableTextfield,
-                    ),
-              focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: C.disableTextfield),
-              ),
-            ),
-            onSaved: (String? value) {
-              // This optional block of code can be used to run
-              // code when the user saves the form.
-            },
-            validator: (String? value) {
-              return (value != null && value.contains('@'))
-                  ? 'Do not use the @ char.'
-                  : null;
-            },
+        decoration: InputDecoration(
+          icon: Poppins(
+              text: "Email         ",
+              size: 14,
+              color: C.dark2,
+              fontWeight: FW.light),
+          hintText: placeholder == "" ? "Email" : placeholder,
+          hintStyle: placeholder != ""
+              ? const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                  fontWeight: FW.light,
+                  color: C.textDefault,
+                )
+              : const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                  fontWeight: FW.light,
+                  color: C.disableTextfield,
+                ),
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: C.disableTextfield),
           ),
-        ],
+        ),
+        onSaved: (String? value) {
+          // This optional block of code can be used to run
+          // code when the user saves the form.
+        },
+        validator: (String? value) {
+          return (value != null && value.contains('@'))
+              ? 'Do not use the @ char.'
+              : null;
+        },
       ),
       // SizedBox(
       //   width: 20,
@@ -278,59 +339,86 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Widget TextFieldBio(String placeholder) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Column(
-        children: [
-          TextFormField(
-            maxLines: 5,
-            keyboardType: TextInputType.multiline,
-            // controller: _content,
-            decoration: InputDecoration(
-              icon: Poppins(
-                  text: "Bio             ",
-                  size: 14,
-                  color: C.dark2,
-                  fontWeight: FW.light),
-              hintText: placeholder == "" ? "Write your Bio" : placeholder,
-              hintStyle: placeholder != ""
-                  ? const TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FW.light,
-                      color: C.textDefault,
-                    )
-                  : const TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FW.light,
-                      color: C.disableTextfield,
-                    ),
-              // label: Text("Description"),
-              // labelStyle: TextStyle(color: Colors.grey),
-              // alignLabelWithHint: true,
-              enabledBorder: const OutlineInputBorder(
-                // borderRadius: BorderRadius.circular(0),
-                borderSide: BorderSide(color: C.disableField),
-              ),
-              focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: C.dark1),
-              ),
-              filled: true, //<-- SEE HERE
-              fillColor: C.disableField, //<-- SEE HERE
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Please enter forum's content";
-              } else {
-                return null;
-              }
-            },
+      padding: const EdgeInsets.only(bottom: 8, left: 30, right: 30),
+      child: TextFormField(
+        maxLines: 5,
+        keyboardType: TextInputType.multiline,
+        // controller: _content,
+        decoration: InputDecoration(
+          icon: Poppins(
+              text: "Bio             ",
+              size: 14,
+              color: C.dark2,
+              fontWeight: FW.light),
+          hintText: placeholder == "" ? "Write your Bio" : placeholder,
+          hintStyle: placeholder != ""
+              ? const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                  fontWeight: FW.light,
+                  color: C.textDefault,
+                )
+              : const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                  fontWeight: FW.light,
+                  color: C.disableTextfield,
+                ),
+          // label: Text("Description"),
+          // labelStyle: TextStyle(color: Colors.grey),
+          // alignLabelWithHint: true,
+          enabledBorder: const OutlineInputBorder(
+            // borderRadius: BorderRadius.circular(0),
+            borderSide: BorderSide(color: C.disableField),
           ),
-        ],
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: C.dark1),
+          ),
+          filled: true, //<-- SEE HERE
+          fillColor: C.disableField, //<-- SEE HERE
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return "Please enter forum's content";
+          } else {
+            return null;
+          }
+        },
       ),
       // SizedBox(
       //   width: 20,
       // ),
     );
   }
+}
+
+class ToolTipCustomShape extends ShapeBorder {
+  final bool usePadding;
+  ToolTipCustomShape({this.usePadding = true});
+
+  @override
+  EdgeInsetsGeometry get dimensions =>
+      EdgeInsets.only(bottom: usePadding ? 20 : 0);
+
+  @override
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) => Path();
+
+  @override
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
+    rect =
+        Rect.fromPoints(rect.topLeft, rect.bottomRight - const Offset(0, 20));
+    return Path()
+      ..addRRect(
+          RRect.fromRectAndRadius(rect, Radius.circular(rect.height / 8)))
+      ..moveTo(rect.bottomCenter.dx + 30, rect.bottomCenter.dy)
+      ..relativeLineTo(10, 20)
+      ..relativeLineTo(10, -20)
+      ..close();
+  }
+
+  @override
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {}
+
+  @override
+  ShapeBorder scale(double t) => this;
 }
