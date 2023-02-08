@@ -49,7 +49,7 @@ class _NavbarState extends State<Navbar> {
             case 3:
               return CupertinoTabView(
                 navigatorKey: forthTabNavKey,
-                builder: (BuildContext context) => ProfileScreen(),
+                builder: (BuildContext context) => Profile(),
               );
           }
           return HeaderHomePage();

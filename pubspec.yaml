@@ -38,6 +38,7 @@ dependencies:
   google_fonts: ^3.0.1
   flutter_svg: ^1.1.6
   flutter_icons: ^1.1.0
+  just_the_tooltip: ^0.0.12
   chips_choice_null_safety: ^2.0.2
 
 dev_dependencies:
