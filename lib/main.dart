@@ -1,3 +1,5 @@
+import 'package:demalongsy/pages/choose_style.dart';
+import 'package:demalongsy/pages/tags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:demalongsy/pages/navbar.dart';
@@ -13,11 +15,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
-      title: 'Flutter Demo',
+        title: 'Flutter Demo',
 
-      // home: const Longin(),
-      //home: ProfileScreen(),
-      home: Navbar(),
-    );
+        // home: const Longin(),
+        //home: ProfileScreen(),
+        home: Tags());
+    // home: ChooseStyle());
+    // home: Loading());
   }
 }

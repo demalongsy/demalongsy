@@ -41,6 +41,7 @@ dependencies:
   salomon_bottom_bar: ^3.3.1
   custom_navigation_bar: ^0.8.2
   flutter_icons: ^1.1.0
+  chips_choice_null_safety: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +73,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/images/circle-regular.svg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
