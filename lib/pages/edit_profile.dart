@@ -9,6 +9,13 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  TextEditingController _nameController = new TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _bioController = new TextEditingController();
+  String _nameInput = '';
+  String _emailInput = '';
+  String _bioInput = '';
+
   bool showPassword = false;
   @override
   Widget build(BuildContext context) {
@@ -45,15 +52,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ),
                         ),
                         Expanded(child: Container()),
-                        GestureDetector(
-                          child: const Poppins(
-                            text: "Save",
-                            size: 16,
-                            color: C.primaryDefault,
-                            fontWeight: FW.bold,
-                            letterspacing: 0.64,
-                          ),
-                        )
+                        _nameInput.length > 0 ||
+                                _emailInput.length > 0 ||
+                                _bioInput.length > 0
+                            ? GestureDetector(
+                                child: const Poppins(
+                                  text: "Save",
+                                  size: 16,
+                                  color: C.primaryDefault,
+                                  fontWeight: FW.bold,
+                                  letterspacing: 0.64,
+                                ),
+                              )
+                            : const Poppins(
+                                text: "Save",
+                                size: 16,
+                                color: C.disableTextfield,
+                                fontWeight: FW.bold,
+                                letterspacing: 0.64,
+                              ),
                       ]),
                 ),
               )),
@@ -76,12 +93,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           width: 98,
                           height: 98,
                           decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    "https://s.isanook.com/wo/0/ui/38/190849/277150081_1212531879516407_7579357549109873866_n.jpg?ip/convert/w0/q80/jpg",
-                                  ))),
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                "https://s.isanook.com/wo/0/ui/38/190849/277150081_1212531879516407_7579357549109873866_n.jpg?ip/convert/w0/q80/jpg",
+                              ),
+                            ),
+                          ),
                         ),
                         Positioned(
                             bottom: 0,
@@ -243,6 +262,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8, left: 30, right: 30),
       child: TextFormField(
+        onChanged: (value) => setState(() => _nameInput = value),
+        controller: _nameController,
         keyboardType: TextInputType.multiline,
         minLines: 1, //Normal textInputField will be displayed
         maxLines: 5, // when user presses enter it will adapt to it
@@ -290,6 +311,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 28, left: 30, right: 30),
       child: TextFormField(
+        onChanged: (value) => setState(() => _emailInput = value),
+        controller: _emailController,
         keyboardType: TextInputType.multiline,
         minLines: 1, //Normal textInputField will be displayed
         maxLines: 5, // when user presses enter it will adapt to it
@@ -338,6 +361,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8, left: 30, right: 30),
       child: TextFormField(
+        onChanged: (value) => setState(() => _bioInput = value),
+        controller: _bioController,
         maxLines: 5,
         keyboardType: TextInputType.multiline,
         // controller: _content,

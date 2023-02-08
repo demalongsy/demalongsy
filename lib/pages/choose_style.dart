@@ -147,40 +147,40 @@ class _ChooseStyleState extends State<ChooseStyle> {
               SizedBox(
                 height: 264,
               ),
-              favUserSelect.length > 0
-                  ? GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => Navbar()));
-                        // Navigator.of(context).push(
-                        // MaterialPageRoute(builder: (context) => HomePage()));
-                        //------------------------
-                        // Navigator.of(context).push(
-                        //   CupertinoPageRoute<bool>(
-                        //     fullscreenDialog: true,
-                        //     builder: (BuildContext context) => HomePage(),
-                        //   ),
-                        // );
-                      },
-                      child: const Button(
-                        text: "Get Start",
-                        fontWeight: FW.bold,
-                        color: C.dark2,
-                        size: 16,
-                        boxColor: C.secondaryDefault,
-                        boxHeight: 48,
-                        haveBorder: false,
-                      ),
-                    )
-                  : const Button(
-                      text: "Get Start",
-                      fontWeight: FW.bold,
-                      color: C.dark3,
-                      size: 16,
-                      boxColor: C.secondaryHover,
-                      boxHeight: 48,
-                      haveBorder: false,
-                    ),
+              // favUserSelect.length > 0
+              //     ? GestureDetector(
+              //         onTap: () {
+              //           Navigator.of(context).push(
+              //               MaterialPageRoute(builder: (context) => Navbar()));
+              //           // Navigator.of(context).push(
+              //           // MaterialPageRoute(builder: (context) => HomePage()));
+              //           //------------------------
+              //           // Navigator.of(context).push(
+              //           //   CupertinoPageRoute<bool>(
+              //           //     fullscreenDialog: true,
+              //           //     builder: (BuildContext context) => HomePage(),
+              //           //   ),
+              //           // );
+              //         },
+              //         child: const Button(
+              //           text: "Get Start",
+              //           fontWeight: FW.bold,
+              //           color: C.dark2,
+              //           size: 16,
+              //           boxColor: C.secondaryDefault,
+              //           boxHeight: 48,
+              //           haveBorder: false,
+              //         ),
+              //       )
+              //     : const Button(
+              //         text: "Get Start",
+              //         fontWeight: FW.bold,
+              //         color: C.dark3,
+              //         size: 16,
+              //         boxColor: C.secondaryHover,
+              //         boxHeight: 48,
+              //         haveBorder: false,
+              //       ),
               // MultiSelectChipDisplay(
               //   items: [],
               // decoration: BoxDecoration(
