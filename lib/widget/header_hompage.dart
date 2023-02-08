@@ -32,6 +32,16 @@ class _HeaderHomePageState extends State<HeaderHomePage>
     return MaterialApp(
       home: SafeArea(
           child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: C.primaryDefault,
+          elevation: 3,
+          child: const Icon(
+            Icons.add_rounded,
+            size: 48,
+            color: C.textDefault,
+          ),
+        ),
         appBar: AppBar(
           backgroundColor: C.white,
           centerTitle: true,

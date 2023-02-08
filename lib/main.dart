@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:demalongsy/pages/login.dart';
 import 'package:demalongsy/pages/navbar.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
 
       // home: const Longin(),
       //home: ProfileScreen(),
-      home: Navbar(),
+      home: Login(),
     );
   }
 }
