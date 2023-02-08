@@ -1,4 +1,3 @@
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
@@ -36,7 +35,6 @@ class _PageForYouState extends State<PageForYou> {
               width: 30,
               height: 30,
             ),
-            
             Container(
               color: C.dangerDefault,
               width: 30,
