@@ -2,9 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:just_the_tooltip/just_the_tooltip.dart';
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -111,14 +108,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   Padding(
                     padding: const EdgeInsets.only(left: 30, right: 30),
                     child: Container(
-                      child: Poppins(
+                      child: const Poppins(
                           text: "Personal Infomation",
                           size: 12,
                           color: C.textDefault,
                           fontWeight: FW.bold),
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     color: Colors.black,
                   ),
                   TextFieldUsername(),
@@ -345,7 +342,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         keyboardType: TextInputType.multiline,
         // controller: _content,
         decoration: InputDecoration(
-          icon: Poppins(
+          icon: const Poppins(
               text: "Bio             ",
               size: 14,
               color: C.dark2,
