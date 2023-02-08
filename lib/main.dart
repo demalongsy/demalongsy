@@ -2,6 +2,7 @@ import 'package:demalongsy/pages/choose_style.dart';
 import 'package:demalongsy/pages/tags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:demalongsy/pages/login.dart';
 import 'package:demalongsy/pages/navbar.dart';
 
 void main() {

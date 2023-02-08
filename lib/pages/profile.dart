@@ -12,11 +12,21 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreen extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: SafeArea(
+    return MaterialApp(
+      home: SafeArea(
           child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: C.primaryDefault,
+          elevation: 3,
+          child: const Icon(
+            Icons.add_rounded,
+            size: 48,
+            color: C.textDefault,
+          ),
+        ),
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(40),
+          preferredSize: const Size.fromHeight(40),
           child: AppBar(
             backgroundColor: Colors.white,
             centerTitle: false,

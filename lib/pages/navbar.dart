@@ -1,14 +1,11 @@
 import '../custom/toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:demalongsy/pages/home.dart';
-import 'package:demalongsy/pages/login.dart';
 import 'package:demalongsy/pages/search.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:demalongsy/pages/profile.dart';
-import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/pages/choose_style.dart';
-import 'package:demalongsy/custom/widget/font.dart';
+import 'package:demalongsy/widget/header_hompage.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -34,35 +31,32 @@ class _NavbarState extends State<Navbar> {
             case 0:
               return CupertinoTabView(
                 navigatorKey: firstTabNavKey,
-                builder: (BuildContext context) => HomePage(),
+                builder: (BuildContext context) => HeaderHomePage(),
               );
-              break;
+
             case 1:
               return CupertinoTabView(
                 navigatorKey: secondTabNavKey,
                 builder: (BuildContext context) => Search(),
               );
-              break;
+
             case 2:
               return CupertinoTabView(
                 navigatorKey: thirdTabNavKey,
                 builder: (BuildContext context) => ChooseStyle(),
               );
-              break;
+
             case 3:
               return CupertinoTabView(
                 navigatorKey: forthTabNavKey,
                 builder: (BuildContext context) => ProfileScreen(),
               );
-              break;
           }
-          return Container();
+          return HeaderHomePage();
         },
         tabBar: CupertinoTabBar(
           backgroundColor: C.white,
-          height: 87,
-          // ignore: unnecessary_const
-
+          height: 76,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               activeIcon: SvgPicture.asset(
