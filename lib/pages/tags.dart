@@ -3,6 +3,7 @@ import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/pages/navbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../custom/toolkit.dart';
 import 'package:flutter/material.dart';
 
@@ -44,108 +45,103 @@ class _TagsState extends State<Tags> {
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-        body: Column(children: [
-          Expanded(
-            child: Container(
-              child: SizedBox.expand(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: const Spectral(
-                        text: "Choose",
-                        color: C.dark1,
-                        fontWeight: FW.bold,
-                        size: 36,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: const Spectral(
-                        text: "your favorite style",
-                        color: C.dark1,
-                        fontWeight: FW.bold,
-                        size: 36,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: const Spectral(
-                        text: "Fantastic to start to use application!",
-                        color: C.dark1,
-                        fontWeight: FW.light,
-                        size: 14,
-                      ),
-                    ),
-                    Column(
-                        //padding วางตรงนี้เป็นต้นไป
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ChipsChoice<String>.multiple(
-                            value: tags,
-                            onChanged: (val) => setState(() => tags = val),
-                            choiceItems: C2Choice.listFrom(
-                                source: options,
-                                value: (i, v) => v,
-                                label: (i, v) => v),
-                            choiceActiveStyle: const C2ChoiceStyle(
-                              labelStyle: TextStyle(color: C.primaryDefault),
-                              backgroundColor: C.dark1,
-                              color: C.primaryDefault,
-                              borderColor: Color(0xFF0B6E40),
-                              avatarBorderColor: C.primaryDefault,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                              avatarBorderShape: OutlineInputBorder(),
-                            ),
-                            choiceStyle: const C2ChoiceStyle(
-                              color: C.dark1,
-                              borderColor: C.dark1,
-                              avatarBorderColor: C.primaryDefault,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                            ),
-                            wrapped: true,
-                            textDirection: TextDirection.ltr,
-                          )
-                        ]),
-                    SizedBox(
-                      height: 284,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => Navbar()));
-                          // Navigator.of(context).push(
-                          // MaterialPageRoute(builder: (context) => HomePage()));
-                          //------------------------
-                          // Navigator.of(context).push(
-                          //   CupertinoPageRoute<bool>(
-                          //     fullscreenDialog: true,
-                          //     builder: (BuildContext context) => HomePage(),
-                          //   ),
-                          // );
-                        },
-                        child: const Button(
-                          text: "Get Start",
-                          fontWeight: FW.bold,
-                          color: C.dark2,
-                          size: 16,
-                          boxColor: C.secondaryDefault,
-                          boxHeight: 48,
-                          haveBorder: false,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+        body: ListView(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 24),
+              child: Spectral(
+                text: "Choose",
+                color: C.dark1,
+                fontWeight: FW.bold,
+                size: 36,
               ),
             ),
-          ),
-        ]),
+            const Padding(
+              padding: EdgeInsets.only(left: 24),
+              child: Spectral(
+                text: "your favorite style",
+                color: C.dark1,
+                fontWeight: FW.bold,
+                size: 36,
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 24),
+              child: Spectral(
+                text: "Fantastic to start to use application!",
+                color: C.dark1,
+                fontWeight: FW.light,
+                size: 14,
+              ),
+            ),
+            ChipsChoice<String>.multiple(
+              value: tags,
+              onChanged: (val) => setState(() => tags = val),
+              choiceItems: C2Choice.listFrom(
+                  source: options, value: (i, v) => v, label: (i, v) => v),
+              choiceActiveStyle: const C2ChoiceStyle(
+                labelStyle: TextStyle(color: C.primaryDefault),
+                backgroundColor: C.dark1,
+                color: C.primaryDefault,
+                borderColor: Color(0xFF0B6E40),
+                avatarBorderColor: C.primaryDefault,
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+                avatarBorderShape: OutlineInputBorder(),
+              ),
+              choiceStyle: const C2ChoiceStyle(
+                color: C.dark1,
+                borderColor: C.dark1,
+                avatarBorderColor: C.primaryDefault,
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+              ),
+              wrapped: true,
+              textDirection: TextDirection.ltr,
+            ),
+            Container(
+              height: 200,
+            ),
+            tags.isNotEmpty
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => Navbar()));
+                        // Navigator.of(context).push(
+                        // MaterialPageRoute(builder: (context) => HomePage()));
+                        //------------------------
+                        // Navigator.of(context).push(
+                        //   CupertinoPageRoute<bool>(
+                        //     fullscreenDialog: true,
+                        //     builder: (BuildContext context) => HomePage(),
+                        //   ),
+                        // );
+                      },
+                      child: const Button(
+                        text: "Get Start",
+                        fontWeight: FW.bold,
+                        color: C.dark2,
+                        size: 16,
+                        boxColor: C.secondaryDefault,
+                        boxHeight: 48,
+                        haveBorder: false,
+                      ),
+                    ),
+                  )
+                : const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Button(
+                      text: "Get Start",
+                      fontWeight: FW.bold,
+                      color: C.dark2,
+                      size: 16,
+                      boxColor: C.secondaryPressed,
+                      boxHeight: 48,
+                      haveBorder: false,
+                    ),
+                  ),
+          ],
+        ),
       ),
     ));
   }
