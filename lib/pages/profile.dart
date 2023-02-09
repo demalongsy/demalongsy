@@ -1,11 +1,10 @@
-import 'package:demalongsy/pages/edit_profile.dart';
-import 'package:demalongsy/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/pages/post.dart';
 import 'package:demalongsy/custom/toolkit.dart';
-import 'package:demalongsy/pages/favorite_post.dart';
 import 'package:demalongsy/custom/widget/font.dart';
+import 'package:demalongsy/pages/edit_profile.dart';
 import 'package:demalongsy/pages/favorite_post.dart';
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -47,7 +46,8 @@ class _Profile extends State<Profile> {
         ),
         body: DefaultTabController(
           length: 2,
-          child: NestedScrollView(
+          child: ExtendedNestedScrollView(
+            onlyOneScrollInBody: true,
             headerSliverBuilder: (context, _) {
               return [
                 SliverList(
@@ -57,33 +57,17 @@ class _Profile extends State<Profile> {
                     ],
                   ),
                 ),
-              ];
-            },
-            body: Column(
-              children: const <Widget>[
-                Material(
-                  color: C.white,
-                  child: TabBar(
+                const SliverAppBar(
+                  elevation: 0,
+                  backgroundColor: C.white,
+                  pinned: true,
+                  primary: false,
+                  toolbarHeight: 0,
+                  bottom: TabBar(
                     indicator: UnderlineTabIndicator(
                       borderSide: BorderSide(width: 2.0),
                       insets: EdgeInsets.symmetric(horizontal: 80.0),
                     ),
-                    // padding: EdgeInsets.only(left: 50, right: 50),
-                    // indicator: BoxDecoration(
-                    //   gradient: LinearGradient(
-                    //     colors: [
-                    //       Colors.green,
-                    //       Colors.blue,
-                    //       Colors.red,
-                    //     ],
-                    //   ),
-                    //   borderRadius: BorderRadius.all(
-                    //     Radius.circular(4),
-                    //   ),
-                    // ),
-                    // indicatorWeight: 10,
-                    // indicatorPadding: EdgeInsets.only(top: 50),
-                    // indicatorColor: Colors.black,
                     tabs: [
                       Tab(
                         icon: Icon(
@@ -96,15 +80,14 @@ class _Profile extends State<Profile> {
                           Icons.favorite_border_rounded,
                           color: Colors.black,
                         ),
-                      ),
+                      )
                     ],
                   ),
-                ),
-                Expanded(
-                    child: TabBarView(
-                  children: [PostScreen(), FavoritePosts()],
-                ))
-              ],
+                )
+              ];
+            },
+            body: const TabBarView(
+              children: [PostScreen(), FavoritePosts()],
             ),
           ),
         ),
@@ -241,11 +224,29 @@ Widget actions(BuildContext context) {
                 fontWeight: FW.bold),
           ),
           onPressed: () {
-            Navigator.of(context, rootNavigator: true).push(
-                MaterialPageRoute(builder: (context) => EditProfilePage()));
+            Navigator.of(context, rootNavigator: true)
+                .push(_createTransitionRoute());
           },
         ),
       ),
     ],
+  );
+}
+
+Route _createTransitionRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => EditProfilePage(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1, 0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
   );
 }

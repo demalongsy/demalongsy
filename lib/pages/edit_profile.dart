@@ -16,6 +16,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String _emailInput = '';
   String _bioInput = '';
 
+  bool checkAllSpaces(String input) {
+    String output = input.replaceAll(' ', '');
+    return output.isNotEmpty ? true : false;
+  }
+
   bool showPassword = false;
   @override
   Widget build(BuildContext context) {
@@ -52,10 +57,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ),
                         ),
                         Expanded(child: Container()),
-                        _nameInput.length > 0 ||
-                                _emailInput.length > 0 ||
-                                _bioInput.length > 0
+                        checkAllSpaces(_nameInput) ||
+                                checkAllSpaces(_emailInput) ||
+                                checkAllSpaces(_bioInput)
                             ? GestureDetector(
+                                onTap: () {
+                                  print(_nameInput);
+                                },
                                 child: const Poppins(
                                   text: "Save",
                                   size: 16,
@@ -125,7 +133,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 30,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 30, right: 30),
+                    padding:  EdgeInsets.only(left: 30, right: 30),
                     child: Container(
                       child: const Poppins(
                           text: "Personal Infomation",
