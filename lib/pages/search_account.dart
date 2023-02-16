@@ -20,8 +20,7 @@ class _SearchAccountState extends State<SearchAccount> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: ListView.builder(
+    return ListView.builder(
       itemCount: accounts.length,
       itemBuilder: ((context, index) {
         final account = accounts[index];
@@ -43,7 +42,7 @@ class _SearchAccountState extends State<SearchAccount> {
               context, MaterialPageRoute(builder: (context) => Profile())),
         );
       }),
-    ));
+    );
   }
 
   void searchAccount(String query) {

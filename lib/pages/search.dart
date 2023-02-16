@@ -36,163 +36,153 @@ class _SearchState extends State<Search> {
   // }
 
   Widget build(BuildContext context) {
-    return Material(
-      child: SafeArea(
-        child: DefaultTabController(
-          length: 2,
-          child: Scaffold(
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          backgroundColor: C.white,
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: C.white,
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: C.white,
-              elevation: 0.0,
-              title: widget.isBack ?? true
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(right: 12),
-                          child: GestureDetector(
-                            onTap: () => Navigator.of(context).pop(Navbar()),
-                            child: const Icon(
-                              Icons.arrow_back_ios_rounded,
-                              color: C.dark2,
-                              size: 16.0,
+            elevation: 0.0,
+            title: widget.isBack ?? true
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 12),
+                        child: GestureDetector(
+                          onTap: () => Navigator.of(context).pop(Navbar()),
+                          child: const Icon(
+                            Icons.arrow_back_ios_rounded,
+                            color: C.dark2,
+                            size: 16.0,
+                          ),
+                          // IconButton(
+                          //   icon: const Icon(Icons.arrow_back_ios_rounded,
+                          //       size: 16.0, color: Colors.black),
+                          //   onPressed: () => Navigator.of(context).pop(),
+                          // ),
+                        ),
+                      ),
+                      Expanded(
+                        child: SizedBox(
+                          // width: MediaQuery.of(context).size.width,
+                          height: 40,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              filled: true,
+                              fillColor: C.disableField,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: C.disableField),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: C.infoDefault),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              // contentPadding: EdgeInsets.symmetric(vertical: 36),
+                              hintText: 'Search...',
+                              hintStyle: const TextStyle(
+                                color: C.disableTextfield,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 0),
+                              prefixIcon: Align(
+                                widthFactor: 1.0,
+                                heightFactor: 1.0,
+                                child: SvgPicture.asset(
+                                  'assets/images/search-icon-grey.svg',
+                                  alignment: Alignment.center,
+                                  fit: BoxFit.fill,
+                                  // width: MediaQuery.of(context).size.width,
+                                  // height: MediaQuery.of(context).size.height,
+                                ),
+                              ),
+                              suffixIcon: const Align(
+                                widthFactor: 0.5,
+                                heightFactor: 1.0,
+                                child: Icon(
+                                  Icons.close,
+                                ),
+                              ),
                             ),
-                            // IconButton(
-                            //   icon: const Icon(Icons.arrow_back_ios_rounded,
-                            //       size: 16.0, color: Colors.black),
-                            //   onPressed: () => Navigator.of(context).pop(),
-                            // ),
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              color: C.dark1,
+                              fontWeight: FW.regular,
+                            ),
+                            onChanged: searchAccount,
                           ),
                         ),
-                        Expanded(
-                          child: SizedBox(
-                            // width: MediaQuery.of(context).size.width,
-                            height: 40,
-                            child: TextField(
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                filled: true,
-                                fillColor: C.disableField,
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1, color: C.disableField),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1, color: C.infoDefault),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                // contentPadding: EdgeInsets.symmetric(vertical: 36),
-                                hintText: 'Search...',
-                                hintStyle: const TextStyle(
-                                  color: C.disableTextfield,
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 2, horizontal: 0),
-                                prefixIcon: Align(
-                                  widthFactor: 1.0,
-                                  heightFactor: 1.0,
-                                  child: SvgPicture.asset(
-                                    'assets/images/search-icon-grey.svg',
-                                    alignment: Alignment.center,
-                                    fit: BoxFit.fill,
-                                    // width: MediaQuery.of(context).size.width,
-                                    // height: MediaQuery.of(context).size.height,
-                                  ),
-                                ),
-                                suffixIcon: const Align(
-                                  widthFactor: 0.5,
-                                  heightFactor: 1.0,
-                                  child: Icon(
-                                    Icons.close,
-                                  ),
+                      ),
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          // width: MediaQuery.of(context).size.width,
+                          height: 40,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              filled: true,
+                              fillColor: C.disableField,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: C.disableField),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: C.infoDefault),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              // contentPadding: EdgeInsets.symmetric(vertical: 36),
+                              hintText: 'Search...',
+                              hintStyle: const TextStyle(
+                                color: C.disableTextfield,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 0),
+                              prefixIcon: Align(
+                                widthFactor: 1.0,
+                                heightFactor: 1.0,
+                                child: SvgPicture.asset(
+                                  'assets/images/search-icon-grey.svg',
+                                  alignment: Alignment.center,
+                                  fit: BoxFit.fill,
+                                  // width: MediaQuery.of(context).size.width,
+                                  // height: MediaQuery.of(context).size.height,
                                 ),
                               ),
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                color: C.dark1,
-                                fontWeight: FW.regular,
+                              suffixIcon: const Align(
+                                widthFactor: 0.5,
+                                heightFactor: 1.0,
+                                child: Icon(
+                                  Icons.close,
+                                ),
                               ),
-                              onChanged: searchAccount,
                             ),
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              color: C.dark1,
+                              fontWeight: FW.regular,
+                            ),
+                            onChanged: searchAccount,
                           ),
                         ),
-                      ],
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            // width: MediaQuery.of(context).size.width,
-                            height: 40,
-                            child: TextField(
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                filled: true,
-                                fillColor: C.disableField,
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1, color: C.disableField),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1, color: C.infoDefault),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                // contentPadding: EdgeInsets.symmetric(vertical: 36),
-                                hintText: 'Search...',
-                                hintStyle: const TextStyle(
-                                  color: C.disableTextfield,
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 2, horizontal: 0),
-                                prefixIcon: Align(
-                                  widthFactor: 1.0,
-                                  heightFactor: 1.0,
-                                  child: SvgPicture.asset(
-                                    'assets/images/search-icon-grey.svg',
-                                    alignment: Alignment.center,
-                                    fit: BoxFit.fill,
-                                    // width: MediaQuery.of(context).size.width,
-                                    // height: MediaQuery.of(context).size.height,
-                                  ),
-                                ),
-                                suffixIcon: const Align(
-                                  widthFactor: 0.5,
-                                  heightFactor: 1.0,
-                                  child: Icon(
-                                    Icons.close,
-                                  ),
-                                ),
-                              ),
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                color: C.dark1,
-                                fontWeight: FW.regular,
-                              ),
-                              onChanged: searchAccount,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-              // title: Container(
-              //   color: C.infoDefault,
-              //   child: const InputField(
-              //     color: C.disableTextfield,
-              //     text: 'Search',
-              //     size: 16,
-              //     // boxHeight: 40,
-              //   ),
-              // ),
-            ),
-            body: Column(
+                      ),
+                    ],
+                  ),
+          ),
+          body: SafeArea(
+            child: Column(
               children: const [
                 TabBar(
                     // controller: controller,
@@ -224,22 +214,22 @@ class _SearchState extends State<Search> {
                 )
               ],
             ),
-            // body: Center(
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(23.0),
-            //     // child: Column(
-            //     //   // ignore: prefer_const_literals_to_create_immutables
-            //     //   children: [
-            //     //     const InputField(
-            //     //       // color: C.disableTextfield,
-            //     //       text: 'Search',
-            //     //       size: 16,
-            //     //     )
-            //     //   ],
-            //     // ),
-            //   ),
-            // ),
           ),
+          // body: Center(
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(23.0),
+          //     // child: Column(
+          //     //   // ignore: prefer_const_literals_to_create_immutables
+          //     //   children: [
+          //     //     const InputField(
+          //     //       // color: C.disableTextfield,
+          //     //       text: 'Search',
+          //     //       size: 16,
+          //     //     )
+          //     //   ],
+          //     // ),
+          //   ),
+          // ),
         ),
       ),
     );
