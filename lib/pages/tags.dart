@@ -36,13 +36,12 @@ class _TagsState extends State<Tags> {
     return MaterialApp(
         home: SafeArea(
       child: Scaffold(
-        backgroundColor: C.white,
-        appBar: AppBar(
-          backgroundColor: C.white,
-          elevation: 0.0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.of(context).pop(),
+        backgroundColor: C.backgroundWhiteIvory,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(60),
+          child: AppBar(
+            backgroundColor: C.backgroundWhiteIvory,
+            elevation: 0,
           ),
         ),
         body: ListView(
@@ -76,72 +75,96 @@ class _TagsState extends State<Tags> {
             ),
             ChipsChoice<String>.multiple(
               value: tags,
-              onChanged: (val) => setState(() => tags = val),
+              onChanged: (val) {
+                setState(() {
+                  tags = val;
+                  return print(options.isNotEmpty);
+                });
+              },
               choiceItems: C2Choice.listFrom(
                   source: options, value: (i, v) => v, label: (i, v) => v),
+              //active
               choiceActiveStyle: const C2ChoiceStyle(
-                labelStyle: TextStyle(color: C.primaryDefault),
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                labelStyle: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
+                    color: C.primaryDefault),
                 backgroundColor: C.dark1,
                 color: C.primaryDefault,
+                showCheckmark: false,
                 borderColor: Color(0xFF0B6E40),
                 avatarBorderColor: C.primaryDefault,
                 borderRadius: BorderRadius.all(Radius.circular(50)),
                 avatarBorderShape: OutlineInputBorder(),
               ),
               choiceStyle: const C2ChoiceStyle(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 color: C.dark1,
                 borderColor: C.dark1,
+                labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 14),
                 avatarBorderColor: C.primaryDefault,
                 borderRadius: BorderRadius.all(Radius.circular(50)),
               ),
               wrapped: true,
               textDirection: TextDirection.ltr,
+              choiceAvatarBuilder: (data) {
+                return data.selected
+                    ? SvgPicture.asset(
+                        'assets/images/circle-check.svg',
+                        width: 24,
+                        height: 24,
+                      )
+                    : SvgPicture.asset(
+                        'assets/images/circle-regular.svg',
+                        width: 24,
+                        height: 24,
+                      );
+              },
             ),
-            Container(
-              height: 200,
-            ),
-            tags.isNotEmpty
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => Navbar()));
-                        // Navigator.of(context).push(
-                        // MaterialPageRoute(builder: (context) => HomePage()));
-                        //------------------------
-                        // Navigator.of(context).push(
-                        //   CupertinoPageRoute<bool>(
-                        //     fullscreenDialog: true,
-                        //     builder: (BuildContext context) => HomePage(),
-                        //   ),
-                        // );
-                      },
-                      child: const Button(
-                        text: "Get Start",
-                        fontWeight: FW.bold,
-                        color: C.dark2,
-                        size: 16,
-                        boxColor: C.secondaryDefault,
-                        boxHeight: 48,
-                        haveBorder: false,
-                      ),
-                    ),
-                  )
-                : const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Button(
-                      text: "Get Start",
-                      fontWeight: FW.bold,
-                      color: C.dark2,
-                      size: 16,
-                      boxColor: C.secondaryPressed,
-                      boxHeight: 48,
-                      haveBorder: false,
-                    ),
-                  ),
           ],
         ),
+        bottomNavigationBar: tags.isNotEmpty
+            ? Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Navbar()));
+                    // Navigator.of(context).push(
+                    // MaterialPageRoute(builder: (context) => HomePage()));
+                    //------------------------
+                    // Navigator.of(context).push(
+                    //   CupertinoPageRoute<bool>(
+                    //     fullscreenDialog: true,
+                    //     builder: (BuildContext context) => HomePage(),
+                    //   ),
+                    // );
+                  },
+                  child: const Button(
+                    text: "Get Start",
+                    fontWeight: FW.bold,
+                    color: C.dark2,
+                    size: 16,
+                    boxColor: C.secondaryDefault,
+                    boxHeight: 48,
+                    haveBorder: false,
+                  ),
+                ),
+              )
+            : const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 32),
+                child: Button(
+                  text: "Get Start",
+                  fontWeight: FW.bold,
+                  color: C.dark2,
+                  size: 16,
+                  boxColor: C.secondaryPressed,
+                  boxHeight: 48,
+                  haveBorder: false,
+                ),
+              ),
       ),
     ));
   }

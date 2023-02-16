@@ -1,4 +1,8 @@
 import 'dart:math';
+import 'package:demalongsy/models/account_data.dart';
+import 'package:demalongsy/pages/navbar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 import '../custom/toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +21,7 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  List<Account_data> accounts = Account_list;
   // late TabController controller;
   @override
   // initState() {
@@ -39,23 +44,95 @@ class _SearchState extends State<Search> {
             appBar: AppBar(
               backgroundColor: C.backgroundWhiteIvory,
               elevation: 0.0,
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(0),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 24, right: 24),
-                  child: const InputField(
-                    color: C.disableTextfield,
-                    text: 'Search',
-                    size: 16,
-
-                    // boxHeight: 40,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // Padding(
+                  //   padding: EdgeInsets.only(right: 12),
+                  //   child: GestureDetector(
+                  //     onTap: () => Navigator.of(context).pop(Navbar()),
+                  //     child: const Icon(
+                  //       Icons.arrow_back_ios_rounded,
+                  //       color: C.dark2,
+                  //       size: 16.0,
+                  //     ),
+                  //     // IconButton(
+                  //     //   icon: const Icon(Icons.arrow_back_ios_rounded,
+                  //     //       size: 16.0, color: Colors.black),
+                  //     //   onPressed: () => Navigator.of(context).pop(),
+                  //     // ),
+                  //   ),
+                  // ),
+                  Expanded(
+                    child: SizedBox(
+                      // width: MediaQuery.of(context).size.width,
+                      height: 40,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          filled: true,
+                          fillColor: C.disableField,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 1, color: C.disableField),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 1, color: C.infoDefault),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          // contentPadding: EdgeInsets.symmetric(vertical: 36),
+                          hintText: 'Search...',
+                          hintStyle: const TextStyle(
+                            color: C.disableTextfield,
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 2, horizontal: 0),
+                          prefixIcon: Align(
+                            widthFactor: 1.0,
+                            heightFactor: 1.0,
+                            child: SvgPicture.asset(
+                              'assets/images/search-icon-grey.svg',
+                              alignment: Alignment.center,
+                              fit: BoxFit.fill,
+                              // width: MediaQuery.of(context).size.width,
+                              // height: MediaQuery.of(context).size.height,
+                            ),
+                          ),
+                          suffixIcon: const Align(
+                            widthFactor: 0.5,
+                            heightFactor: 1.0,
+                            child: Icon(
+                              Icons.close,
+                            ),
+                          ),
+                        ),
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: C.dark1,
+                          fontWeight: FW.regular,
+                        ),
+                        onChanged: searchAccount,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
+
+              // title: Container(
+              //   color: C.infoDefault,
+              //   child: const InputField(
+              //     color: C.disableTextfield,
+              //     text: 'Search',
+              //     size: 16,
+              //     // boxHeight: 40,
+              //   ),
+              // ),
             ),
             body: Column(
-              children: [
-                const TabBar(
+              children: const [
+                TabBar(
                     // controller: controller,
                     labelColor: Colors.black,
                     // labelPadding: const EdgeInsets.symmetric(horizontal: 2),
@@ -104,6 +181,15 @@ class _SearchState extends State<Search> {
         ),
       ),
     );
+  }
+
+  void searchAccount(String query) {
+    final suggesttions = Account_list.where((account) {
+      final accountTitle = account.title.toLowerCase();
+      final input = query.toLowerCase();
+      return accountTitle.contains(input);
+    }).toList();
+    setState(() => accounts = suggesttions);
   }
 }
 
