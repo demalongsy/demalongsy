@@ -133,7 +133,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 30,
                   ),
                   Padding(
-                    padding:  EdgeInsets.only(left: 30, right: 30),
+                    padding: EdgeInsets.only(left: 30, right: 30),
                     child: Container(
                       child: const Poppins(
                           text: "Personal Infomation",
