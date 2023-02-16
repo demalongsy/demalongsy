@@ -95,8 +95,10 @@ class _HeaderHomePageState extends State<HeaderHomePage>
                   setState(() {
                     isTapped = false;
                   });
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Search()));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Search(
+                            isBack: true,
+                          )));
                 }),
                 onPointerMove: (event) {
                   setState(() {

@@ -78,7 +78,6 @@ class _TagsState extends State<Tags> {
               onChanged: (val) {
                 setState(() {
                   tags = val;
-                  return print(options.isNotEmpty);
                 });
               },
               choiceItems: C2Choice.listFrom(
