@@ -13,6 +13,7 @@ class Poppins extends StatelessWidget {
   final double? letterspacing;
   final TextAlign? textAlign;
   final int? maxLines;
+  final bool? underline;
 
   const Poppins(
       {Key? key,
@@ -21,6 +22,7 @@ class Poppins extends StatelessWidget {
       required this.color,
       required this.fontWeight,
       this.fontStyle = FontStyle.normal,
+      this.underline = false,
       this.letterspacing,
       this.textAlign,
       this.maxLines})
@@ -35,6 +37,7 @@ class Poppins extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       textScaleFactor: ScaleSize.textScaleFactor(context),
       style: GoogleFonts.poppins(
+        decoration: underline ?? false ? TextDecoration.underline : null,
         fontSize: size,
         color: color,
         fontWeight: fontWeight,

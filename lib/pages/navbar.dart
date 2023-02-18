@@ -112,7 +112,6 @@ class _NavbarState extends State<Navbar> {
             ),
           ],
           onTap: (index) {
-            // back home only if not switching tab
             if (currentIndex == index) {
               switch (index) {
                 case 0:
