@@ -393,7 +393,7 @@ class _SignUpState extends State<SignUp> {
                                     builder: (context) => const Tags()));
                               },
                               child: const Button(
-                                text: "Get Start",
+                                text: "Sign Up",
                                 fontWeight: FW.bold,
                                 color: C.dark2,
                                 size: 16,

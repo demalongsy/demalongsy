@@ -1,3 +1,4 @@
+import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/pages/navbar.dart';
 import 'package:demalongsy/pages/signup.dart';
 import 'package:demalongsy/pages/tags.dart';
@@ -293,8 +294,8 @@ class _LoginState extends State<Login> {
                           ),
                           GestureDetector(
                             onTap: (() {
-                              Navigator.of(context, rootNavigator: true)
-                                  .push(_createTransitionRoute());
+                              Navigator.of(context, rootNavigator: true).push(
+                                  createTransitionRoute(const SignUp(), 1, 0));
                             }),
                             child: const Poppins(
                               text: "Sign up",
@@ -317,22 +318,4 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-}
-
-Route _createTransitionRoute() {
-  return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => SignUp(),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(1, 0);
-      const end = Offset.zero;
-      const curve = Curves.ease;
-
-      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-      return SlideTransition(
-        position: animation.drive(tween),
-        child: child,
-      );
-    },
-  );
 }

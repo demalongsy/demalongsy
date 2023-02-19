@@ -1,3 +1,4 @@
+import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/pages/post.dart';
 import 'package:demalongsy/custom/toolkit.dart';
@@ -225,28 +226,10 @@ Widget actions(BuildContext context) {
           ),
           onPressed: () {
             Navigator.of(context, rootNavigator: true)
-                .push(_createTransitionRoute());
+                .push(createTransitionRoute(EditProfilePage(), 1, 0));
           },
         ),
       ),
     ],
-  );
-}
-
-Route _createTransitionRoute() {
-  return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => EditProfilePage(),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(1, 0);
-      const end = Offset.zero;
-      const curve = Curves.ease;
-
-      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-      return SlideTransition(
-        position: animation.drive(tween),
-        child: child,
-      );
-    },
   );
 }
