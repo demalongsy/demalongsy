@@ -1,3 +1,5 @@
+import 'package:demalongsy/custom/key/navigate.dart';
+import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/pages/post.dart';
 import 'package:demalongsy/custom/toolkit.dart';
@@ -7,6 +9,8 @@ import 'package:demalongsy/pages/favorite_post.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 
 class Profile extends StatefulWidget {
+  final bool? rootPage;
+  const Profile({Key? key, this.rootPage}) : super(key: key);
   @override
   _Profile createState() => _Profile();
 }
@@ -15,6 +19,8 @@ class _Profile extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey:
+          widget.rootPage ?? false ? NavigationService.profileKey : null,
       home: SafeArea(
           child: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -225,28 +231,10 @@ Widget actions(BuildContext context) {
           ),
           onPressed: () {
             Navigator.of(context, rootNavigator: true)
-                .push(_createTransitionRoute());
+                .push(createTransitionRoute(EditProfilePage(), 1, 0));
           },
         ),
       ),
     ],
-  );
-}
-
-Route _createTransitionRoute() {
-  return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => EditProfilePage(),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(1, 0);
-      const end = Offset.zero;
-      const curve = Curves.ease;
-
-      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-      return SlideTransition(
-        position: animation.drive(tween),
-        child: child,
-      );
-    },
   );
 }

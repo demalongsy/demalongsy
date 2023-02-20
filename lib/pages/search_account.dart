@@ -45,14 +45,14 @@ class _SearchAccountState extends State<SearchAccount> {
     );
   }
 
-  void searchAccount(String query) {
-    final suggesttions = Account_list.where((account) {
-      final accountTitle = account.title.toLowerCase();
-      final input = query.toLowerCase();
-      return accountTitle.contains(input);
-    }).toList();
-    setState(() => accounts = suggesttions);
-  }
+  // void searchAccount(String query) {
+  //   final suggesttions = Account_list.where((account) {
+  //     final accountTitle = account.title.toLowerCase();
+  //     final input = query.toLowerCase();
+  //     return accountTitle.contains(input);
+  //   }).toList();
+  //   setState(() => accounts = suggesttions);
+  // }
 }
 
 class ScaleSize {

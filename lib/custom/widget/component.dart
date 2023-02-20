@@ -16,6 +16,8 @@ class Button extends StatelessWidget {
   final double? letterspacing;
   final TextAlign? textAlign;
   final bool? haveBorder;
+  final String? pathImg;
+  final bool? hasImg;
 
   const Button(
       {Key? key,
@@ -28,7 +30,9 @@ class Button extends StatelessWidget {
       this.fontStyle = FontStyle.normal,
       this.letterspacing,
       this.haveBorder,
-      this.textAlign})
+      this.textAlign,
+      this.pathImg,
+      this.hasImg = false})
       : super(key: key);
 
   @override
@@ -41,17 +45,42 @@ class Button extends StatelessWidget {
             haveBorder == true ? Border.all(width: 1, color: C.dark2) : null,
       ),
       height: boxHeight,
-      child: Center(
-          child: Text(
-        text,
-        textAlign: textAlign,
-        style: GoogleFonts.poppins(
-          fontSize: size,
-          color: color,
-          fontWeight: fontWeight,
-          letterSpacing: letterspacing,
-        ),
-      )),
+      child: hasImg ?? false
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  pathImg.toString(),
+                  width: 23,
+                  height: 23,
+                ),
+                const SizedBox(
+                  width: 24,
+                ),
+                Text(
+                  text,
+                  textAlign: textAlign,
+                  style: GoogleFonts.poppins(
+                    fontSize: size,
+                    color: color,
+                    fontWeight: fontWeight,
+                    letterSpacing: letterspacing,
+                  ),
+                ),
+              ],
+            )
+          : Center(
+              child: Text(
+                text,
+                textAlign: textAlign,
+                style: GoogleFonts.poppins(
+                  fontSize: size,
+                  color: color,
+                  fontWeight: fontWeight,
+                  letterSpacing: letterspacing,
+                ),
+              ),
+            ),
     );
   }
 }
