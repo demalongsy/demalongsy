@@ -22,8 +22,17 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  TextEditingController _searchController = new TextEditingController();
+  String _searchInput = '';
+  bool x = false;
+
   List<Account_data> accounts = Account_list;
   // late TabController controller;
+  bool checkAllSpaces(String input) {
+    String output = input.replaceAll(' ', '');
+    return output.isNotEmpty ? true : false;
+  }
+
   @override
   // initState() {
   //   super.initState();
@@ -70,52 +79,65 @@ class _SearchState extends State<Search> {
                           // width: MediaQuery.of(context).size.width,
                           height: 40,
                           child: TextField(
+                            onChanged: (value) => setState(() {
+                              _searchInput = value;
+                              x = true;
+                            }),
+                            controller: _searchController,
                             decoration: InputDecoration(
-                              border: InputBorder.none,
-                              filled: true,
-                              fillColor: C.disableField,
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: C.disableField),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: C.infoDefault),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              // contentPadding: EdgeInsets.symmetric(vertical: 36),
-                              hintText: 'Search...',
-                              hintStyle: const TextStyle(
-                                color: C.disableTextfield,
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 2, horizontal: 0),
-                              prefixIcon: Align(
-                                widthFactor: 1.0,
-                                heightFactor: 1.0,
-                                child: SvgPicture.asset(
-                                  'assets/images/search-icon-grey.svg',
-                                  alignment: Alignment.center,
-                                  fit: BoxFit.fill,
-                                  // width: MediaQuery.of(context).size.width,
-                                  // height: MediaQuery.of(context).size.height,
+                                border: InputBorder.none,
+                                filled: true,
+                                fillColor: C.disableField,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: C.disableField),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                              ),
-                              suffixIcon: const Align(
-                                widthFactor: 0.5,
-                                heightFactor: 1.0,
-                                child: Icon(
-                                  Icons.close,
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: C.infoDefault),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                              ),
-                            ),
+                                // contentPadding: EdgeInsets.symmetric(vertical: 36),
+                                hintText: 'Search...',
+                                hintStyle: const TextStyle(
+                                  color: C.disableTextfield,
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 2, horizontal: 0),
+                                prefixIcon: Align(
+                                  widthFactor: 1.0,
+                                  heightFactor: 1.0,
+                                  child: SvgPicture.asset(
+                                    'assets/images/search-icon-grey.svg',
+                                    alignment: Alignment.center,
+                                    fit: BoxFit.fill,
+                                    // width: MediaQuery.of(context).size.width,
+                                    // height: MediaQuery.of(context).size.height,
+                                  ),
+                                ),
+                                suffixIcon: _searchInput.isNotEmpty
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          _searchController.clear();
+                                          setState(() {
+                                            _searchInput = '';
+                                          });
+                                        },
+                                        child: const Align(
+                                          widthFactor: 0.5,
+                                          heightFactor: 1.0,
+                                          child: Icon(
+                                            Icons.close,
+                                          ),
+                                        ),
+                                      )
+                                    : null),
                             style: GoogleFonts.poppins(
                               fontSize: 16,
                               color: C.dark1,
                               fontWeight: FW.regular,
                             ),
-                            onChanged: searchAccount,
                           ),
                         ),
                       ),
@@ -129,52 +151,65 @@ class _SearchState extends State<Search> {
                           // width: MediaQuery.of(context).size.width,
                           height: 40,
                           child: TextField(
+                            onChanged: (value) => setState(() {
+                              _searchInput = value;
+                              // x = true;
+                            }),
+                            controller: _searchController,
                             decoration: InputDecoration(
-                              border: InputBorder.none,
-                              filled: true,
-                              fillColor: C.disableField,
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: C.disableField),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: C.infoDefault),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              // contentPadding: EdgeInsets.symmetric(vertical: 36),
-                              hintText: 'Search...',
-                              hintStyle: const TextStyle(
-                                color: C.disableTextfield,
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 2, horizontal: 0),
-                              prefixIcon: Align(
-                                widthFactor: 1.0,
-                                heightFactor: 1.0,
-                                child: SvgPicture.asset(
-                                  'assets/images/search-icon-grey.svg',
-                                  alignment: Alignment.center,
-                                  fit: BoxFit.fill,
-                                  // width: MediaQuery.of(context).size.width,
-                                  // height: MediaQuery.of(context).size.height,
+                                border: InputBorder.none,
+                                filled: true,
+                                fillColor: C.disableField,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: C.disableField),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                              ),
-                              suffixIcon: const Align(
-                                widthFactor: 0.5,
-                                heightFactor: 1.0,
-                                child: Icon(
-                                  Icons.close,
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: C.infoDefault),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                              ),
-                            ),
+                                // contentPadding: EdgeInsets.symmetric(vertical: 36),
+                                hintText: 'Search...',
+                                hintStyle: const TextStyle(
+                                  color: C.disableTextfield,
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 2, horizontal: 0),
+                                prefixIcon: Align(
+                                  widthFactor: 1.0,
+                                  heightFactor: 1.0,
+                                  child: SvgPicture.asset(
+                                    'assets/images/search-icon-grey.svg',
+                                    alignment: Alignment.center,
+                                    fit: BoxFit.fill,
+                                    // width: MediaQuery.of(context).size.width,
+                                    // height: MediaQuery.of(context).size.height,
+                                  ),
+                                ),
+                                suffixIcon: _searchInput.isNotEmpty
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          _searchController.clear();
+                                          setState(() {
+                                            _searchInput = '';
+                                          });
+                                        },
+                                        child: const Align(
+                                          widthFactor: 0.5,
+                                          heightFactor: 1.0,
+                                          child: Icon(
+                                            Icons.close,
+                                          ),
+                                        ),
+                                      )
+                                    : null),
                             style: GoogleFonts.poppins(
                               fontSize: 16,
                               color: C.dark1,
                               fontWeight: FW.regular,
                             ),
-                            onChanged: searchAccount,
                           ),
                         ),
                       ),
@@ -215,21 +250,6 @@ class _SearchState extends State<Search> {
               ],
             ),
           ),
-          // body: Center(
-          //   child: Padding(
-          //     padding: const EdgeInsets.all(23.0),
-          //     // child: Column(
-          //     //   // ignore: prefer_const_literals_to_create_immutables
-          //     //   children: [
-          //     //     const InputField(
-          //     //       // color: C.disableTextfield,
-          //     //       text: 'Search',
-          //     //       size: 16,
-          //     //     )
-          //     //   ],
-          //     // ),
-          //   ),
-          // ),
         ),
       ),
     );
