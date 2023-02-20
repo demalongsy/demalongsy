@@ -1,10 +1,13 @@
+import 'package:demalongsy/custom/key/navigate.dart';
+import 'package:demalongsy/pages/search_style.dart';
+
 import '../custom/toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:demalongsy/pages/search.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:demalongsy/pages/profile.dart';
-import 'package:demalongsy/pages/choose_style.dart';
+
 import 'package:demalongsy/widget/header_hompage.dart';
 
 class Navbar extends StatefulWidget {
@@ -24,6 +27,7 @@ class _NavbarState extends State<Navbar> {
 
   @override
   Widget build(BuildContext context) {
+    var route = ModalRoute.of(context);
     return MaterialApp(
       home: CupertinoTabScaffold(
         tabBuilder: (BuildContext context, int index) {
@@ -37,19 +41,25 @@ class _NavbarState extends State<Navbar> {
             case 1:
               return CupertinoTabView(
                 navigatorKey: secondTabNavKey,
-                builder: (BuildContext context) => Search(),
+                builder: (BuildContext context) => Search(
+                  isBack: false,
+                ),
               );
 
             case 2:
               return CupertinoTabView(
                 navigatorKey: thirdTabNavKey,
-                builder: (BuildContext context) => ChooseStyle(),
+                builder: (BuildContext context) => SearchStyle(
+                  rootPage: true,
+                ),
               );
 
             case 3:
               return CupertinoTabView(
                 navigatorKey: forthTabNavKey,
-                builder: (BuildContext context) => Profile(),
+                builder: (BuildContext context) => Profile(
+                  rootPage: true,
+                ),
               );
           }
           return HeaderHomePage();
@@ -115,15 +125,23 @@ class _NavbarState extends State<Navbar> {
             if (currentIndex == index) {
               switch (index) {
                 case 0:
+                  NavigationService.headerKey.currentState!
+                      .popUntil((r) => r.isFirst);
                   firstTabNavKey.currentState!.popUntil((r) => r.isFirst);
                   break;
                 case 1:
+                  NavigationService.searchKey.currentState!
+                      .popUntil((r) => r.isFirst);
                   secondTabNavKey.currentState!.popUntil((r) => r.isFirst);
                   break;
                 case 2:
+                  NavigationService.searchStyleKey.currentState!
+                      .popUntil((r) => r.isFirst);
                   thirdTabNavKey.currentState!.popUntil((r) => r.isFirst);
                   break;
                 case 3:
+                  NavigationService.profileKey.currentState!
+                      .popUntil((r) => r.isFirst);
                   forthTabNavKey.currentState!.popUntil((r) => r.isFirst);
                   break;
               }

@@ -1,3 +1,4 @@
+import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/pages/post.dart';
@@ -8,6 +9,8 @@ import 'package:demalongsy/pages/favorite_post.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 
 class Profile extends StatefulWidget {
+  final bool? rootPage;
+  const Profile({Key? key, this.rootPage}) : super(key: key);
   @override
   _Profile createState() => _Profile();
 }
@@ -16,6 +19,8 @@ class _Profile extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey:
+          widget.rootPage ?? false ? NavigationService.profileKey : null,
       home: SafeArea(
           child: Scaffold(
         floatingActionButton: FloatingActionButton(

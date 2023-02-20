@@ -1,9 +1,11 @@
-import 'dart:math';
+import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/custom/widget/font.dart';
-import 'package:demalongsy/models/account_data.dart';
-import 'package:demalongsy/models/action_chips.dart';
+import 'package:demalongsy/custom/widget/page_transition.dart';
+import 'package:demalongsy/models/data_mockup_for_post.dart';
+
 import 'package:demalongsy/pages/profile.dart';
-import 'package:demalongsy/widget/action_chip_data.dart';
+import 'package:demalongsy/pages/signup.dart';
+
 import 'package:flutter/material.dart';
 import 'package:demalongsy/pages/search.dart';
 import 'package:demalongsy/custom/toolkit.dart';
@@ -19,18 +21,19 @@ class _HeaderHomePageState extends State<HeaderHomePage>
     with TickerProviderStateMixin {
   late TabController tabController;
   bool isTapped = true;
-  bool isSelectedFirstPages = true;
-  List<Account_data> accounts = Account_list;
-  int index = 0;
-  final double spacing = 8;
-  List favUserSelect = [];
+  bool isFavorited = false;
+  List<Post> postDesc = allPost;
 
-  // List<ChipData> chips = Chips.all;
-  List<FilterChipData> filterChips = FilterChips.all;
+
+  final Future<String> _calculation = Future<String>.delayed(
+    const Duration(seconds: 2),
+    () => 'Data Loaded',
+  );
 
   @override
   void initState() {
     super.initState();
+    _calculation;
     tabController = TabController(
       length: 2,
       initialIndex: 0,
@@ -41,6 +44,7 @@ class _HeaderHomePageState extends State<HeaderHomePage>
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: NavigationService.headerKey,
       home: SafeArea(
         child: Scaffold(
             floatingActionButton: FloatingActionButton(
@@ -82,7 +86,7 @@ class _HeaderHomePageState extends State<HeaderHomePage>
                         borderRadius: BorderRadius.circular(40),
                       ),
                       controller: tabController,
-                      tabs: [
+                      tabs: const [
                         Text(
                           "For you",
                         ),
@@ -123,37 +127,91 @@ class _HeaderHomePageState extends State<HeaderHomePage>
               ),
             ),
             body: Container(
+              color: C.backgroundWhiteIvory,
               child: TabBarView(
                 controller: tabController,
                 children: [
                   SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ListView(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          primary: false,
-                          children: filterChips
-                              .map((filterChip) => Fuck(filterChip.label))
-                              .toList(),
-                        ),
-                      ],
+                      child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Center(
+                      child: FutureBuilder<String>(
+                        future: _calculation,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<String> snapshot) {
+                          List<Widget> children;
+                          if (snapshot.hasData) {
+                            children = <Widget>[
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => Search(
+                                        isBack: true,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Icon(
+                                  Icons.check_circle_outline,
+                                  color: Colors.green,
+                                  size: 60,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 16),
+                                child: Text('Result: ${snapshot.data}'),
+                              ),
+                            ];
+                          } else if (snapshot.hasError) {
+                            children = <Widget>[
+                              const Icon(
+                                Icons.error_outline,
+                                color: Colors.red,
+                                size: 60,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 16),
+                                child: Text('Error: ${snapshot.error}'),
+                              ),
+                            ];
+                          } else {
+                            children = const <Widget>[
+                              SizedBox(
+                                width: 60,
+                                height: 60,
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 16),
+                                child: Text('Awaiting result...'),
+                              ),
+                            ];
+                          }
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: children,
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
+                  )),
                   SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ListView(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          primary: false,
-                          children: filterChips
-                              .map((filterChip) => Fuck(filterChip.label))
-                              .toList(),
-                        ),
-                      ],
+                      child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Center(
+                      child: Wrap(
+                        runSpacing: 6,
+                        spacing: 6,
+                        children: postDesc
+                            .map((post) => AllPost(post.topic, post.name,
+                                post.imgAcc, post.imgPath))
+                            .toList(),
+                      ),
                     ),
-                  ),
+                  )),
                 ],
               ),
             )),
@@ -161,15 +219,124 @@ class _HeaderHomePageState extends State<HeaderHomePage>
     );
   }
 
-  Widget Fuck(String a) {
-    return ListTile(
-      title: GestureDetector(
-        onTap: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => Profile()));
-        },
-        child: Poppins(text: a, size: 14, color: C.dark1, fontWeight: FW.bold),
+  Widget AllPost(String topic, String name, String imgAcc, String imgPath) {
+    return GestureDetector(
+      onTap: (() {
+        print(imgPath);
+      }),
+      child: Container(
+        width: 168,
+        height: 289,
+        decoration: BoxDecoration(
+            color: C.white, borderRadius: BorderRadius.circular(8)),
+        child: Stack(children: [
+          Column(
+            children: [
+              Container(
+                height: 198,
+                width: 168,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(8),
+                      topLeft: Radius.circular(8)),
+                  image: DecorationImage(
+                      image: NetworkImage(imgPath), fit: BoxFit.fill),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(7.0),
+                child: Poppins(
+                  text: topic,
+                  size: 14,
+                  color: C.dark1,
+                  fontWeight: FW.bold,
+                  letterspacing: 0.64,
+                  maxLines: 2,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 7),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 10,
+                      backgroundColor: Color(0xff74EDED),
+                      backgroundImage: NetworkImage(imgAcc),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Poppins(
+                      text: name,
+                      size: 10,
+                      color: C.dark1,
+                      fontWeight: FW.regular,
+                      letterspacing: 0.64,
+                      maxLines: 1,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: 168,
+              height: 40,
+              child: Row(
+                children: [
+                  Expanded(child: Container()),
+                  Expanded(child: Container()),
+                  isFavorited
+                      ? GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isFavorited = false;
+                            });
+                          },
+                          child: Container(
+                            height: 32,
+                            width: 32,
+                            decoration: BoxDecoration(
+                              color: C.white,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Icon(
+                              Icons.favorite,
+                              color: C.dark1,
+                            ),
+                          ),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isFavorited = true;
+                            });
+                          },
+                          child: Container(
+                            height: 32,
+                            width: 32,
+                            decoration: BoxDecoration(
+                              color: C.white,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Icon(
+                              Icons.favorite_outline_rounded,
+                              color: C.dark1,
+                            ),
+                          ),
+                        ),
+                ],
+              ),
+            ),
+          )
+        ]),
       ),
     );
   }
 }
+
