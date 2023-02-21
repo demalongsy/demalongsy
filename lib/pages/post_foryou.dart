@@ -17,22 +17,33 @@ class _PostForYouState extends State<PostForYou> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: C.backgroundWhiteIvory,
-      body: SingleChildScrollView(
+        backgroundColor: C.backgroundWhiteIvory,
+        body: SingleChildScrollView(
           child: Padding(
-        padding: const EdgeInsets.only(top: 10),
-        child: Center(
-          child: Wrap(
-            runSpacing: 6,
-            spacing: 6,
-            children: postDesc
-                .map((post) =>
-                    AllPost(post.topic, post.name, post.imgAcc, post.imgPath))
-                .toList(),
+            padding: const EdgeInsets.all(10),
+            child: GridView.builder(
+                shrinkWrap: true,
+                primary: false,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    mainAxisExtent: 298,
+
+                    //childAspectRatio: 3 / 2,
+                    crossAxisSpacing: 6,
+                    mainAxisSpacing: 6),
+                itemCount: 10,
+                itemBuilder: (BuildContext ctx, index) {
+                  return Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Text("${index}"),
+                  );
+                }),
           ),
-        ),
-      )),
-    );
+        ));
   }
 
   Widget AllPost(String topic, String name, String imgAcc, String imgPath) {

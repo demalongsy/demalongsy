@@ -24,6 +24,7 @@ class _NavbarState extends State<Navbar> {
   final GlobalKey<NavigatorState> secondTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> thirdTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> forthTabNavKey = GlobalKey<NavigatorState>();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class _NavbarState extends State<Navbar> {
               return CupertinoTabView(
                 navigatorKey: secondTabNavKey,
                 builder: (BuildContext context) => Search(
-                  isBack: false,
+                  //isRootPage: true,
                 ),
               );
 
@@ -50,7 +51,7 @@ class _NavbarState extends State<Navbar> {
               return CupertinoTabView(
                 navigatorKey: thirdTabNavKey,
                 builder: (BuildContext context) => SearchStyle(
-                  rootPage: true,
+                  isRootPage: true,
                 ),
               );
 
@@ -58,7 +59,7 @@ class _NavbarState extends State<Navbar> {
               return CupertinoTabView(
                 navigatorKey: forthTabNavKey,
                 builder: (BuildContext context) => Profile(
-                  rootPage: true,
+                  //isRootPage: true,
                 ),
               );
           }
