@@ -1,4 +1,5 @@
 import 'package:demalongsy/custom/key/navigate.dart';
+import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/pages/post.dart';
@@ -7,6 +8,7 @@ import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/pages/edit_profile.dart';
 import 'package:demalongsy/pages/favorite_post.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+import 'package:flutter_svg/svg.dart';
 
 class Profile extends StatefulWidget {
   final bool? rootPage;
@@ -16,6 +18,13 @@ class Profile extends StatefulWidget {
 }
 
 class _Profile extends State<Profile> {
+  _fetchPrefs() async {
+    Navigator.pop(context);
+    await Future.delayed(Duration(seconds: 1));
+    Navigator.of(context, rootNavigator: true)
+        .push(createTransitionRoute(EditProfilePage(), 1, 0));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,7 +54,143 @@ class _Profile extends State<Profile> {
                   Icons.settings_outlined,
                   color: Colors.black,
                 ),
-                onPressed: () => print("Add"),
+                // onPressed: () => print("Add"),
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    shape: const RoundedRectangleBorder(
+                      // <-- SEE HERE
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(25.0),
+                      ),
+                    ),
+                    context: context,
+                    useRootNavigator: true,
+                    builder: (BuildContext context) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(height: 10),
+                          SvgPicture.asset(
+                            "assets/images/line.svg",
+                            width: 8,
+                            height: 4,
+                            color: C.dark2,
+                          ),
+                          const SizedBox(height: 10),
+                          const Padding(
+                            padding: EdgeInsets.only(bottom: 15),
+                            child: Poppins(
+                                text: "Setting",
+                                size: 18,
+                                color: C.dark1,
+                                fontWeight: FW.bold),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            child: ListTile(
+                              leading: SvgPicture.asset(
+                                "assets/images/lock-solid.svg",
+                                width: 23,
+                                height: 23,
+                                color: C.dark2,
+                              ),
+                              title: const Poppins(
+                                  text: "Change Password",
+                                  size: 16,
+                                  color: C.dark2,
+                                  fontWeight: FW.light),
+                              onTap: () {
+                                Navigator.pop(context);
+                                // _fetchPrefs();
+                              },
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 80, right: 70),
+                            child: Divider(
+                              color: C.darkHover,
+                              thickness: 2,
+                              // height: 3,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            child: ListTile(
+                              leading: SvgPicture.asset(
+                                "assets/images/policy-solid.svg",
+                                width: 23,
+                                height: 23,
+                                color: C.dark2,
+                              ),
+                              title: const Poppins(
+                                  text: "Policy",
+                                  size: 16,
+                                  color: C.dark2,
+                                  fontWeight: FW.light),
+                              onTap: () {
+                                Navigator.of(context, rootNavigator: true).push(
+                                    createTransitionRoute(
+                                        EditProfilePage(), 1, 0));
+                              },
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 80, right: 70),
+                            child: Divider(
+                              color: C.darkHover,
+                              thickness: 2,
+                              // height: 3,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            child: ListTile(
+                              leading: SvgPicture.asset(
+                                "assets/images/message-solid.svg",
+                                width: 23,
+                                height: 23,
+                                color: C.dark2,
+                              ),
+                              title: const Poppins(
+                                  text: "Feedback",
+                                  size: 16,
+                                  color: C.dark2,
+                                  fontWeight: FW.light),
+                              onTap: () {
+                                Navigator.of(context, rootNavigator: true).push(
+                                    createTransitionRoute(
+                                        EditProfilePage(), 1, 0));
+                              },
+                            ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(bottom: 20)),
+                          OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: C.dark2),
+                              primary: C.dark3, // Background color
+                              shape: const StadiumBorder(),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 130, vertical: 10),
+                              child: Poppins(
+                                  text: "Log Out",
+                                  size: 16,
+                                  color: C.dark2,
+                                  fontWeight: FW.bold),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).push(
+                                  createTransitionRoute(
+                                      EditProfilePage(), 1, 0));
+                            },
+                          ),
+                          const SizedBox(height: 20)
+                        ],
+                      );
+                    },
+                  );
+                },
               )
             ],
           ),
