@@ -1,4 +1,6 @@
 import 'package:demalongsy/custom/key/navigate.dart';
+import 'package:demalongsy/custom/toolkit.dart';
+import 'package:demalongsy/custom/widget/font.dart';
 import 'package:flutter/material.dart';
 
 class SearchStyle extends StatefulWidget {
@@ -15,7 +17,18 @@ class _SearchStyleState extends State<SearchStyle> {
     return MaterialApp(
       navigatorKey:
           widget.rootPage ?? false ? NavigationService.searchStyleKey : null,
-      home: Container(),
+      home: SafeArea(
+        child: Scaffold(
+          body: Center(
+            child: Poppins(
+              text: "Similar Style",
+              color: C.primaryDefault,
+              fontWeight: FontWeight.normal,
+              size: 40,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
