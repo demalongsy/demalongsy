@@ -95,3 +95,46 @@ class ScaleSize {
     return max(1, min(val, maxTextScaleFactor));
   }
 }
+
+class Roboto extends StatelessWidget {
+  final double size;
+  final String text;
+  final Color color;
+  final FontWeight fontWeight;
+  final FontStyle? fontStyle;
+  final double? letterspacing;
+  final TextAlign? textAlign;
+  final int? maxLines;
+  final bool? underline;
+
+  const Roboto(
+      {Key? key,
+      required this.text,
+      required this.size,
+      required this.color,
+      required this.fontWeight,
+      this.fontStyle = FontStyle.normal,
+      this.underline = false,
+      this.letterspacing,
+      this.textAlign,
+      this.maxLines})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      textAlign: textAlign,
+      maxLines: maxLines,
+      overflow: TextOverflow.ellipsis,
+      textScaleFactor: ScaleSize.textScaleFactor(context),
+      style: GoogleFonts.roboto(
+        decoration: underline ?? false ? TextDecoration.underline : null,
+        fontSize: size,
+        color: color,
+        fontWeight: fontWeight,
+        letterSpacing: letterspacing,
+      ),
+    );
+  }
+}
