@@ -21,7 +21,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return output.isNotEmpty ? true : false;
   }
 
-  bool showPassword = false;
+  // bool showPassword = false;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -267,157 +267,188 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Widget TextFieldName(String placeholder) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8, left: 30, right: 30),
-      child: TextFormField(
-        onChanged: (value) => setState(() => _nameInput = value),
-        controller: _nameController,
-        keyboardType: TextInputType.multiline,
-        minLines: 1, //Normal textInputField will be displayed
-        maxLines: 5, // when user presses enter it will adapt to it
-        decoration: InputDecoration(
-          icon: const Poppins(
-              text: "Name        ",
-              size: 14,
-              color: C.dark2,
-              fontWeight: FW.light),
-          hintText: placeholder == "" ? "Name" : "      " + placeholder,
-          hintStyle: placeholder != ""
-              ? const TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 16,
-                  fontWeight: FW.light,
-                  color: C.textDefault,
-                )
-              : const TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 16,
-                  fontWeight: FW.light,
-                  color: C.disableTextfield,
-                ),
-          focusedBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: C.disableTextfield),
+    return GestureDetector(
+      onDoubleTap: () {
+        if (_nameController.text.isNotEmpty) {
+          _nameController.selection = TextSelection(
+              baseOffset: 0, extentOffset: _nameController.text.length);
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8, left: 30, right: 30),
+        child: TextFormField(
+          onChanged: (value) => setState(() => _nameInput = value),
+          controller: _nameController,
+          keyboardType: TextInputType.multiline,
+          minLines: 1, //Normal textInputField will be displayed
+          maxLines: 5, // when user presses enter it will adapt to it
+          decoration: InputDecoration(
+            icon: const Poppins(
+                text: "Name        ",
+                size: 14,
+                color: C.dark2,
+                fontWeight: FW.light),
+            hintText: placeholder == "" ? "Name" : "      " + placeholder,
+            hintStyle: placeholder != ""
+                ? const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 16,
+                    fontWeight: FW.light,
+                    color: C.textDefault,
+                  )
+                : const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 16,
+                    fontWeight: FW.light,
+                    color: C.disableTextfield,
+                  ),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: C.disableTextfield),
+            ),
           ),
+          onSaved: (String? value) {
+            // This optional block of code can be used to run
+            // code when the user saves the form.
+          },
+          validator: (String? value) {
+            return (value != null && value.contains('@'))
+                ? 'Do not use the @ char.'
+                : null;
+          },
         ),
-        onSaved: (String? value) {
-          // This optional block of code can be used to run
-          // code when the user saves the form.
-        },
-        validator: (String? value) {
-          return (value != null && value.contains('@'))
-              ? 'Do not use the @ char.'
-              : null;
-        },
+        // SizedBox(
+        //   width: 20,
+        // ),
       ),
-      // SizedBox(
-      //   width: 20,
-      // ),
     );
   }
 
   Widget TextFieldEmail(String placeholder) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 28, left: 30, right: 30),
-      child: TextFormField(
-        onChanged: (value) => setState(() => _emailInput = value),
-        controller: _emailController,
-        keyboardType: TextInputType.multiline,
-        minLines: 1, //Normal textInputField will be displayed
-        maxLines: 5, // when user presses enter it will adapt to it
+    return GestureDetector(
+      onDoubleTap: () {
+        if (_emailController.text.isNotEmpty) {
+          _emailController.selection = TextSelection(
+              baseOffset: 0, extentOffset: _emailController.text.length);
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 28, left: 30, right: 30),
+        child: TextFormField(
+          onChanged: (value) => setState(() => _emailInput = value),
+          controller: _emailController,
+          keyboardType: TextInputType.multiline,
+          minLines: 1, //Normal textInputField will be displayed
+          maxLines: 5, // when user presses enter it will adapt to it
 
-        decoration: InputDecoration(
-          icon: Poppins(
-              text: "Email         ",
-              size: 14,
-              color: C.dark2,
-              fontWeight: FW.light),
-          hintText: placeholder == "" ? "Email" : placeholder,
-          hintStyle: placeholder != ""
-              ? const TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 16,
-                  fontWeight: FW.light,
-                  color: C.textDefault,
-                )
-              : const TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 16,
-                  fontWeight: FW.light,
-                  color: C.disableTextfield,
-                ),
-          focusedBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: C.disableTextfield),
+          decoration: InputDecoration(
+            icon: Poppins(
+                text: "Email         ",
+                size: 14,
+                color: C.dark2,
+                fontWeight: FW.light),
+            hintText: placeholder == "" ? "Email" : placeholder,
+            hintStyle: placeholder != ""
+                ? const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 16,
+                    fontWeight: FW.light,
+                    color: C.textDefault,
+                  )
+                : const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 16,
+                    fontWeight: FW.light,
+                    color: C.disableTextfield,
+                  ),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: C.disableTextfield),
+            ),
           ),
+          onSaved: (String? value) {
+            // This optional block of code can be used to run
+            // code when the user saves the form.
+          },
+          validator: (String? value) {
+            return (value != null && value.contains('@'))
+                ? 'Do not use the @ char.'
+                : null;
+          },
         ),
-        onSaved: (String? value) {
-          // This optional block of code can be used to run
-          // code when the user saves the form.
-        },
-        validator: (String? value) {
-          return (value != null && value.contains('@'))
-              ? 'Do not use the @ char.'
-              : null;
-        },
+        // SizedBox(
+        //   width: 20,
+        // ),
       ),
-      // SizedBox(
-      //   width: 20,
-      // ),
     );
   }
 
   Widget TextFieldBio(String placeholder) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8, left: 30, right: 30),
-      child: TextFormField(
-        onChanged: (value) => setState(() => _bioInput = value),
-        controller: _bioController,
-        maxLines: 5,
-        keyboardType: TextInputType.multiline,
-        // controller: _content,
-        decoration: InputDecoration(
-          icon: const Poppins(
-              text: "Bio             ",
-              size: 14,
-              color: C.dark2,
-              fontWeight: FW.light),
-          hintText: placeholder == "" ? "Write your Bio" : placeholder,
-          hintStyle: placeholder != ""
-              ? const TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 16,
-                  fontWeight: FW.light,
-                  color: C.textDefault,
-                )
-              : const TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 16,
-                  fontWeight: FW.light,
-                  color: C.disableTextfield,
-                ),
-          // label: Text("Description"),
-          // labelStyle: TextStyle(color: Colors.grey),
-          // alignLabelWithHint: true,
-          enabledBorder: const OutlineInputBorder(
-            // borderRadius: BorderRadius.circular(0),
-            borderSide: BorderSide(color: C.disableField),
-          ),
-          focusedBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: C.dark1),
-          ),
-          filled: true, //<-- SEE HERE
-          fillColor: C.disableField, //<-- SEE HERE
+    return GestureDetector(
+      onDoubleTap: () {
+        if (_bioController.text.isNotEmpty) {
+          _bioController.selection = TextSelection(
+              baseOffset: 0, extentOffset: _bioController.text.length);
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8, left: 30, right: 30),
+        child: TextFormField(
+          onChanged: (value) => setState(() => _bioInput = value),
+          controller: _bioController,
+          maxLines: 8,
+          maxLength: 80,
+          keyboardType: TextInputType.multiline,
+          decoration: InputDecoration(
+              icon: const Poppins(
+                  text: "Bio             ",
+                  size: 14,
+                  color: C.dark2,
+                  fontWeight: FW.light),
+              hintText: placeholder == "" ? "Write your Bio" : placeholder,
+              hintStyle: placeholder != ""
+                  ? const TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FW.light,
+                      color: C.textDefault,
+                    )
+                  : const TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FW.light,
+                      color: C.disableTextfield,
+                    ),
+              enabledBorder: const OutlineInputBorder(
+                // borderRadius: BorderRadius.circular(0),
+                borderSide: BorderSide(color: C.disableField),
+              ),
+              focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: C.dark1),
+              ),
+              filled: true, //<-- SEE HERE
+              fillColor: C.disableField, //<-- SEE HERE
+              // suffixText:
+              //     '${(80 - _bioController.text.length).toString()} character(s)',
+              // counterText: '',
+              counterText:
+                  '${(80 - _bioController.text.length).toString()} character',
+              counterStyle: const TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 10,
+                fontWeight: FW.light,
+                color: C.disableTextfield,
+              )),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "Please enter forum's content";
+            } else {
+              return null;
+            }
+          },
         ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return "Please enter forum's content";
-          } else {
-            return null;
-          }
-        },
+        // SizedBox(
+        //   width: 20,
+        // ),
       ),
-      // SizedBox(
-      //   width: 20,
-      // ),
     );
   }
 }
