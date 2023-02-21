@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/models/account_data.dart';
 import 'package:demalongsy/pages/navbar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -46,6 +47,7 @@ class _SearchState extends State<Search> {
 
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: widget.isBack ?? true ? null : NavigationService.searchKey,
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -61,7 +63,7 @@ class _SearchState extends State<Search> {
                       Padding(
                         padding: EdgeInsets.only(right: 12),
                         child: GestureDetector(
-                          onTap: () => Navigator.of(context).pop(Navbar()),
+                          onTap: () => Navigator.of(context).pop(),
                           child: const Icon(
                             Icons.arrow_back_ios_rounded,
                             color: C.dark2,
