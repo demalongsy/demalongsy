@@ -36,92 +36,110 @@ class _TagsState extends State<Tags> {
     return MaterialApp(
         home: SafeArea(
       child: Scaffold(
-        backgroundColor: C.backgroundWhiteIvory,
+        backgroundColor: C.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(60),
           child: AppBar(
-            backgroundColor: C.backgroundWhiteIvory,
+            backgroundColor: C.white,
             elevation: 0,
           ),
         ),
-        body: ListView(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 24),
-              child: Spectral(
-                text: "Choose",
-                color: C.dark1,
-                fontWeight: FW.bold,
-                size: 36,
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 24),
-              child: Spectral(
-                text: "your favorite style",
-                color: C.dark1,
-                fontWeight: FW.bold,
-                size: 36,
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 24),
-              child: Spectral(
-                text: "Fantastic to start to use application!",
-                color: C.dark1,
-                fontWeight: FW.light,
-                size: 14,
-              ),
-            ),
-            ChipsChoice<String>.multiple(
-              value: tags,
-              onChanged: (val) {
-                setState(() {
-                  tags = val;
-                });
-              },
-              choiceItems: C2Choice.listFrom(
-                  source: options, value: (i, v) => v, label: (i, v) => v),
-              //active
-              choiceActiveStyle: const C2ChoiceStyle(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                labelStyle: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 14,
-                    color: C.primaryDefault),
-                backgroundColor: C.dark1,
+        body: GestureDetector(
+          child: Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
                 color: C.primaryDefault,
-                showCheckmark: false,
-                borderColor: Color(0xFF0B6E40),
-                avatarBorderColor: C.primaryDefault,
-                borderRadius: BorderRadius.all(Radius.circular(50)),
-                avatarBorderShape: OutlineInputBorder(),
+                child: SvgPicture.asset(
+                  "assets/images/bg-choose-fav.svg",
+                  fit: BoxFit.fill,
+                ),
               ),
-              choiceStyle: const C2ChoiceStyle(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                color: C.dark1,
-                borderColor: C.dark1,
-                labelStyle: TextStyle(fontFamily: 'Poppins', fontSize: 14),
-                avatarBorderColor: C.primaryDefault,
-                borderRadius: BorderRadius.all(Radius.circular(50)),
-              ),
-              wrapped: true,
-              textDirection: TextDirection.ltr,
-              choiceAvatarBuilder: (data) {
-                return data.selected
-                    ? SvgPicture.asset(
-                        'assets/images/circle-check.svg',
-                        width: 24,
-                        height: 24,
-                      )
-                    : SvgPicture.asset(
-                        'assets/images/circle-regular.svg',
-                        width: 24,
-                        height: 24,
-                      );
-              },
-            ),
-          ],
+              ListView(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 24),
+                    child: Spectral(
+                      text: "Choose",
+                      color: C.dark1,
+                      fontWeight: FW.bold,
+                      size: 36,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 24),
+                    child: Spectral(
+                      text: "your favorite style",
+                      color: C.dark1,
+                      fontWeight: FW.bold,
+                      size: 36,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 24),
+                    child: Spectral(
+                      text: "Fantastic to start to use application!",
+                      color: C.dark1,
+                      fontWeight: FW.light,
+                      size: 14,
+                    ),
+                  ),
+                  ChipsChoice<String>.multiple(
+                    value: tags,
+                    onChanged: (val) {
+                      setState(() {
+                        tags = val;
+                      });
+                    },
+                    choiceItems: C2Choice.listFrom(
+                        source: options,
+                        value: (i, v) => v,
+                        label: (i, v) => v),
+                    //active
+                    choiceActiveStyle: const C2ChoiceStyle(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      labelStyle: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                          color: C.primaryDefault),
+                      backgroundColor: C.dark1,
+                      color: C.primaryDefault,
+                      showCheckmark: false,
+                      borderColor: Color(0xFF0B6E40),
+                      avatarBorderColor: C.primaryDefault,
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      avatarBorderShape: OutlineInputBorder(),
+                    ),
+                    choiceStyle: const C2ChoiceStyle(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      color: C.dark1,
+                      borderColor: C.dark1,
+                      labelStyle:
+                          TextStyle(fontFamily: 'Poppins', fontSize: 14),
+                      avatarBorderColor: C.primaryDefault,
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                    ),
+                    wrapped: true,
+                    textDirection: TextDirection.ltr,
+                    choiceAvatarBuilder: (data) {
+                      return data.selected
+                          ? SvgPicture.asset(
+                              'assets/images/circle-check.svg',
+                              width: 24,
+                              height: 24,
+                            )
+                          : SvgPicture.asset(
+                              'assets/images/circle-regular.svg',
+                              width: 24,
+                              height: 24,
+                            );
+                    },
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
         bottomNavigationBar: tags.isNotEmpty
             ? Padding(

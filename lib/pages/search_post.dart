@@ -14,7 +14,7 @@ class _SearchPostState extends State<SearchPost> {
     return Container(
       child: Center(
         child: Text(
-          "1st tab",
+          "No post",
           style: Theme.of(context).textTheme.subtitle1,
           textAlign: TextAlign.center,
           textScaleFactor: ScaleSize.textScaleFactor(context),

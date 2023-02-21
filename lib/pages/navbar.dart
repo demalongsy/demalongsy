@@ -1,3 +1,5 @@
+import 'package:demalongsy/pages/view_post.dart';
+
 import '../custom/toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,7 +45,7 @@ class _NavbarState extends State<Navbar> {
             case 2:
               return CupertinoTabView(
                 navigatorKey: thirdTabNavKey,
-                builder: (BuildContext context) => ChooseStyle(),
+                builder: (BuildContext context) => ViewPost(),
               );
 
             case 3:
