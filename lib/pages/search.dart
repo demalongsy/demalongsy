@@ -56,167 +56,94 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
           title: Column(
             children: [
               SizedBox(),
-              widget.isBack ?? true
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(right: 12),
-                          child: GestureDetector(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: const Icon(
-                              Icons.arrow_back_ios_rounded,
-                              color: C.dark2,
-                              size: 16.0,
-                            ),
-                            // IconButton(
-                            //   icon: const Icon(Icons.arrow_back_ios_rounded,
-                            //       size: 16.0, color: Colors.black),
-                            //   onPressed: () => Navigator.of(context).pop(),
-                            // ),
-                          ),
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            // width: MediaQuery.of(context).size.width,
-                            height: 40,
-                            child: TextFormField(
-                              onChanged: (value) => setState(() {
-                                _searchInput = value;
-                                x = true;
-                              }),
-                              controller: _searchController,
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  filled: true,
-                                  fillColor: C.disableField,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: C.disableField),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: C.infoDefault),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  // contentPadding: EdgeInsets.symmetric(vertical: 36),
-                                  hintText: 'Search...',
-                                  hintStyle: const TextStyle(
-                                    color: C.disableTextfield,
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 2, horizontal: 0),
-                                  prefixIcon: Align(
-                                    widthFactor: 1.0,
-                                    heightFactor: 1.0,
-                                    child: SvgPicture.asset(
-                                      'assets/images/search-icon-grey.svg',
-                                      alignment: Alignment.center,
-                                      fit: BoxFit.fill,
-                                      // width: MediaQuery.of(context).size.width,
-                                      // height: MediaQuery.of(context).size.height,
-                                    ),
-                                  ),
-                                  suffixIcon: _searchInput.isNotEmpty
-                                      ? GestureDetector(
-                                          onTap: () {
-                                            _searchController.clear();
-                                            setState(() {
-                                              _searchInput = '';
-                                            });
-                                          },
-                                          child: const Align(
-                                            widthFactor: 0.5,
-                                            heightFactor: 1.0,
-                                            child: Icon(
-                                              Icons.close,
-                                            ),
-                                          ),
-                                        )
-                                      : null),
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                color: C.dark1,
-                                fontWeight: FW.regular,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            // width: MediaQuery.of(context).size.width,
-                            height: 40,
-                            child: TextField(
-                              onChanged: (value) => setState(() {
-                                _searchInput = value;
-                                // x = true;
-                              }),
-                              controller: _searchController,
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  filled: true,
-                                  fillColor: C.disableField,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: C.disableField),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: C.infoDefault),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  // contentPadding: EdgeInsets.symmetric(vertical: 36),
-                                  hintText: 'Search...',
-                                  hintStyle: const TextStyle(
-                                    color: C.disableTextfield,
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 2, horizontal: 0),
-                                  prefixIcon: Align(
-                                    widthFactor: 1.0,
-                                    heightFactor: 1.0,
-                                    child: SvgPicture.asset(
-                                      'assets/images/search-icon-grey.svg',
-                                      alignment: Alignment.center,
-                                      fit: BoxFit.fill,
-                                      // width: MediaQuery.of(context).size.width,
-                                      // height: MediaQuery.of(context).size.height,
-                                    ),
-                                  ),
-                                  suffixIcon: _searchInput.isNotEmpty
-                                      ? GestureDetector(
-                                          onTap: () {
-                                            _searchController.clear();
-                                            setState(() {
-                                              _searchInput = '';
-                                            });
-                                          },
-                                          child: const Align(
-                                            widthFactor: 0.5,
-                                            heightFactor: 1.0,
-                                            child: Icon(
-                                              Icons.close,
-                                            ),
-                                          ),
-                                        )
-                                      : null),
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                color: C.dark1,
-                                fontWeight: FW.regular,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 12),
+                    child: GestureDetector(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: const Icon(
+                        Icons.arrow_back_ios_rounded,
+                        color: C.dark2,
+                        size: 16.0,
+                      ),
+                      // IconButton(
+                      //   icon: const Icon(Icons.arrow_back_ios_rounded,
+                      //       size: 16.0, color: Colors.black),
+                      //   onPressed: () => Navigator.of(context).pop(),
+                      // ),
                     ),
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      // width: MediaQuery.of(context).size.width,
+                      height: 40,
+                      child: TextFormField(
+                        onChanged: (value) => setState(() {
+                          _searchInput = value;
+                          x = true;
+                        }),
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: C.disableField,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: C.disableField),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: C.infoDefault),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            // contentPadding: EdgeInsets.symmetric(vertical: 36),
+                            hintText: 'Search...',
+                            hintStyle: const TextStyle(
+                              color: C.disableTextfield,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 2, horizontal: 0),
+                            prefixIcon: Align(
+                              widthFactor: 1.0,
+                              heightFactor: 1.0,
+                              child: SvgPicture.asset(
+                                'assets/images/search-icon-grey.svg',
+                                alignment: Alignment.center,
+                                fit: BoxFit.fill,
+                                // width: MediaQuery.of(context).size.width,
+                                // height: MediaQuery.of(context).size.height,
+                              ),
+                            ),
+                            suffixIcon: _searchInput.isNotEmpty
+                                ? GestureDetector(
+                                    onTap: () {
+                                      _searchController.clear();
+                                      setState(() {
+                                        _searchInput = '';
+                                      });
+                                    },
+                                    child: const Align(
+                                      widthFactor: 0.5,
+                                      heightFactor: 1.0,
+                                      child: Icon(
+                                        Icons.close,
+                                      ),
+                                    ),
+                                  )
+                                : null),
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: C.dark1,
+                          fontWeight: FW.regular,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               TabBar(
                 // controller: controller,
                 labelColor: Colors.black,

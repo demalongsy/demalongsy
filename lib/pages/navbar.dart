@@ -28,7 +28,6 @@ class _NavbarState extends State<Navbar> {
 
   @override
   Widget build(BuildContext context) {
-    var route = ModalRoute.of(context);
     return MaterialApp(
       home: CupertinoTabScaffold(
         tabBuilder: (BuildContext context, int index) {
@@ -42,9 +41,9 @@ class _NavbarState extends State<Navbar> {
             case 1:
               return CupertinoTabView(
                 navigatorKey: secondTabNavKey,
-                builder: (BuildContext context) => SearchFirstPage(
-                    //isRootPage: true,
-                    ),
+                builder: (BuildContext context) => const SearchFirstPage(
+                  isRootPage: true,
+                ),
               );
 
             case 2:

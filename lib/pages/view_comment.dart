@@ -97,25 +97,27 @@ class _ViewCommentState extends State<ViewComment>
   }
 
   void _handleSubmitted(String text) {
-    _messageController.clear();
-    setState(
-      () {
-        _isComposing = false;
-      },
-    );
-    ChatMessage message = ChatMessage(
-      text: text,
-      animationController: AnimationController(
-        duration: Duration(milliseconds: 700),
-        vsync: this,
-      ),
-    );
-    setState(
-      () {
-        _messages.insert(0, message);
-      },
-    );
-    message.animationController.forward();
+    if (checkAllSpaces(_messageInput)) {
+      _messageController.clear();
+      setState(
+        () {
+          _isComposing = false;
+        },
+      );
+      ChatMessage message = ChatMessage(
+        text: text,
+        animationController: AnimationController(
+          duration: Duration(milliseconds: 700),
+          vsync: this,
+        ),
+      );
+      setState(
+        () {
+          _messages.insert(0, message);
+        },
+      );
+      message.animationController.forward();
+    }
   }
 
   Widget _buildTextComposer() {
@@ -134,7 +136,8 @@ class _ViewCommentState extends State<ViewComment>
           Expanded(
             child: SizedBox(
               height: 40,
-              child: TextFormField(
+              child: TextField(
+                onSubmitted: _handleSubmitted,
                 controller: _messageController,
                 onChanged: (String text) {
                   setState(() {
