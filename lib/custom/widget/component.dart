@@ -18,6 +18,10 @@ class Button extends StatelessWidget {
   final bool? haveBorder;
   final String? pathImg;
   final bool? hasImg;
+  final bool? declareWidth;
+  final double? width;
+  final bool? customRadius;
+  final double? radius;
 
   const Button(
       {Key? key,
@@ -32,7 +36,11 @@ class Button extends StatelessWidget {
       this.haveBorder,
       this.textAlign,
       this.pathImg,
-      this.hasImg = false})
+      this.hasImg = false,
+      this.declareWidth = false,
+      this.width,
+      this.customRadius = false,
+      this.radius})
       : super(key: key);
 
   @override
@@ -40,11 +48,14 @@ class Button extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: boxColor,
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: customRadius ?? false
+            ? BorderRadius.circular(radius ?? 0)
+            : BorderRadius.circular(50),
         border:
             haveBorder == true ? Border.all(width: 1, color: C.dark2) : null,
       ),
       height: boxHeight,
+      width: declareWidth == true ? width : null,
       child: hasImg ?? false
           ? Row(
               mainAxisAlignment: MainAxisAlignment.center,

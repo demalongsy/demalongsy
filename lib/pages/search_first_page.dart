@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'package:demalongsy/custom/key/navigate.dart';
+import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/models/account_data.dart';
 import 'package:demalongsy/pages/navbar.dart';
+import 'package:demalongsy/pages/search.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../custom/toolkit.dart';
@@ -14,15 +16,16 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:demalongsy/pages/search_account.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 
-class Search extends StatefulWidget {
+class SearchFirstPage extends StatefulWidget {
   final bool? isBack;
-  const Search({Key? key, this.isBack = false}) : super(key: key);
+  const SearchFirstPage({Key? key, this.isBack = false}) : super(key: key);
 
   @override
-  State<Search> createState() => _SearchState();
+  State<SearchFirstPage> createState() => _SearchState();
 }
 
-class _SearchState extends State<Search> with TickerProviderStateMixin {
+class _SearchState extends State<SearchFirstPage>
+    with TickerProviderStateMixin {
   TextEditingController _searchController = new TextEditingController();
   String _searchInput = '';
   bool x = false;
@@ -34,28 +37,26 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
     return output.isNotEmpty ? true : false;
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    controller = TabController(
-      length: 2,
-      initialIndex: 0,
-      vsync: this,
-    );
+  void search(String input) {
+    if (checkAllSpaces(input)) {
+      Navigator.of(context, rootNavigator: false)
+          .push(createTransitionRoute(Search(), 1, 0));
+    }
   }
 
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: C.white,
-      appBar: AppBar(
-          toolbarHeight: 100,
+    return MaterialApp(
+      navigatorKey: NavigationService.searchKey,
+      home: Scaffold(
+        backgroundColor: C.white,
+        appBar: AppBar(
+          toolbarHeight: 52,
           automaticallyImplyLeading: false,
           backgroundColor: C.white,
           elevation: 0.0,
           title: Column(
             children: [
-              SizedBox(),
               widget.isBack ?? true
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -69,34 +70,32 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                               color: C.dark2,
                               size: 16.0,
                             ),
-                            // IconButton(
-                            //   icon: const Icon(Icons.arrow_back_ios_rounded,
-                            //       size: 16.0, color: Colors.black),
-                            //   onPressed: () => Navigator.of(context).pop(),
-                            // ),
                           ),
                         ),
                         Expanded(
                           child: SizedBox(
                             // width: MediaQuery.of(context).size.width,
                             height: 40,
-                            child: TextFormField(
-                              onChanged: (value) => setState(() {
-                                _searchInput = value;
-                                x = true;
-                              }),
+                            child: TextField(
+                              onSubmitted: search,
+                              onChanged: (value) => setState(
+                                () {
+                                  _searchInput = value;
+                                  x = true;
+                                },
+                              ),
                               controller: _searchController,
                               decoration: InputDecoration(
                                   border: InputBorder.none,
                                   filled: true,
                                   fillColor: C.disableField,
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                         width: 1, color: C.disableField),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                         width: 1, color: C.infoDefault),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
@@ -153,10 +152,13 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                             // width: MediaQuery.of(context).size.width,
                             height: 40,
                             child: TextField(
-                              onChanged: (value) => setState(() {
-                                _searchInput = value;
-                                // x = true;
-                              }),
+                              onSubmitted: search,
+                              onChanged: (value) => setState(
+                                () {
+                                  _searchInput = value;
+                                  // x = true;
+                                },
+                              ),
                               controller: _searchController,
                               decoration: InputDecoration(
                                   border: InputBorder.none,
@@ -217,53 +219,10 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                         ),
                       ],
                     ),
-              TabBar(
-                // controller: controller,
-                labelColor: Colors.black,
-                // labelPadding: const EdgeInsets.symmetric(horizontal: 2),
-                indicator: UnderlineTabIndicator(
-                  borderSide: BorderSide(width: 2.0),
-                  insets: EdgeInsets.symmetric(horizontal: 110.0, vertical: 0),
-                ),
-                indicatorColor: C.dark1,
-                labelStyle: TextStyle(fontWeight: FW.bold, fontSize: 14),
-                controller: controller,
-                tabs: const [
-                  Tab(
-                    // icon: Icon(Icons.home),
-                    text: "Post",
-                  ),
-                  Tab(
-                    text: "Account",
-                  )
-                ],
-              ),
             ],
-          )),
-      body: TabBarView(controller: controller, children: [
-        //post
-        SearchPost(),
-        //account
-        SearchAccount()
-      ]),
+          ),
+        ),
+      ),
     );
-  }
-
-  void searchAccount(String query) {
-    final suggesttions = Account_list.where((account) {
-      final accountTitle = account.title.toLowerCase();
-      final input = query.toLowerCase();
-      return accountTitle.contains(input);
-    }).toList();
-    setState(() => accounts = suggesttions);
-  }
-}
-
-class ScaleSize {
-  static double textScaleFactor(BuildContext context,
-      {double maxTextScaleFactor = 2}) {
-    final width = MediaQuery.of(context).size.width;
-    double val = (width / 1400) * maxTextScaleFactor;
-    return max(1, min(val, maxTextScaleFactor));
   }
 }

@@ -40,8 +40,8 @@ class _PostTrendingState extends State<PostTrending> {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => Search(
-                            isBack: true,
-                          ),
+                              // isBack: true,
+                              ),
                         ),
                       );
                     },
