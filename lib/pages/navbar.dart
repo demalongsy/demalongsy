@@ -1,4 +1,5 @@
 import 'package:demalongsy/custom/key/navigate.dart';
+import 'package:demalongsy/pages/search_first_page.dart';
 import 'package:demalongsy/pages/search_style.dart';
 
 import '../custom/toolkit.dart';
@@ -41,9 +42,9 @@ class _NavbarState extends State<Navbar> {
             case 1:
               return CupertinoTabView(
                 navigatorKey: secondTabNavKey,
-                builder: (BuildContext context) => Search(
-                    // isBack: false,
-                    ),
+                builder: (BuildContext context) => SearchFirstPage(
+                  isBack: false,
+                ),
               );
 
             case 2:

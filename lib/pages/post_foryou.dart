@@ -1,5 +1,7 @@
 import 'package:demalongsy/custom/widget/font.dart';
+import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/models/data_mockup_for_post.dart';
+import 'package:demalongsy/pages/view_post.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 
@@ -38,7 +40,8 @@ class _PostForYouState extends State<PostForYou> {
   Widget AllPost(String topic, String name, String imgAcc, String imgPath) {
     return GestureDetector(
       onTap: (() {
-        print(imgPath);
+        Navigator.of(context, rootNavigator: false)
+            .push(createTransitionRoute(ViewPost(), 1, 0));
       }),
       child: Container(
         width: 168,
