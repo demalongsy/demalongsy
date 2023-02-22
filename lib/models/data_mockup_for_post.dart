@@ -33,4 +33,18 @@ List<Post> allPost = [
       imgAcc:
           "https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg",
       name: "K.Payongdech"),
+  Post(
+      imgPath:
+          "https://hips.hearstapps.com/hmg-prod/images/fashion-model-naomi-campbell-wears-a-furry-cocktail-dress-news-photo-1656444150.jpg",
+      topic: "ไอเดียแต่งตัวไปเรียน casual look",
+      imgAcc:
+          "https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg",
+      name: "K.Payongdech"),
+  Post(
+      imgPath:
+          "https://static01.nyt.com/images/2022/12/22/fashion/21FASHION-AND-SPORTS-6-a8ea/21FASHION-AND-SPORTS-6-a8ea-mobileMasterAt3x.jpg",
+      topic: "มาแต่งตัวจากไอเดียคู่สีกันเถอะ",
+      imgAcc:
+          "https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg",
+      name: "K.Payongdech"),
 ];

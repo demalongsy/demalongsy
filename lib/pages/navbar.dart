@@ -36,34 +36,33 @@ class _NavbarState extends State<Navbar> {
             case 0:
               return CupertinoTabView(
                 navigatorKey: firstTabNavKey,
-                builder: (BuildContext context) => HeaderHomePage(),
+                builder: (BuildContext context) => const HeaderHomePage(),
               );
 
             case 1:
               return CupertinoTabView(
                 navigatorKey: secondTabNavKey,
                 builder: (BuildContext context) => SearchFirstPage(
-                  isBack: false,
-                ),
+                    //isRootPage: true,
+                    ),
               );
 
             case 2:
               return CupertinoTabView(
                 navigatorKey: thirdTabNavKey,
-                builder: (BuildContext context) => SearchStyle(
-                  rootPage: true,
+                builder: (BuildContext context) => const SearchStyle(
+                  isRootPage: true,
                 ),
               );
 
             case 3:
               return CupertinoTabView(
                 navigatorKey: forthTabNavKey,
-                builder: (BuildContext context) => Profile(
-                  rootPage: true,
-                ),
+                builder: (BuildContext context) =>
+                    const Profile(isRootPage: true, isOwner: true),
               );
           }
-          return HeaderHomePage();
+          return const HeaderHomePage();
         },
         tabBar: CupertinoTabBar(
           backgroundColor: C.white,

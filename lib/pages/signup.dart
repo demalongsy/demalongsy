@@ -1,6 +1,8 @@
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/font.dart';
+import 'package:demalongsy/custom/widget/page_transition.dart';
+import 'package:demalongsy/pages/policy.dart';
 import 'package:demalongsy/pages/tags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -348,7 +350,10 @@ class _SignUpState extends State<SignUp> {
                             letterspacing: 0.4,
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context, rootNavigator: true).push(
+                                  createTransitionRoute(PolicyPage(), 0, 1));
+                            },
                             child: const Poppins(
                               text: "Tems ",
                               size: 14,
@@ -366,7 +371,10 @@ class _SignUpState extends State<SignUp> {
                             letterspacing: 0.4,
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context, rootNavigator: true).push(
+                                  createTransitionRoute(PolicyPage(), 0, 1));
+                            },
                             child: const Poppins(
                               text: "Privacy Policy",
                               size: 14,

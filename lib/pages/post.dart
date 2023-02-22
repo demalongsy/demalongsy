@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 
-
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
 
@@ -16,10 +15,10 @@ class _PostScreenState extends State<PostScreen> {
     return const SafeArea(
       child: Scaffold(
         body: Center(
-          child: Spectral(
+          child: Poppins(
             text: "Post Screen",
             color: C.primaryDefault,
-            fontWeight: FontWeight.bold,
+            fontWeight: FW.regular,
             size: 40,
           ),
         ),
