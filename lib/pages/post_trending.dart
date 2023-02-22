@@ -39,7 +39,9 @@ class _PostTrendingState extends State<PostTrending> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => Search(),
+                          builder: (context) => Search(
+                              // isBack: true,
+                              ),
                         ),
                       );
                     },

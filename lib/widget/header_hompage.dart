@@ -1,6 +1,7 @@
 import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/pages/post_foryou.dart';
 import 'package:demalongsy/pages/post_trending.dart';
+import 'package:demalongsy/pages/search_first_page.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/pages/search.dart';
 import 'package:demalongsy/custom/toolkit.dart';
@@ -100,8 +101,8 @@ class _HeaderHomePageState extends State<HeaderHomePage>
                         isTapped = false;
                       });
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const Search(
-                                isBack: true,
+                          builder: (context) => SearchFirstPage(
+                              // isBack: true,
                               )));
                     }),
                     onPointerMove: (event) {
