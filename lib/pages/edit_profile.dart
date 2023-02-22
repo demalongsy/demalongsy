@@ -29,59 +29,60 @@ class _EditProfilePageState extends State<EditProfilePage> {
         child: Scaffold(
           backgroundColor: C.white,
           appBar: PreferredSize(
-              preferredSize: Size.fromHeight(50),
-              child: AppBar(
-                backgroundColor: C.white,
-                elevation: 0,
-                title: Center(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                            child: const Icon(
-                              Icons.arrow_back_ios_rounded,
-                              color: C.dark2,
-                              size: 16.0,
-                            ),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            }),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 20),
-                          child: Poppins(
-                            text: "Edit Profile",
-                            size: 20,
-                            color: C.dark1,
-                            fontWeight: FW.bold,
-                            letterspacing: 0.64,
+            preferredSize: Size.fromHeight(50),
+            child: AppBar(
+              backgroundColor: C.white,
+              elevation: 0,
+              title: Center(
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                          child: const Icon(
+                            Icons.arrow_back_ios_rounded,
+                            color: C.dark2,
+                            size: 16.0,
                           ),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          }),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Poppins(
+                          text: "Edit Profile",
+                          size: 20,
+                          color: C.dark1,
+                          fontWeight: FW.bold,
+                          letterspacing: 0.64,
                         ),
-                        Expanded(child: Container()),
-                        checkAllSpaces(_nameInput) ||
-                                checkAllSpaces(_emailInput) ||
-                                checkAllSpaces(_bioInput)
-                            ? GestureDetector(
-                                onTap: () {
-                                  print(_nameInput);
-                                },
-                                child: const Poppins(
-                                  text: "Save",
-                                  size: 16,
-                                  color: C.primaryDefault,
-                                  fontWeight: FW.bold,
-                                  letterspacing: 0.64,
-                                ),
-                              )
-                            : const Poppins(
+                      ),
+                      Expanded(child: Container()),
+                      checkAllSpaces(_nameInput) ||
+                              checkAllSpaces(_emailInput) ||
+                              checkAllSpaces(_bioInput)
+                          ? GestureDetector(
+                              onTap: () {
+                                print(_nameInput);
+                              },
+                              child: const Poppins(
                                 text: "Save",
                                 size: 16,
-                                color: C.disableTextfield,
+                                color: C.primaryDefault,
                                 fontWeight: FW.bold,
                                 letterspacing: 0.64,
                               ),
-                      ]),
-                ),
-              )),
+                            )
+                          : const Poppins(
+                              text: "Save",
+                              size: 16,
+                              color: C.disableTextfield,
+                              fontWeight: FW.bold,
+                              letterspacing: 0.64,
+                            ),
+                    ]),
+              ),
+            ),
+          ),
           body: Container(
             // width: double.infinity,
             // padding: const EdgeInsets.only(left: 30, right: 30),

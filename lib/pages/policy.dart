@@ -2,14 +2,14 @@ import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:flutter/material.dart';
 
-class FeedBack extends StatefulWidget {
-  const FeedBack({super.key});
+class PolicyPage extends StatefulWidget {
+  const PolicyPage({super.key});
 
   @override
-  State<FeedBack> createState() => _FeedBackState();
+  State<PolicyPage> createState() => _PolicyPageState();
 }
 
-class _FeedBackState extends State<FeedBack> {
+class _PolicyPageState extends State<PolicyPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,9 +23,9 @@ class _FeedBackState extends State<FeedBack> {
             children: [
               GestureDetector(
                   child: const Icon(
-                    Icons.arrow_back_ios_rounded,
+                    Icons.close_rounded,
                     color: C.dark2,
-                    size: 20.0,
+                    size: 30.0,
                   ),
                   onTap: () {
                     Navigator.of(context).pop();
@@ -37,7 +37,7 @@ class _FeedBackState extends State<FeedBack> {
         body: SingleChildScrollView(
           child: Center(
             child: Poppins(
-              text: "Feedback Page",
+              text: "Policy Page",
               color: C.primaryDefault,
               fontWeight: FontWeight.normal,
               size: 40,

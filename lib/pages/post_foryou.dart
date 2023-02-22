@@ -1,5 +1,6 @@
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/models/data_mockup_for_post.dart';
+import 'package:demalongsy/pages/search.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 
@@ -32,14 +33,25 @@ class _PostForYouState extends State<PostForYou> {
                     //childAspectRatio: 3 / 2,
                     crossAxisSpacing: 6,
                     mainAxisSpacing: 6),
-                itemCount: 10,
-                itemBuilder: (BuildContext ctx, index) {
-                  return Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Text("${index}"),
+                itemCount: 9,
+                itemBuilder: (BuildContext context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const Search(
+                            isBack: true,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: Colors.amber,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Text("${index}"),
+                    ),
                   );
                 }),
           ),

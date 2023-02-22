@@ -24,7 +24,6 @@ class _NavbarState extends State<Navbar> {
   final GlobalKey<NavigatorState> secondTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> thirdTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> forthTabNavKey = GlobalKey<NavigatorState>();
-  
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +35,21 @@ class _NavbarState extends State<Navbar> {
             case 0:
               return CupertinoTabView(
                 navigatorKey: firstTabNavKey,
-                builder: (BuildContext context) => HeaderHomePage(),
+                builder: (BuildContext context) => const HeaderHomePage(),
               );
 
             case 1:
               return CupertinoTabView(
                 navigatorKey: secondTabNavKey,
                 builder: (BuildContext context) => Search(
-                  //isRootPage: true,
-                ),
+                    //isRootPage: true,
+                    ),
               );
 
             case 2:
               return CupertinoTabView(
                 navigatorKey: thirdTabNavKey,
-                builder: (BuildContext context) => SearchStyle(
+                builder: (BuildContext context) => const SearchStyle(
                   isRootPage: true,
                 ),
               );
@@ -58,12 +57,11 @@ class _NavbarState extends State<Navbar> {
             case 3:
               return CupertinoTabView(
                 navigatorKey: forthTabNavKey,
-                builder: (BuildContext context) => Profile(
-                  //isRootPage: true,
-                ),
+                builder: (BuildContext context) =>
+                    const Profile(isRootPage: true, isOwner: true),
               );
           }
-          return HeaderHomePage();
+          return const HeaderHomePage();
         },
         tabBar: CupertinoTabBar(
           backgroundColor: C.white,

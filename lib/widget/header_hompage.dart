@@ -1,13 +1,6 @@
 import 'package:demalongsy/custom/key/navigate.dart';
-import 'package:demalongsy/custom/widget/font.dart';
-import 'package:demalongsy/custom/widget/page_transition.dart';
-import 'package:demalongsy/models/data_mockup_for_post.dart';
 import 'package:demalongsy/pages/post_foryou.dart';
 import 'package:demalongsy/pages/post_trending.dart';
-
-import 'package:demalongsy/pages/profile.dart';
-import 'package:demalongsy/pages/signup.dart';
-
 import 'package:flutter/material.dart';
 import 'package:demalongsy/pages/search.dart';
 import 'package:demalongsy/custom/toolkit.dart';
@@ -107,7 +100,7 @@ class _HeaderHomePageState extends State<HeaderHomePage>
                         isTapped = false;
                       });
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Search(
+                          builder: (context) => const Search(
                                 isBack: true,
                               )));
                     }),

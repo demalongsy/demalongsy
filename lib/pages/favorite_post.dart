@@ -1,11 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 
-
 class FavoritePosts extends StatefulWidget {
-
   const FavoritePosts({super.key});
 
   @override
@@ -18,10 +15,10 @@ class _FavoritePostsState extends State<FavoritePosts> {
     return const SafeArea(
       child: Scaffold(
         body: Center(
-          child: Spectral(
+          child: Poppins(
             text: "Favorite Post",
             color: C.primaryDefault,
-            fontWeight: FontWeight.bold,
+            fontWeight: FW.regular,
             size: 40,
           ),
         ),
