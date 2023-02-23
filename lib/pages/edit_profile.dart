@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
@@ -83,14 +82,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             ),
           ),
-          body: Container(
+          body: SingleChildScrollView(
             // width: double.infinity,
             // padding: const EdgeInsets.only(left: 30, right: 30),
             child: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
               },
-              child: ListView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(
                     height: 15,
@@ -153,27 +153,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   const SizedBox(
                     height: 80,
                   ),
-                  // Tooltip(
-                  //   child: IconButton(
-                  //     icon: Icon(Icons.info, size: 16),
-                  //     onPressed: null,
-                  //   ),
-                  //   message: 'Can not be change',
-                  //   padding: const EdgeInsets.all(10),
-                  //   showDuration: const Duration(seconds: 5),
-                  //   decoration: ShapeDecoration(
-                  //     color: C.disableTextfield,
-                  //     shape: ToolTipCustomShape(),
-                  //   ),
-                  //   textStyle: const TextStyle(
-                  //     fontFamily: 'Poppins',
-                  //     fontSize: 14,
-                  //     fontWeight: FW.regular,
-                  //     color: C.dark1,
-                  //   ),
-                  //   preferBelow: false,
-                  //   verticalOffset: 15,
-                  // ),
                 ],
               ),
             ),
@@ -188,11 +167,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       padding: const EdgeInsets.only(bottom: 1, left: 30, right: 30),
       child: TextFormField(
         readOnly: true,
-        // showCursor: false,
-        // enabled: false, // disable a text edit field (default: true)
-        // keyboardType: TextInputType.multiline,
-        // minLines: 1, //Normal textInputField will be displayed
-        // maxLines: 5, // when user presses enter it will adapt to it
         decoration: InputDecoration(
           icon: Poppins(
               text: "Username", size: 14, color: C.dark2, fontWeight: FW.light),
@@ -228,28 +202,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               color: C.dark3,
             ),
           ),
-          // Tooltip(
-          //   child: IconButton(
-          //     icon: Icon(Icons.info, size: 16, color: C.dark3),
-          //     onPressed: null,
-          //   ),
-          //   message: 'Can not be changeeeee',
-          //   padding: const EdgeInsets.all(10),
-          //   showDuration: const Duration(seconds: 5),
-          //   decoration: ShapeDecoration(
-          //     color: C.disableTextfield,
-          //     shape: ToolTipCustomShape(),
-          //   ),
-          //   textStyle: const TextStyle(
-          //     fontFamily: 'Poppins',
-          //     fontSize: 14,
-          //     fontWeight: FW.regular,
-          //     color: C.dark1,
-          //     overflow: TextOverflow.ellipsis,
-          //   ),
-          //   preferBelow: false,
-          //   verticalOffset: 10,
-          // ),
         ),
         onSaved: (String? value) {
           // This optional block of code can be used to run
@@ -261,9 +213,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               : null;
         },
       ),
-      // SizedBox(
-      //   width: 20,
-      // ),
     );
   }
 
@@ -317,9 +266,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 : null;
           },
         ),
-        // SizedBox(
-        //   width: 20,
-        // ),
       ),
     );
   }
