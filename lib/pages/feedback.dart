@@ -15,9 +15,9 @@ class FeedBack extends StatefulWidget {
 }
 
 class _FeedBackState extends State<FeedBack> {
-  double _ratingScore = 0;
+  double _ratingScore = 0.5;
 
-  TextEditingController _feedbackController = new TextEditingController();
+  TextEditingController _feedbackController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +76,8 @@ class _FeedBackState extends State<FeedBack> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 24),
+                  const Padding(
+                    padding: EdgeInsets.only(right: 24),
                     child: Spectral(
                       text: "How was your overall experience",
                       size: 36,
@@ -120,7 +120,7 @@ class _FeedBackState extends State<FeedBack> {
                   ),
                   Center(
                     child: RatingBar.builder(
-                      initialRating: 0,
+                      initialRating: 0.5,
                       unratedColor: C.disableTextfield.withOpacity(0.5),
                       minRating: 0.5,
                       glow: true,
@@ -154,7 +154,7 @@ class _FeedBackState extends State<FeedBack> {
                       maxLines: 2,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
                   Padding(
@@ -162,7 +162,9 @@ class _FeedBackState extends State<FeedBack> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        SizedBox(
+                        Container(
+                          color: C.textField,
+                          height: MediaQuery.of(context).size.height / 3.9,
                           child: TextFormField(
                             controller: _feedbackController,
                             maxLines: 8,
@@ -190,12 +192,15 @@ class _FeedBackState extends State<FeedBack> {
                           ),
                         ),
                         Container(
+                          height: 40,
                           color: C.textField,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.only(
+                                    right: 8, left: 8, top: 8, bottom: 6),
                                 child: SvgPicture.asset(
                                   "assets/images/lineDec.svg",
                                   width: 20,
@@ -205,7 +210,7 @@ class _FeedBackState extends State<FeedBack> {
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         Container(
@@ -224,7 +229,7 @@ class _FeedBackState extends State<FeedBack> {
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 70,
                         ),
                       ],
