@@ -39,13 +39,7 @@ class _PostForYouState extends State<PostForYou> {
                 itemBuilder: (BuildContext context, index) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const Search(
-                            isBack: true,
-                          ),
-                        ),
-                      );
+                     
                     },
                     child: Container(
                       alignment: Alignment.center,
