@@ -1,19 +1,17 @@
-import 'package:demalongsy/custom/key/navigate.dart';
-import 'package:demalongsy/custom/widget/component.dart';
-import 'package:demalongsy/custom/widget/page_transition.dart';
-import 'package:demalongsy/pages/feedback.dart';
-
+import 'package:flutter_svg/svg.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:demalongsy/pages/post.dart';
 import 'package:demalongsy/pages/login.dart';
 import 'package:demalongsy/pages/policy.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:demalongsy/pages/post.dart';
 import 'package:demalongsy/custom/toolkit.dart';
+import 'package:demalongsy/pages/feedback.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/pages/edit_profile.dart';
 import 'package:demalongsy/pages/favorite_post.dart';
+import 'package:demalongsy/custom/key/navigate.dart';
+import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
-import 'package:flutter_svg/svg.dart';
 
 class Profile extends StatefulWidget {
   final bool? isRootPage;
