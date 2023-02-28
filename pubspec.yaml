@@ -42,7 +42,7 @@ dependencies:
   chips_choice_null_safety: ^2.0.2
   extended_nested_scroll_view: ^5.1.3
   flutter_rating_bar: ^4.0.1
-  image_picker: ^0.7.2+1
+  image_picker: ^0.8.6+3
   path_provider: ^2.0.13
 
 dev_dependencies:
