@@ -1,3 +1,5 @@
+import 'package:demalongsy/models/data_mockup_for_post.dart';
+import 'package:demalongsy/widget/showposts.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
@@ -10,17 +12,36 @@ class PostScreen extends StatefulWidget {
 }
 
 class _PostScreenState extends State<PostScreen> {
+  List<Post> postDesc = allPost;
+
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-      child: Scaffold(
-        body: Center(
-          child: Poppins(
-            text: "Post Screen",
-            color: C.primaryDefault,
-            fontWeight: FW.regular,
-            size: 40,
-          ),
+    return Scaffold(
+      backgroundColor: C.backgroundWhiteIvory,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: GridView.builder(
+              shrinkWrap: true,
+              primary: false,
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200,
+                  mainAxisExtent: 298,
+
+                  //childAspectRatio: 3 / 2,
+                  crossAxisSpacing: 6,
+                  mainAxisSpacing: 6),
+              itemCount: postDesc.length,
+              itemBuilder: (BuildContext context, index) {
+                return GestureDetector(
+                    onTap: () {},
+                    child: ShowPost(
+                        topic: postDesc[index].topic,
+                        name: postDesc[index].name,
+                        imgAcc: postDesc[index].imgAcc,
+                        imgPath: postDesc[index].imgPath));
+              }),
         ),
       ),
     );
