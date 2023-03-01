@@ -120,41 +120,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 15,
                   ),
                   profilePhoto(),
-                  // Center(
-                  //   child: Stack(
-                  //     children: [
-                  //       Container(
-                  //         width: 98,
-                  //         height: 98,
-                  //         decoration: const BoxDecoration(
-                  //           shape: BoxShape.circle,
-                  //           image: DecorationImage(
-                  //             fit: BoxFit.cover,
-                  //             image: NetworkImage(
-                  //               "https://s.isanook.com/wo/0/ui/38/190849/277150081_1212531879516407_7579357549109873866_n.jpg?ip/convert/w0/q80/jpg",
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ),
-                  //       Positioned(
-                  //           bottom: 0,
-                  //           right: 0,
-                  //           child: Container(
-                  //             height: 34,
-                  //             width: 34,
-                  //             decoration: const BoxDecoration(
-                  //               shape: BoxShape.circle,
-                  //               color: C.secondaryDefault,
-                  //             ),
-                  //             child: const Icon(
-                  //               Icons.mode_edit_rounded,
-                  //               color: C.dark2,
-                  //               size: 20,
-                  //             ),
-                  //           )),
-                  //     ],
-                  //   ),
-                  // ),
                   const SizedBox(
                     height: 30,
                   ),
@@ -451,10 +416,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 98,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      // image: DecorationImage(
-                      //   fit: BoxFit.cover,
-
-                      // ),
                     ),
                     child: ClipOval(
                       child: Image.file(
