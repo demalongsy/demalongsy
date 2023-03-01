@@ -148,48 +148,33 @@ class _ViewCommentState extends State<ViewComment>
                   });
                 },
                 decoration: InputDecoration(
-                    hintText: "Send a message...",
-                    hintStyle: const TextStyle(
-                      color: C.disableTextfield,
-                    ),
-                    contentPadding:
-                        const EdgeInsets.only(top: 8, bottom: 8, left: 16),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(width: 1, color: C.disableTextfield),
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(width: 1, color: C.infoDefault),
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    suffix: checkAllSpaces(_messageInput)
-                        ? Container(
-                            margin: const EdgeInsets.all(4.0),
-                            child: GestureDetector(
-                              onTap: _isComposing
-                                  ? () => _handleSubmitted(_messageInput)
-                                  : null,
-                              child: const Button(
-                                text: "Send",
-                                fontWeight: FW.bold,
-                                color: C.dark1,
-                                size: 14,
-                                boxColor: C.primaryDefault,
-                                boxHeight: 40,
-                                haveBorder: false,
-                                declareWidth: true,
-                                width: 56,
-                              ),
-                            ),
-                          )
-                        : Container(
-                            margin: const EdgeInsets.all(4.0),
+                  hintText: "Send a message...",
+                  hintStyle: const TextStyle(
+                    color: C.disableTextfield,
+                  ),
+                  contentPadding:
+                      const EdgeInsets.only(top: 8, bottom: 8, left: 16),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(width: 1, color: C.disableTextfield),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(width: 1, color: C.infoDefault),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  suffix: checkAllSpaces(_messageInput)
+                      ? Container(
+                          margin: const EdgeInsets.all(4.0),
+                          child: GestureDetector(
+                            onTap: _isComposing
+                                ? () => _handleSubmitted(_messageInput)
+                                : null,
                             child: const Button(
                               text: "Send",
                               fontWeight: FW.bold,
-                              color: C.disableTextfield,
+                              color: C.dark1,
                               size: 14,
                               boxColor: C.primaryDefault,
                               boxHeight: 40,
@@ -197,44 +182,26 @@ class _ViewCommentState extends State<ViewComment>
                               declareWidth: true,
                               width: 56,
                             ),
-                          )),
+                          ),
+                        )
+                      : Container(
+                          margin: const EdgeInsets.all(4.0),
+                          child: const Button(
+                            text: "Send",
+                            fontWeight: FW.bold,
+                            color: C.disableTextfield,
+                            size: 14,
+                            boxColor: C.primaryDefault,
+                            boxHeight: 40,
+                            haveBorder: false,
+                            declareWidth: true,
+                            width: 56,
+                          ),
+                        ),
+                ),
               ),
             ),
           ),
-          // checkAllSpaces(_messageInput)
-          //     ? Container(
-          //         margin: const EdgeInsets.symmetric(horizontal: 4.0),
-          //         child: GestureDetector(
-          //           onTap: _isComposing
-          //               ? () => _handleSubmitted(_messageInput)
-          //               : null,
-          //           child: const Button(
-          //             text: "Send",
-          //             fontWeight: FW.bold,
-          //             color: C.dark2,
-          //             size: 14,
-          //             boxColor: C.primaryDefault,
-          //             boxHeight: 40,
-          //             haveBorder: false,
-          //             declareWidth: true,
-          //             width: 56,
-          //           ),
-          //         ),
-          //       )
-          //     : Container(
-          //         margin: const EdgeInsets.symmetric(horizontal: 4.0),
-          //         child: const Button(
-          //           text: "Send",
-          //           fontWeight: FW.bold,
-          //           color: C.dark2,
-          //           size: 14,
-          //           boxColor: C.primaryPressed,
-          //           boxHeight: 40,
-          //           haveBorder: false,
-          //           declareWidth: true,
-          //           width: 56,
-          //         ),
-          //       )
         ],
       ),
     );
@@ -272,25 +239,26 @@ class ChatMessage extends StatelessWidget {
                     children: [
                       Text(
                         _name,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FW.bold, color: C.dark2, fontSize: 14),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 4,
                       ),
                       Container(
-                          // decoration: BoxDecoration(
-                          //     borderRadius: BorderRadius.circular(20)),
-                          width: 58,
-                          height: 18,
-                          padding: EdgeInsets.all(2),
-                          color: C.primaryDefault,
-                          child: Center(
-                            child: Text(
-                              'Creator',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ))
+                        // decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.circular(20)),
+                        width: 58,
+                        height: 18,
+                        padding: EdgeInsets.all(2),
+                        color: C.primaryDefault,
+                        child: const Center(
+                          child: Text(
+                            'Creator',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                   Container(
