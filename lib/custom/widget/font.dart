@@ -87,15 +87,6 @@ class Spectral extends StatelessWidget {
   }
 }
 
-class ScaleSize {
-  static double textScaleFactor(BuildContext context,
-      {double maxTextScaleFactor = 1.5}) {
-    final width = MediaQuery.of(context).size.width;
-    double val = (width / 1400) * maxTextScaleFactor;
-    return max(1, min(val, maxTextScaleFactor));
-  }
-}
-
 class Roboto extends StatelessWidget {
   final double size;
   final String text;
@@ -136,5 +127,14 @@ class Roboto extends StatelessWidget {
         letterSpacing: letterspacing,
       ),
     );
+  }
+}
+
+class ScaleSize {
+  static double textScaleFactor(BuildContext context,
+      {double maxTextScaleFactor = 1.5}) {
+    final width = MediaQuery.of(context).size.width;
+    double val = (width / 1400) * maxTextScaleFactor;
+    return max(1, min(val, maxTextScaleFactor));
   }
 }

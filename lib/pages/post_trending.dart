@@ -1,4 +1,6 @@
 import 'package:demalongsy/custom/toolkit.dart';
+import 'package:demalongsy/custom/widget/page_transition.dart';
+import 'package:demalongsy/pages/profile.dart';
 import 'package:demalongsy/pages/search.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +38,10 @@ class _PostTrendingState extends State<PostTrending> {
               if (snapshot.hasData) {
                 children = <Widget>[
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: false)
+                          .push(createTransitionRoute(Profile(), 1, 0));
+                    },
                     child: Icon(
                       Icons.check_circle_outline,
                       color: Colors.green,
