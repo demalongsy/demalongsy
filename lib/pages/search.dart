@@ -15,8 +15,8 @@ import 'package:demalongsy/pages/search_account.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 
 class Search extends StatefulWidget {
-  final bool? isBack;
-  const Search({Key? key, this.isBack = false}) : super(key: key);
+  final String param;
+  const Search({Key? key, required this.param}) : super(key: key);
 
   @override
   State<Search> createState() => _SearchState();
@@ -37,6 +37,10 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _searchController..text = '${widget.param}';
+      _searchInput = widget.param;
+    });
 
     controller = TabController(
       length: 2,
@@ -83,6 +87,9 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                         onChanged: (value) => setState(() {
                           _searchInput = value;
                           x = true;
+                          // if (widget.param.isNotEmpty) {
+                          //   _searchInput = widget.param;
+                          // }
                         }),
                         controller: _searchController,
                         decoration: InputDecoration(
@@ -101,8 +108,10 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                             ),
                             // contentPadding: EdgeInsets.symmetric(vertical: 36),
                             hintText: 'Search...',
-                            hintStyle: const TextStyle(
-                              color: C.disableTextfield,
+                            hintStyle: TextStyle(
+                              color: _searchInput.isNotEmpty
+                                  ? C.disableTextfield
+                                  : C.disableTextfield,
                             ),
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 2, horizontal: 0),

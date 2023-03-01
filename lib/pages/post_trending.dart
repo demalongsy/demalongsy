@@ -36,15 +36,7 @@ class _PostTrendingState extends State<PostTrending> {
               if (snapshot.hasData) {
                 children = <Widget>[
                   GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => Search(
-                              // isBack: true,
-                              ),
-                        ),
-                      );
-                    },
+                    onTap: () {},
                     child: Icon(
                       Icons.check_circle_outline,
                       color: Colors.green,

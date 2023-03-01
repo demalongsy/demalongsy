@@ -39,8 +39,18 @@ class _SearchState extends State<SearchFirstPage>
 
   void search(String input) {
     if (checkAllSpaces(input)) {
-      Navigator.of(context, rootNavigator: false)
-          .push(createTransitionRoute(Search(), 1, 0));
+      Navigator.of(context, rootNavigator: false).push(
+        createTransitionRoute(
+            Search(
+              param: _searchInput,
+            ),
+            1,
+            0),
+      );
+      setState(() {
+        _searchInput = '';
+      });
+      _searchController.clear();
     }
   }
 
@@ -71,7 +81,7 @@ class _SearchState extends State<SearchFirstPage>
                               onChanged: (value) => setState(
                                 () {
                                   _searchInput = value;
-                                  // x = true;
+                                  x = true;
                                 },
                               ),
                               controller: _searchController,
@@ -80,12 +90,12 @@ class _SearchState extends State<SearchFirstPage>
                                   filled: true,
                                   fillColor: C.disableField,
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                         width: 1, color: C.disableField),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                         width: 1, color: C.infoDefault),
                                     borderRadius: BorderRadius.circular(8),
                                   ),

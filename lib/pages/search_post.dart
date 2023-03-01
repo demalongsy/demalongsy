@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:demalongsy/custom/widget/page_transition.dart';
+import 'package:demalongsy/pages/view_post.dart';
 import 'package:flutter/material.dart';
 
 class SearchPost extends StatefulWidget {
@@ -11,15 +13,21 @@ class SearchPost extends StatefulWidget {
 class _SearchPostState extends State<SearchPost> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text(
-          "No post",
-          style: Theme.of(context).textTheme.subtitle1,
-          textAlign: TextAlign.center,
-          textScaleFactor: ScaleSize.textScaleFactor(context),
+    return GestureDetector(
+      child: Container(
+        child: Center(
+          child: Text(
+            "No post",
+            style: Theme.of(context).textTheme.subtitle1,
+            textAlign: TextAlign.center,
+            textScaleFactor: ScaleSize.textScaleFactor(context),
+          ),
         ),
       ),
+      onTap: () {
+        Navigator.of(context, rootNavigator: true)
+            .push(createTransitionRoute(ViewPost(), 1, 0));
+      },
     );
   }
 }

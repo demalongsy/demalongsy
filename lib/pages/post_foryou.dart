@@ -2,6 +2,7 @@ import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/models/data_mockup_for_post.dart';
 import 'package:demalongsy/pages/search.dart';
+import 'package:demalongsy/pages/search_first_page.dart';
 import 'package:demalongsy/pages/view_post.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
@@ -38,15 +39,7 @@ class _PostForYouState extends State<PostForYou> {
                 itemCount: 9,
                 itemBuilder: (BuildContext context, index) {
                   return GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const Search(
-                            isBack: true,
-                          ),
-                        ),
-                      );
-                    },
+                    onTap: () {},
                     child: Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
