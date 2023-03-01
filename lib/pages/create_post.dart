@@ -1,4 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 
@@ -13,6 +17,37 @@ class _CreatePostState extends State<CreatePost> {
   TextEditingController _titleController = new TextEditingController();
   String _titleInput = '';
 
+  // Image
+  final ImagePicker _picker = ImagePicker();
+  List<XFile> imageFileList = [];
+  List<File> imageList = [];
+
+  Future selectImages() async {
+    final List<XFile>? selectedImages = await _picker.pickMultiImage();
+    if (selectedImages!.isNotEmpty) {
+      imageFileList.addAll(selectedImages);
+    }
+    setState(() {
+      imageFileList.map((val) {
+        imageList.add(File(val.path));
+      });
+    });
+  }
+
+  Future takePhoto(ImageSource source) async {
+    try {
+      final image = await _picker.pickImage(source: source);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() {
+        imageList.add(imageTemporary);
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,29 +61,33 @@ class _CreatePostState extends State<CreatePost> {
               elevation: 0,
               title: Center(
                 child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                          child: const Icon(
-                            Icons.arrow_back_ios_rounded,
-                            color: C.dark2,
-                            size: 16.0,
-                          ),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          }),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Poppins(
-                          text: "Create Post",
-                          size: 20,
-                          color: C.dark1,
-                          fontWeight: FW.bold,
-                          letterspacing: 0.64,
-                        ),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      child: const Icon(
+                        Icons.arrow_back_ios_rounded,
+                        color: C.dark2,
+                        size: 16.0,
                       ),
-                      Expanded(child: Container()),
-                    ]),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Poppins(
+                        text: "Create Post",
+                        size: 20,
+                        color: C.dark1,
+                        fontWeight: FW.bold,
+                        letterspacing: 0.64,
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -100,20 +139,173 @@ class _CreatePostState extends State<CreatePost> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 20),
+                Container(
+                  padding: EdgeInsets.only(left: 25, top: 10),
+                  width: double.infinity,
+                  height: 110,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: imageFileList.length + 1,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (index == imageFileList.length) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: SizedBox.fromSize(
+                            size: Size.fromRadius(50),
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: C.backgroundWhiteIvory,
+                                border: Border.all(
+                                  color: C.boderAddPhotos,
+                                  width: 0.5,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: IconButton(
+                                // onPressed: selectImages,
+                                onPressed: () {
+                                  showModalBottomSheet<void>(
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        height: 150,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  border: Border(
+                                                bottom: BorderSide(
+                                                    width: 0.8,
+                                                    color: Colors.grey
+                                                        .withOpacity(0.5)),
+                                              )),
+                                              child: ListTile(
+                                                  onTap: () async {
+                                                    Future.delayed(
+                                                      const Duration(
+                                                          seconds: 5),
+                                                    );
+                                                    Navigator.of(context).pop();
+                                                    await takePhoto(
+                                                        ImageSource.camera);
+                                                  },
+                                                  leading: const Icon(
+                                                    Icons
+                                                        .photo_camera_front_outlined,
+                                                    color: Colors.black,
+                                                  ),
+                                                  title: const Text(
+                                                    "Take a photo",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 14,
+                                                    ),
+                                                  )),
+                                            ),
+                                            Container(
+                                              child: ListTile(
+                                                  onTap: () async {
+                                                    Future.delayed(
+                                                      const Duration(
+                                                          seconds: 5),
+                                                    );
+                                                    Navigator.of(context).pop();
+                                                    await selectImages();
+                                                  },
+                                                  leading: const Icon(
+                                                    Icons
+                                                        .photo_library_outlined,
+                                                    color: Colors.black,
+                                                  ),
+                                                  title: const Text(
+                                                    "Choose from gallery",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 14,
+                                                    ),
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: Icon(Icons.add),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                      return Container(
+                        padding: EdgeInsets.only(right: 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: SizedBox.fromSize(
+                            size: Size.fromRadius(50),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Image.file(
+                                  File(imageList[index].path),
+                                  fit: BoxFit.cover,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          imageList.removeAt(index);
+                                          setState(() {});
+                                        },
+                                        child: Container(
+                                          width: 20,
+                                          height: 20,
+                                          decoration: BoxDecoration(
+                                            color: C.secondaryDefault,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          child: const Center(
+                                            child: Icon(
+                                              Icons.close_rounded,
+                                              size: 15,
+                                              color: C.dark3,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 24),
                 GestureDetector(
-                  // onDoubleTap: () {
-                  //   if (_titleController.text.isNotEmpty) {
-                  //     _titleController.selection = TextSelection(
-                  //         baseOffset: 0,
-                  //         extentOffset: _titleController.text.length);
-                  //   }
-                  // },
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 10, left: 25, right: 25),
+                    padding: const EdgeInsets.only(left: 25, right: 25),
                     child: TextFormField(
-                      // onChanged: (value) => setState(() => _titleInput = value),
-                      // controller: _titleController,
                       keyboardType: TextInputType.multiline,
                       minLines: 1,
                       maxLines: 5,
@@ -145,22 +337,12 @@ class _CreatePostState extends State<CreatePost> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 12),
                 GestureDetector(
-                  // onDoubleTap: () {
-                  //   if (_titleController.text.isNotEmpty) {
-                  //     _titleController.selection = TextSelection(
-                  //         baseOffset: 0,
-                  //         extentOffset: _titleController.text.length);
-                  //   }
-                  // },
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 10, left: 25, right: 25),
+                    padding: const EdgeInsets.only(left: 25, right: 25),
                     child: TextFormField(
-                      // onChanged: (value) => setState(() => _titleInput = value),
-                      // controller: _titleController,
                       keyboardType: TextInputType.multiline,
-                      // minLines: 1,
                       maxLines: 8,
                       decoration: InputDecoration(
                         hintText: "Write your text",
@@ -189,7 +371,8 @@ class _CreatePostState extends State<CreatePost> {
                       },
                     ),
                   ),
-                )
+                ),
+                const SizedBox(height: 20),
               ],
             ),
           ),
