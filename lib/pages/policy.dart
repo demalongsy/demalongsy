@@ -34,15 +34,34 @@ class _PolicyPageState extends State<PolicyPage> {
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Poppins(
-              text: "Policy Page",
-              color: C.primaryDefault,
-              fontWeight: FontWeight.normal,
-              size: 40,
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              //this
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                      child: Container(
+                    color: C.dangerDefault,
+                  )),
+                  Expanded(
+                    //this
+                    child: Container(
+                      height: 300,
+                      color: C.primaryDefault,
+                      child: ListView(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          for (int i = 0; i < 100; i++) Text('Text $i'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
