@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:demalongsy/custom/widget/component.dart';
+import 'package:demalongsy/pages/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -19,34 +21,44 @@ class _CreatePostState extends State<CreatePost> {
 
   // Image
   final ImagePicker _picker = ImagePicker();
-  List<XFile> imageFileList = [];
   List<File> imageList = [];
   File? image;
 
   Future selectImages() async {
     final List<XFile>? selectedImages = await _picker.pickMultiImage();
     if (selectedImages!.isNotEmpty) {
-      selectedImages.map((e) {
-        if (imageList.length < 10) {
-          imageList.add(File(e.path));
-        }
-      }).toList();
+      setState(
+        () {
+          selectedImages.map((e) {
+            if (imageList.length < 10) {
+              imageList.add(File(e.path));
+            }
+          }).toList();
+        },
+      );
     }
   }
 
-  Future takePhoto(ImageSource source) async {
+  Future takePhoto() async {
     try {
-      final image = await _picker.pickImage(source: source);
+      final image = await _picker.pickImage(source: ImageSource.camera);
       if (image == null) return;
 
       final imageTemporary = File(image.path);
-      setState(() {
-        this.image = imageTemporary;
-        imageList.add(this.image!);
-      });
+      setState(
+        () {
+          this.image = imageTemporary;
+          imageList.add(this.image!);
+        },
+      );
     } on PlatformException catch (e) {
       print('Failed to pick image $e');
     }
+  }
+
+  bool checkAllSpaces(String input) {
+    String output = input.replaceAll(' ', '');
+    return output.isNotEmpty ? true : false;
   }
 
   @override
@@ -54,7 +66,46 @@ class _CreatePostState extends State<CreatePost> {
     return MaterialApp(
       home: SafeArea(
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: C.white,
+          bottomSheet: Padding(
+            padding: const EdgeInsets.only(left: 25, right: 25, bottom: 20),
+            child: SizedBox(
+              height: 48,
+              child: checkAllSpaces(_titleInput) && imageList.isNotEmpty
+                  ? ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                              primary: C.secondaryDefault, // Background color
+                              onPrimary: C
+                                  .secondaryPressed, // Text Color (Foreground color)
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
+                              elevation: 0.0,
+                              shadowColor: Colors.transparent)
+                          .copyWith(
+                              elevation: ButtonStyleButton.allOrNull(0.0)),
+                      child: const Center(
+                        child: Poppins(
+                            text: "Post",
+                            size: 16,
+                            color: C.dark2,
+                            fontWeight: FW.bold),
+                      ),
+                      onPressed: () {},
+                    )
+                  : const Button(
+                      text: "Post",
+                      fontWeight: FW.bold,
+                      color: C.textDefault2,
+                      size: 16,
+                      boxColor: C.secondaryPressed,
+                      boxHeight: 48,
+                      haveBorder: false,
+                      letterspacing: 0.64,
+                    ),
+            ),
+          ),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(50),
             child: AppBar(
@@ -166,7 +217,6 @@ class _CreatePostState extends State<CreatePost> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: IconButton(
-                                //onPressed: selectImages,
                                 onPressed: () {
                                   showModalBottomSheet<void>(
                                     backgroundColor: Colors.transparent,
@@ -201,8 +251,7 @@ class _CreatePostState extends State<CreatePost> {
                                                           seconds: 5),
                                                     );
                                                     Navigator.of(context).pop();
-                                                    await takePhoto(
-                                                        ImageSource.camera);
+                                                    await takePhoto();
                                                   },
                                                   leading: const Icon(
                                                     Icons
@@ -309,6 +358,8 @@ class _CreatePostState extends State<CreatePost> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 25, right: 25),
                     child: TextFormField(
+                      onChanged: (value) => setState(() => _titleInput = value),
+                      controller: _titleController,
                       keyboardType: TextInputType.multiline,
                       minLines: 1,
                       maxLines: 5,
