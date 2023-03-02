@@ -36,6 +36,7 @@ class C {
   static const darkPressed = Color(0xFFDEDEDE);
   static const disableBackground = Color(0xFF9E9E9E);
   static const disableText = Color(0xFFFAFAFA);
+  static const addBorderPhoto = Color(0xFFDEDEDE);
 }
 
 class FW {

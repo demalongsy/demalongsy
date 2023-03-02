@@ -28,77 +28,41 @@ class _SearchAccountState extends State<SearchAccount> {
         FocusScope.of(context).unfocus();
       },
       child: SingleChildScrollView(
-          child: Column(children: [
-        ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: accounts.length,
-          itemBuilder: ((context, index) {
-            final account = accounts[index];
-            return ListTile(
-              leading: Container(
-                width: 50,
-                height: 50,
-                child: CircleAvatar(
-                  radius: 50.0,
-                  backgroundImage: NetworkImage(account.urlImage),
-                ),
-              ),
-              title: Poppins(
-                  text: account.title,
-                  size: 14,
-                  color: C.dark1,
-                  fontWeight: FW.bold),
-              onTap: () {
-                Navigator.of(context, rootNavigator: true)
-                    .push(createTransitionRoute(ViewComment(), 1, 0));
-              },
-            );
-          }),
+        child: Column(
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: accounts.length,
+              itemBuilder: ((context, index) {
+                final account = accounts[index];
+                return ListTile(
+                  leading: Container(
+                    width: 50,
+                    height: 50,
+                    child: CircleAvatar(
+                      radius: 50.0,
+                      backgroundImage: NetworkImage(account.urlImage),
+                    ),
+                  ),
+                  title: Poppins(
+                      text: account.title,
+                      size: 14,
+                      color: C.dark1,
+                      fontWeight: FW.bold),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).push(
+                      createTransitionRoute(ViewComment(), 1, 0),
+                    );
+                  },
+                );
+              }),
+            ),
+          ],
         ),
-      ])),
+      ),
     );
   }
-
-  //   Scaffold(
-  //     body: SingleChildScrollView(
-  //       child: ListView.builder(
-  //         shrinkWrap: true,
-  //         physics: NeverScrollableScrollPhysics(),
-  //         itemCount: accounts.length,
-  //         itemBuilder: ((context, index) {
-  //           final account = accounts[index];
-  //           return ListTile(
-  //             leading: Container(
-  //               width: 50,
-  //               height: 50,
-  //               child: CircleAvatar(
-  //                 radius: 50.0,
-  //                 backgroundImage: NetworkImage(account.urlImage),
-  //               ),
-  //             ),
-  //             title: Poppins(
-  //                 text: account.title,
-  //                 size: 14,
-  //                 color: C.dark1,
-  //                 fontWeight: FW.bold),
-  //             onTap: () => Navigator.push(
-  //                 context, MaterialPageRoute(builder: (context) => Profile())),
-  //           );
-  //         }),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // void searchAccount(String query) {
-  //   final suggesttions = Account_list.where((account) {
-  //     final accountTitle = account.title.toLowerCase();
-  //     final input = query.toLowerCase();
-  //     return accountTitle.contains(input);
-  //   }).toList();
-  //   setState(() => accounts = suggesttions);
-  // }
 }
 
 class ScaleSize {

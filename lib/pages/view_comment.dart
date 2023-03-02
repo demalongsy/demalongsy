@@ -211,7 +211,7 @@ class _ViewCommentState extends State<ViewComment>
 class ChatMessage extends StatelessWidget {
   ChatMessage({required this.text, required this.animationController});
   final String text;
-  final String _name = "Kraithong";
+  final String _name = "K.Payongdech";
   final AnimationController animationController;
   @override
   Widget build(BuildContext context) {
@@ -246,12 +246,13 @@ class ChatMessage extends StatelessWidget {
                         width: 4,
                       ),
                       Container(
-                        // decoration: BoxDecoration(
-                        //     borderRadius: BorderRadius.circular(20)),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: C.primaryDefault,
+                        ),
                         width: 58,
                         height: 18,
                         padding: EdgeInsets.all(2),
-                        color: C.primaryDefault,
                         child: const Center(
                           child: Text(
                             'Creator',
