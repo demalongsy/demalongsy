@@ -21,17 +21,14 @@ class _CreatePostState extends State<CreatePost> {
   final ImagePicker _picker = ImagePicker();
   List<XFile> imageFileList = [];
   List<File> imageList = [];
+  File? image;
 
   Future selectImages() async {
     final List<XFile>? selectedImages = await _picker.pickMultiImage();
     if (selectedImages!.isNotEmpty) {
-      imageFileList.addAll(selectedImages);
+      selectedImages.map((e) => imageList.add(File(e.path))).toList();
+     
     }
-    setState(() {
-      imageFileList.map((val) {
-        imageList.add(File(val.path));
-      });
-    });
   }
 
   Future takePhoto(ImageSource source) async {
@@ -41,8 +38,10 @@ class _CreatePostState extends State<CreatePost> {
 
       final imageTemporary = File(image.path);
       setState(() {
-        imageList.add(imageTemporary);
+        this.image = imageTemporary;
+        imageList.add(this.image!);
       });
+      print(imageList);
     } on PlatformException catch (e) {
       print('Failed to pick image $e');
     }
@@ -147,9 +146,9 @@ class _CreatePostState extends State<CreatePost> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: imageFileList.length + 1,
+                    itemCount: imageList.length + 1,
                     itemBuilder: (BuildContext context, int index) {
-                      if (index == imageFileList.length) {
+                      if (index == imageList.length) {
                         return Padding(
                           padding: const EdgeInsets.only(right: 10),
                           child: SizedBox.fromSize(
@@ -164,7 +163,7 @@ class _CreatePostState extends State<CreatePost> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: IconButton(
-                                // onPressed: selectImages,
+                                //onPressed: selectImages,
                                 onPressed: () {
                                   showModalBottomSheet<void>(
                                     backgroundColor: Colors.transparent,
@@ -222,6 +221,7 @@ class _CreatePostState extends State<CreatePost> {
                                                       const Duration(
                                                           seconds: 5),
                                                     );
+
                                                     Navigator.of(context).pop();
                                                     await selectImages();
                                                   },
@@ -260,7 +260,7 @@ class _CreatePostState extends State<CreatePost> {
                               fit: StackFit.expand,
                               children: [
                                 Image.file(
-                                  File(imageList[index].path),
+                                  imageList[index],
                                   fit: BoxFit.cover,
                                 ),
                                 Padding(
