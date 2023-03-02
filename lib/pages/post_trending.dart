@@ -1,5 +1,6 @@
 import 'package:demalongsy/custom/toolkit.dart';
-import 'package:demalongsy/pages/search.dart';
+import 'package:demalongsy/models/data_mockup_for_post.dart';
+import 'package:demalongsy/widget/showposts.dart';
 import 'package:flutter/material.dart';
 
 class PostTrending extends StatefulWidget {
@@ -10,87 +11,38 @@ class PostTrending extends StatefulWidget {
 }
 
 class _PostTrendingState extends State<PostTrending> {
-  final Future<String> _calculation = Future<String>.delayed(
-    const Duration(seconds: 2),
-    () => 'Data Loaded',
-  );
-
-  @override
-  void initState() {
-    super.initState();
-    _calculation;
-  }
+  List<Post> postDesc = allPost;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: C.backgroundWhiteIvory,
       body: SingleChildScrollView(
-          child: Padding(
-        padding: const EdgeInsets.only(top: 10),
-        child: Center(
-          child: FutureBuilder<String>(
-            future: _calculation,
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              List<Widget> children;
-              if (snapshot.hasData) {
-                children = <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => Search(
-                              // isBack: true,
-                              ),
-                        ),
-                      );
-                    },
-                    child: Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.green,
-                      size: 60,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: Text('Result: ${snapshot.data}'),
-                  ),
-                ];
-              } else if (snapshot.hasError) {
-                children = <Widget>[
-                  const Icon(
-                    Icons.error_outline,
-                    color: Colors.red,
-                    size: 60,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: Text('Error: ${snapshot.error}'),
-                  ),
-                ];
-              } else {
-                children = const <Widget>[
-                  SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: CircularProgressIndicator(),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 16),
-                    child: Text('Awaiting result...'),
-                  ),
-                ];
-              }
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: children,
-                ),
-              );
-            },
-          ),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: GridView.builder(
+              shrinkWrap: true,
+              primary: false,
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200,
+                  mainAxisExtent: 298,
+
+                  //childAspectRatio: 3 / 2,
+                  crossAxisSpacing: 6,
+                  mainAxisSpacing: 6),
+              itemCount: postDesc.length,
+              itemBuilder: (BuildContext context, index) {
+                return GestureDetector(
+                    onTap: () {},
+                    child: ShowPost(
+                        topic: postDesc[index].topic,
+                        name: postDesc[index].name,
+                        imgAcc: postDesc[index].imgAcc,
+                        imgPath: postDesc[index].imgPath));
+              }),
         ),
-      )),
+      ),
     );
   }
 }

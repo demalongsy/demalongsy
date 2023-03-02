@@ -1,7 +1,6 @@
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/pages/navbar.dart';
 import 'package:demalongsy/pages/signup.dart';
-import 'package:demalongsy/pages/tags.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
@@ -215,6 +214,7 @@ class _LoginState extends State<Login> {
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => const Navbar()));
+                            FocusScope.of(context).unfocus();
                           },
                           child: const Button(
                             text: "Sign In",
