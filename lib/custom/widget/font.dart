@@ -15,6 +15,7 @@ class Poppins extends StatelessWidget {
   final int? maxLines;
   final bool? underline;
   final bool? fontRespon;
+  final bool? overflow;
 
   const Poppins(
       {Key? key,
@@ -27,7 +28,8 @@ class Poppins extends StatelessWidget {
       this.letterspacing,
       this.textAlign,
       this.maxLines,
-      this.fontRespon})
+      this.fontRespon,
+      this.overflow})
       : super(key: key);
 
   @override
@@ -36,7 +38,7 @@ class Poppins extends StatelessWidget {
       text,
       textAlign: textAlign,
       maxLines: maxLines,
-      overflow: TextOverflow.ellipsis,
+      overflow: overflow ?? true ? TextOverflow.ellipsis : null,
       textScaleFactor:
           fontRespon ?? true ? ScaleSize.textScaleFactor(context) : null,
       style: GoogleFonts.poppins(
@@ -61,6 +63,7 @@ class Spectral extends StatelessWidget {
   final TextAlign? textAlign;
   final int? maxLines;
   final bool? fontRespon;
+  final bool? overflow;
 
   const Spectral(
       {Key? key,
@@ -72,7 +75,8 @@ class Spectral extends StatelessWidget {
       this.letterspacing,
       this.textAlign,
       this.maxLines,
-      this.fontRespon})
+      this.fontRespon,
+      this.overflow})
       : super(key: key);
 
   @override
@@ -81,7 +85,7 @@ class Spectral extends StatelessWidget {
       text,
       textAlign: textAlign,
       maxLines: maxLines,
-      overflow: TextOverflow.ellipsis,
+      overflow: overflow ?? true ? TextOverflow.ellipsis : null,
       textScaleFactor:
           fontRespon ?? true ? ScaleSize.textScaleFactor(context) : null,
       style: GoogleFonts.spectral(
@@ -104,6 +108,7 @@ class Roboto extends StatelessWidget {
   final int? maxLines;
   final bool? underline;
   final bool? fontRespon;
+  final bool? overflow;
 
   const Roboto(
       {Key? key,
@@ -116,7 +121,8 @@ class Roboto extends StatelessWidget {
       this.letterspacing,
       this.textAlign,
       this.maxLines,
-      this.fontRespon})
+      this.fontRespon,
+      this.overflow})
       : super(key: key);
 
   @override
@@ -125,7 +131,7 @@ class Roboto extends StatelessWidget {
       text,
       textAlign: textAlign,
       maxLines: maxLines,
-      overflow: TextOverflow.ellipsis,
+      overflow: overflow ?? true ? TextOverflow.ellipsis : null,
       textScaleFactor:
           fontRespon ?? true ? ScaleSize.textScaleFactor(context) : null,
       style: GoogleFonts.roboto(

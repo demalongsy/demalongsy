@@ -1,4 +1,7 @@
 import 'package:demalongsy/models/data_mockup_for_post.dart';
+import 'package:demalongsy/pages/search.dart';
+import 'package:demalongsy/pages/search_first_page.dart';
+import 'package:demalongsy/pages/view_post.dart';
 import 'package:demalongsy/widget/showposts.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
