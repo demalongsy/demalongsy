@@ -26,7 +26,11 @@ class _CreatePostState extends State<CreatePost> {
   Future selectImages() async {
     final List<XFile>? selectedImages = await _picker.pickMultiImage();
     if (selectedImages!.isNotEmpty) {
-      selectedImages.map((e) => imageList.add(File(e.path))).toList();
+      selectedImages.map((e) {
+        if (imageList.length < 10) {
+          imageList.add(File(e.path));
+        }
+      }).toList();
     }
   }
 
