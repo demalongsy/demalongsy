@@ -399,6 +399,7 @@ class _SignUpState extends State<SignUp> {
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => const Tags()));
+                                FocusScope.of(context).unfocus();
                               },
                               child: const Button(
                                 text: "Sign Up",
