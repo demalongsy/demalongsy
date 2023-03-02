@@ -1,7 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -12,9 +15,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController _nameController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _bioController = new TextEditingController();
+  // TextEditingController _thumbnail = new TextEditingController();
   String _nameInput = '';
   String _emailInput = '';
   String _bioInput = '';
+
+  // Image
+  File? image;
+
+  Future takePhoto(ImageSource source) async {
+    try {
+      final _picker = ImagePicker();
+      final image = await _picker.pickImage(source: source);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() {
+        this.image = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image $e');
+    }
+  }
 
   bool checkAllSpaces(String input) {
     String output = input.replaceAll(' ', '');
@@ -59,7 +81,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       Expanded(child: Container()),
                       checkAllSpaces(_nameInput) ||
                               checkAllSpaces(_emailInput) ||
-                              checkAllSpaces(_bioInput)
+                              checkAllSpaces(_bioInput) ||
+                              image != null
                           ? GestureDetector(
                               onTap: () {
                                 print(_nameInput);
@@ -83,53 +106,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             ),
           ),
-          body: Container(
+          body: SingleChildScrollView(
             // width: double.infinity,
             // padding: const EdgeInsets.only(left: 30, right: 30),
             child: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
               },
-              child: ListView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(
                     height: 15,
                   ),
-                  Center(
-                    child: Stack(
-                      children: [
-                        Container(
-                          width: 98,
-                          height: 98,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                "https://s.isanook.com/wo/0/ui/38/190849/277150081_1212531879516407_7579357549109873866_n.jpg?ip/convert/w0/q80/jpg",
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              height: 34,
-                              width: 34,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: C.secondaryDefault,
-                              ),
-                              child: const Icon(
-                                Icons.mode_edit_rounded,
-                                color: C.dark2,
-                                size: 20,
-                              ),
-                            )),
-                      ],
-                    ),
-                  ),
+                  profilePhoto(),
                   const SizedBox(
                     height: 30,
                   ),
@@ -153,27 +143,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   const SizedBox(
                     height: 80,
                   ),
-                  // Tooltip(
-                  //   child: IconButton(
-                  //     icon: Icon(Icons.info, size: 16),
-                  //     onPressed: null,
-                  //   ),
-                  //   message: 'Can not be change',
-                  //   padding: const EdgeInsets.all(10),
-                  //   showDuration: const Duration(seconds: 5),
-                  //   decoration: ShapeDecoration(
-                  //     color: C.disableTextfield,
-                  //     shape: ToolTipCustomShape(),
-                  //   ),
-                  //   textStyle: const TextStyle(
-                  //     fontFamily: 'Poppins',
-                  //     fontSize: 14,
-                  //     fontWeight: FW.regular,
-                  //     color: C.dark1,
-                  //   ),
-                  //   preferBelow: false,
-                  //   verticalOffset: 15,
-                  // ),
                 ],
               ),
             ),
@@ -188,11 +157,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       padding: const EdgeInsets.only(bottom: 1, left: 30, right: 30),
       child: TextFormField(
         readOnly: true,
-        // showCursor: false,
-        // enabled: false, // disable a text edit field (default: true)
-        // keyboardType: TextInputType.multiline,
-        // minLines: 1, //Normal textInputField will be displayed
-        // maxLines: 5, // when user presses enter it will adapt to it
         decoration: InputDecoration(
           icon: Poppins(
               text: "Username", size: 14, color: C.dark2, fontWeight: FW.light),
@@ -228,28 +192,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               color: C.dark3,
             ),
           ),
-          // Tooltip(
-          //   child: IconButton(
-          //     icon: Icon(Icons.info, size: 16, color: C.dark3),
-          //     onPressed: null,
-          //   ),
-          //   message: 'Can not be changeeeee',
-          //   padding: const EdgeInsets.all(10),
-          //   showDuration: const Duration(seconds: 5),
-          //   decoration: ShapeDecoration(
-          //     color: C.disableTextfield,
-          //     shape: ToolTipCustomShape(),
-          //   ),
-          //   textStyle: const TextStyle(
-          //     fontFamily: 'Poppins',
-          //     fontSize: 14,
-          //     fontWeight: FW.regular,
-          //     color: C.dark1,
-          //     overflow: TextOverflow.ellipsis,
-          //   ),
-          //   preferBelow: false,
-          //   verticalOffset: 10,
-          // ),
         ),
         onSaved: (String? value) {
           // This optional block of code can be used to run
@@ -261,9 +203,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               : null;
         },
       ),
-      // SizedBox(
-      //   width: 20,
-      // ),
     );
   }
 
@@ -317,9 +256,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 : null;
           },
         ),
-        // SizedBox(
-        //   width: 20,
-        // ),
       ),
     );
   }
@@ -449,6 +385,130 @@ class _EditProfilePageState extends State<EditProfilePage> {
         // SizedBox(
         //   width: 20,
         // ),
+      ),
+    );
+  }
+
+  Widget profilePhoto() {
+    return Center(
+      child: InkWell(
+        customBorder: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40),
+        ),
+        child: Stack(
+          children: [
+            image == null
+                ? Container(
+                    width: 98,
+                    height: 98,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          "https://s.isanook.com/wo/0/ui/38/190849/277150081_1212531879516407_7579357549109873866_n.jpg?ip/convert/w0/q80/jpg",
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(
+                    width: 98,
+                    height: 98,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: ClipOval(
+                      child: Image.file(
+                        image!,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
+                    )),
+            Positioned(
+                bottom: 0,
+                right: 0,
+                child: Container(
+                  height: 34,
+                  width: 34,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: C.secondaryDefault,
+                  ),
+                  child: const Icon(
+                    Icons.mode_edit_rounded,
+                    color: C.dark2,
+                    size: 20,
+                  ),
+                )),
+          ],
+        ),
+        onTap: () {
+          showModalBottomSheet<void>(
+              backgroundColor: Colors.transparent,
+              context: context,
+              builder: (BuildContext context) {
+                return Container(
+                  height: 150,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                          bottom: BorderSide(
+                              width: 0.8, color: Colors.grey.withOpacity(0.5)),
+                        )),
+                        child: ListTile(
+                            onTap: () async {
+                              Future.delayed(Duration(seconds: 5));
+                              Navigator.of(context).pop();
+                              await takePhoto(ImageSource.camera);
+                            },
+                            leading: const Icon(
+                              Icons.photo_camera_front_outlined,
+                              color: Colors.black,
+                            ),
+                            title: const Text(
+                              "Take a photo",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                              ),
+                            )),
+                      ),
+                      Container(
+                        child: ListTile(
+                            onTap: () async {
+                              Future.delayed(Duration(seconds: 5));
+                              Navigator.of(context).pop();
+                              await takePhoto(ImageSource.gallery);
+                            },
+                            leading: const Icon(
+                              Icons.photo_library_outlined,
+                              color: Colors.black,
+                            ),
+                            title: const Text(
+                              "Choose from gallery",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
+                );
+              });
+        },
       ),
     );
   }

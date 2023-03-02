@@ -1,3 +1,5 @@
+import 'package:demalongsy/pages/other_fav.dart';
+import 'package:demalongsy/pages/other_post.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,17 +15,17 @@ import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 
-class Profile extends StatefulWidget {
+class OtherProfile extends StatefulWidget {
   final bool? isRootPage;
   final bool? isOwner;
 
-  const Profile({Key? key, this.isRootPage, this.isOwner = false})
+  const OtherProfile({Key? key, this.isRootPage, this.isOwner = false})
       : super(key: key);
   @override
-  _Profile createState() => _Profile();
+  _OtherProfile createState() => _OtherProfile();
 }
 
-class _Profile extends State<Profile> {
+class _OtherProfile extends State<OtherProfile> {
   bool isPoptoRoot = false;
 
   @override
@@ -326,7 +328,7 @@ class _Profile extends State<Profile> {
               ];
             },
             body: const TabBarView(
-              children: [PostScreen(), FavoritePosts()],
+              children: [OtherPost(), OtherFavorite()],
             ),
           ),
         ),
@@ -348,8 +350,6 @@ Widget profileHeaderWidget(BuildContext context) {
             height: 10,
           ),
           Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const CircleAvatar(
                 radius: 45,
