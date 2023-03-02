@@ -285,7 +285,7 @@ class _ViewPostState extends State<ViewPost> {
                                       color: C.dark1,
                                       fontWeight: FW.bold),
                                 ),
-                                const Divider(color: C.addBorderPhoto),
+                                const Divider(color: C.boderAddPhotos),
                                 // ListTile(
                                 //   leading: Container(
                                 //     decoration: BoxDecoration(
@@ -491,7 +491,7 @@ class _ViewPostState extends State<ViewPost> {
                       fontWeight: FW.bold,
                     ),
                   ),
-                  const Divider(color: C.addBorderPhoto),
+                  const Divider(color: C.boderAddPhotos),
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context, rootNavigator: true).push(
@@ -583,7 +583,7 @@ class _ViewPostState extends State<ViewPost> {
                       fontWeight: FW.bold,
                     ),
                   ),
-                  const Divider(color: C.addBorderPhoto),
+                  const Divider(color: C.boderAddPhotos),
                   const SizedBox(
                     height: 20,
                   ),
