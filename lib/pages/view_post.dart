@@ -4,6 +4,7 @@ import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/models/data_mockup_for_post.dart';
+import 'package:demalongsy/pages/another_profile.dart';
 import 'package:demalongsy/pages/navbar.dart';
 import 'package:demalongsy/pages/profile.dart';
 import 'package:demalongsy/pages/view_comment.dart';
@@ -67,7 +68,10 @@ class _ViewPostState extends State<ViewPost> {
                   Padding(
                     padding: const EdgeInsets.only(left: 12),
                     child: GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
+                      onTap: () {
+                        Navigator.of(context, rootNavigator: false).push(
+                            createTransitionRoute(AnotherProfile(), 1, 0));
+                      },
                       child: Container(
                         // color: C.dangerDefault,
                         width: 40,

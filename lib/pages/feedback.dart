@@ -1,11 +1,9 @@
-import 'dart:math';
-
-import 'package:demalongsy/custom/toolkit.dart';
-import 'package:demalongsy/custom/widget/font.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:demalongsy/custom/toolkit.dart';
+import 'package:demalongsy/custom/widget/font.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class FeedBack extends StatefulWidget {
   const FeedBack({super.key});
@@ -17,7 +15,7 @@ class FeedBack extends StatefulWidget {
 class _FeedBackState extends State<FeedBack> {
   double _ratingScore = 0.5;
 
-  TextEditingController _feedbackController = TextEditingController();
+  final TextEditingController _feedbackController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +23,7 @@ class _FeedBackState extends State<FeedBack> {
       home: Scaffold(
         backgroundColor: C.backgroundWhiteIvory,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50),
+          preferredSize: const Size.fromHeight(50),
           child: AppBar(
             backgroundColor: C.backgroundWhiteIvory,
             elevation: 0,
@@ -92,15 +90,10 @@ class _FeedBackState extends State<FeedBack> {
                     child: Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        Container(
-                          height: 24,
-                          width: 24,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/caphand.png'),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
+                        SvgPicture.asset(
+                          "assets/images/hand.svg",
+                          width: 21,
+                          height: 21,
                         ),
                         const Padding(
                           padding: EdgeInsets.only(left: 8),
@@ -115,8 +108,8 @@ class _FeedBackState extends State<FeedBack> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 58,
+                  const SizedBox(
+                    height: 50,
                   ),
                   Center(
                     child: RatingBar.builder(
@@ -128,8 +121,8 @@ class _FeedBackState extends State<FeedBack> {
                       direction: Axis.horizontal,
                       allowHalfRating: true,
                       itemCount: 5,
-                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                      itemBuilder: (context, _) => Icon(
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => const Icon(
                         Icons.star_rounded,
                         color: C.dark2,
                       ),
@@ -140,8 +133,8 @@ class _FeedBackState extends State<FeedBack> {
                       },
                     ),
                   ),
-                  SizedBox(
-                    height: 72,
+                  const SizedBox(
+                    height: 50,
                   ),
                   const Padding(
                     padding: EdgeInsets.only(left: 8),
@@ -228,9 +221,6 @@ class _FeedBackState extends State<FeedBack> {
                               ),
                             ],
                           ),
-                        ),
-                        const SizedBox(
-                          height: 70,
                         ),
                       ],
                     ),
