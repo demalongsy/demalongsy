@@ -1,6 +1,6 @@
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/pages/navbar.dart';
-import 'package:demalongsy/pages/signup.dart';
+import 'package:demalongsy/pages/auth/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';

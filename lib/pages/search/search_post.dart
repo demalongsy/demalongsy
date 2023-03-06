@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:demalongsy/custom/widget/page_transition.dart';
-import 'package:demalongsy/pages/view_post.dart';
+import 'package:demalongsy/pages/post/view_post.dart';
 import 'package:flutter/material.dart';
 
 class SearchPost extends StatefulWidget {

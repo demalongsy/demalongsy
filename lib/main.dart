@@ -1,7 +1,7 @@
-import 'package:demalongsy/pages/tags.dart';
+import 'package:demalongsy/pages/auth/tags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:demalongsy/pages/login.dart';
+import 'package:demalongsy/pages/auth/login.dart';
 import 'package:demalongsy/pages/navbar.dart';
 
 void main() {

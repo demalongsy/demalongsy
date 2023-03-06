@@ -4,14 +4,14 @@ import 'package:demalongsy/models/account_data.dart';
 import 'package:demalongsy/pages/navbar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../custom/toolkit.dart';
+import '../../custom/toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:demalongsy/pages/search_post.dart';
+import 'package:demalongsy/pages/search/search_post.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:demalongsy/pages/search_account.dart';
+import 'package:demalongsy/pages/search/search_account.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 
 class Search extends StatefulWidget {

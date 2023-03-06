@@ -1,37 +1,36 @@
+import 'package:demalongsy/pages/another/another_fav.dart';
+import 'package:demalongsy/pages/another/another_post.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:demalongsy/pages/post.dart';
-import 'package:demalongsy/pages/login.dart';
-import 'package:demalongsy/pages/policy.dart';
+import 'package:demalongsy/pages/profile/post.dart';
+import 'package:demalongsy/pages/auth/login.dart';
+import 'package:demalongsy/pages/profile/policy.dart';
 import 'package:demalongsy/custom/toolkit.dart';
-import 'package:demalongsy/pages/feedback.dart';
+import 'package:demalongsy/pages/profile/feedback.dart';
 import 'package:demalongsy/custom/widget/font.dart';
-import 'package:demalongsy/pages/edit_profile.dart';
-import 'package:demalongsy/pages/favorite_post.dart';
+import 'package:demalongsy/pages/profile/edit_profile.dart';
+import 'package:demalongsy/pages/profile/favorite_post.dart';
 import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 
-class Profile extends StatefulWidget {
+class AnotherProfile extends StatefulWidget {
   final bool? isRootPage;
   final bool? isOwner;
 
-  const Profile({Key? key, this.isRootPage, this.isOwner = false})
+  const AnotherProfile({Key? key, this.isRootPage, this.isOwner = false})
       : super(key: key);
   @override
-  _Profile createState() => _Profile();
+  _AnotherProfile createState() => _AnotherProfile();
 }
 
-class _Profile extends State<Profile> {
+class _AnotherProfile extends State<AnotherProfile> {
   bool isPoptoRoot = false;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: (widget.isRootPage ?? false || isPoptoRoot)
-          ? NavigationService.profileKey
-          : null,
       home: SafeArea(
           child: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -74,7 +73,6 @@ class _Profile extends State<Profile> {
                         onTap: () {
                           showModalBottomSheet<void>(
                             shape: const RoundedRectangleBorder(
-                              // <-- SEE HERE
                               borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(25.0),
                               ),
@@ -235,7 +233,6 @@ class _Profile extends State<Profile> {
                                                 ],
                                               ),
                                               actions: [
-                                                // The "No" button
                                                 CupertinoDialogAction(
                                                   onPressed: () {
                                                     setState(() {
@@ -326,7 +323,7 @@ class _Profile extends State<Profile> {
               ];
             },
             body: const TabBarView(
-              children: [PostScreen(), FavoritePosts()],
+              children: [AnotherPost(), AnotherFavorite()],
             ),
           ),
         ),
@@ -348,8 +345,6 @@ Widget profileHeaderWidget(BuildContext context) {
             height: 10,
           ),
           Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const CircleAvatar(
                 radius: 45,

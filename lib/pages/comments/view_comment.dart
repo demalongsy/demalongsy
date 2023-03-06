@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-import '../custom/widget/component.dart';
+import '../../custom/widget/component.dart';
 
 class ViewComment extends StatefulWidget {
   ViewComment({super.key});

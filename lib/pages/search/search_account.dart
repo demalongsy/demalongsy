@@ -1,15 +1,15 @@
 import 'dart:math';
-import 'package:demalongsy/pages/profile.dart';
-import 'package:demalongsy/pages/view_comment.dart';
+import 'package:demalongsy/pages/profile/profile.dart';
+import 'package:demalongsy/pages/comments/view_comment.dart';
 
-import '../custom/toolkit.dart';
+import '../../custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/models/account_data.dart';
 import 'package:flutter/material.dart';
-import 'package:demalongsy/pages/search.dart';
+import 'package:demalongsy/pages/search/search.dart';
 
-import '../custom/widget/page_transition.dart';
+import '../../custom/widget/page_transition.dart';
 
 class SearchAccount extends StatefulWidget {
   const SearchAccount({super.key});
