@@ -1,5 +1,5 @@
-import 'package:demalongsy/pages/other_fav.dart';
-import 'package:demalongsy/pages/other_post.dart';
+import 'package:demalongsy/pages/another_fav.dart';
+import 'package:demalongsy/pages/another_post.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,25 +15,22 @@ import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 
-class OtherProfile extends StatefulWidget {
+class AnotherProfile extends StatefulWidget {
   final bool? isRootPage;
   final bool? isOwner;
 
-  const OtherProfile({Key? key, this.isRootPage, this.isOwner = false})
+  const AnotherProfile({Key? key, this.isRootPage, this.isOwner = false})
       : super(key: key);
   @override
-  _OtherProfile createState() => _OtherProfile();
+  _AnotherProfile createState() => _AnotherProfile();
 }
 
-class _OtherProfile extends State<OtherProfile> {
+class _AnotherProfile extends State<AnotherProfile> {
   bool isPoptoRoot = false;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: (widget.isRootPage ?? false || isPoptoRoot)
-          ? NavigationService.profileKey
-          : null,
       home: SafeArea(
           child: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -76,7 +73,6 @@ class _OtherProfile extends State<OtherProfile> {
                         onTap: () {
                           showModalBottomSheet<void>(
                             shape: const RoundedRectangleBorder(
-                              // <-- SEE HERE
                               borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(25.0),
                               ),
@@ -237,7 +233,6 @@ class _OtherProfile extends State<OtherProfile> {
                                                 ],
                                               ),
                                               actions: [
-                                                // The "No" button
                                                 CupertinoDialogAction(
                                                   onPressed: () {
                                                     setState(() {
@@ -328,7 +323,7 @@ class _OtherProfile extends State<OtherProfile> {
               ];
             },
             body: const TabBarView(
-              children: [OtherPost(), OtherFavorite()],
+              children: [AnotherPost(), AnotherFavorite()],
             ),
           ),
         ),
