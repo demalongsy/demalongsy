@@ -103,6 +103,7 @@ class _ViewPostState extends State<ViewPost> {
                     ),
                   ),
 <<<<<<< HEAD
+<<<<<<< HEAD
                 ),
                 const Padding(
                   padding: EdgeInsets.only(left: 8),
@@ -174,6 +175,8 @@ class _ViewPostState extends State<ViewPost> {
                       ),
                     ),
 =======
+=======
+>>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
                   Padding(
                     padding: const EdgeInsets.only(left: 12),
                     child: GestureDetector(
@@ -254,6 +257,9 @@ class _ViewPostState extends State<ViewPost> {
                         ),
                       ),
                     ),
+<<<<<<< HEAD
+>>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
+=======
 >>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
                     Positioned(
                       bottom: 10,
@@ -264,8 +270,11 @@ class _ViewPostState extends State<ViewPost> {
                         children: imageList.asMap().entries.map(
                           (entry) {
 <<<<<<< HEAD
+<<<<<<< HEAD
                             print(entry);
                             print(entry.key);
+=======
+>>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
 =======
 >>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
                             return GestureDetector(
@@ -278,16 +287,22 @@ class _ViewPostState extends State<ViewPost> {
                                     const EdgeInsets.symmetric(horizontal: 3.0),
                                 decoration: BoxDecoration(
 <<<<<<< HEAD
+<<<<<<< HEAD
                                   borderRadius: BorderRadius.circular(10),
                                   color: currentIndex == entry.key
                                       ? Colors.red
                                       : Colors.teal,
                                 ),
 =======
+=======
+>>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
                                     borderRadius: BorderRadius.circular(10),
                                     color: currentIndex == entry.key
                                         ? C.infoDefault
                                         : C.disableTextfield),
+<<<<<<< HEAD
+>>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
+=======
 >>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
                               ),
                             );
@@ -303,7 +318,10 @@ class _ViewPostState extends State<ViewPost> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 6, horizontal: 12),
 <<<<<<< HEAD
+<<<<<<< HEAD
                       // height: 36,
+=======
+>>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
 =======
 >>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
                       child: Row(
@@ -353,6 +371,7 @@ class _ViewPostState extends State<ViewPost> {
                                 ),
                           const Text('1'),
 <<<<<<< HEAD
+<<<<<<< HEAD
                           Row(
                             children: [
                               GestureDetector(
@@ -379,6 +398,8 @@ class _ViewPostState extends State<ViewPost> {
                             ],
                           )
 =======
+=======
+>>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context, rootNavigator: true).push(
@@ -399,6 +420,9 @@ class _ViewPostState extends State<ViewPost> {
                             ),
                           ),
                           const Text('1')
+<<<<<<< HEAD
+>>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
+=======
 >>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
                         ],
                       ),
@@ -594,6 +618,7 @@ class _ViewPostState extends State<ViewPost> {
                       height: 8,
                     ),
 <<<<<<< HEAD
+<<<<<<< HEAD
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
@@ -613,6 +638,8 @@ class _ViewPostState extends State<ViewPost> {
                               color: C.dark3,
                               fontWeight: FW.regular,
 =======
+=======
+>>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Wrap(
@@ -634,12 +661,16 @@ class _ViewPostState extends State<ViewPost> {
                                 color: C.dark3,
                                 fontWeight: FW.regular,
                               ),
+<<<<<<< HEAD
+>>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
+=======
 >>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
                             ),
                           ),
                           const SizedBox(
                             width: 4,
                           ),
+<<<<<<< HEAD
 <<<<<<< HEAD
                           Container(
                             padding: const EdgeInsets.symmetric(
@@ -656,6 +687,8 @@ class _ViewPostState extends State<ViewPost> {
                               color: C.dark3,
                               fontWeight: FW.regular,
 =======
+=======
+>>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
                           Padding(
                             padding: const EdgeInsets.only(bottom: 4),
                             child: Container(
@@ -673,6 +706,9 @@ class _ViewPostState extends State<ViewPost> {
                                 color: C.dark3,
                                 fontWeight: FW.regular,
                               ),
+<<<<<<< HEAD
+>>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
+=======
 >>>>>>> b6bda1acf11ced50f99ac39f82da0e9114de6787
                             ),
                           ),
