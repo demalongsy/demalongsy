@@ -3,7 +3,7 @@ import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/pages/profile/policy.dart';
-import 'package:demalongsy/pages/auth/tags.dart';
+import 'package:demalongsy/pages/choose_style/tags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
