@@ -14,11 +14,7 @@ class MyApp extends StatelessWidget {
 //This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: CupertinoApp(title: 'Flutter Demo', home: const Login()));
-    //home: ProfileScreen(),
-    // home: Tags());
-    // home: ChooseStyle());
-    // home: Loading());
+    return const MaterialApp(
+        home: CupertinoApp(title: 'Flutter Demo', home: Login()));
   }
 }

@@ -73,7 +73,6 @@ class _AnotherProfile extends State<AnotherProfile> {
                         onTap: () {
                           showModalBottomSheet<void>(
                             shape: const RoundedRectangleBorder(
-                              // <-- SEE HERE
                               borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(25.0),
                               ),
@@ -234,7 +233,6 @@ class _AnotherProfile extends State<AnotherProfile> {
                                                 ],
                                               ),
                                               actions: [
-                                                // The "No" button
                                                 CupertinoDialogAction(
                                                   onPressed: () {
                                                     setState(() {

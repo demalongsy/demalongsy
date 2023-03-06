@@ -37,7 +37,42 @@ class _ViewPostState extends State<ViewPost> {
       "id": 3,
       "image_path":
           'https://static01.nyt.com/images/2022/12/22/fashion/21FASHION-AND-SPORTS-6-a8ea/21FASHION-AND-SPORTS-6-a8ea-mobileMasterAt3x.jpg'
-    }
+    },
+    {
+      "id": 4,
+      "image_path":
+          'https://hips.hearstapps.com/hmg-prod/images/fashion-model-naomi-campbell-wears-a-furry-cocktail-dress-news-photo-1656444150.jpg'
+    },
+    {
+      "id": 5,
+      "image_path":
+          'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'
+    },
+    {
+      "id": 6,
+      "image_path":
+          'https://static01.nyt.com/images/2022/12/22/fashion/21FASHION-AND-SPORTS-6-a8ea/21FASHION-AND-SPORTS-6-a8ea-mobileMasterAt3x.jpg'
+    },
+    {
+      "id": 7,
+      "image_path":
+          'https://hips.hearstapps.com/hmg-prod/images/fashion-model-naomi-campbell-wears-a-furry-cocktail-dress-news-photo-1656444150.jpg'
+    },
+    {
+      "id": 8,
+      "image_path":
+          'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'
+    },
+    {
+      "id": 9,
+      "image_path":
+          'https://static01.nyt.com/images/2022/12/22/fashion/21FASHION-AND-SPORTS-6-a8ea/21FASHION-AND-SPORTS-6-a8ea-mobileMasterAt3x.jpg'
+    },
+    {
+      "id": 10,
+      "image_path":
+          'https://hips.hearstapps.com/hmg-prod/images/fashion-model-naomi-campbell-wears-a-furry-cocktail-dress-news-photo-1656444150.jpg'
+    },
   ];
   final CarouselController _carouselController = CarouselController();
   int currentIndex = 0;
@@ -70,7 +105,8 @@ class _ViewPostState extends State<ViewPost> {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context, rootNavigator: false).push(
-                            createTransitionRoute(AnotherProfile(), 1, 0));
+                            createTransitionRoute(
+                                const AnotherProfile(), 1, 0));
                       },
                       child: Container(
                         // color: C.dangerDefault,
@@ -84,24 +120,22 @@ class _ViewPostState extends State<ViewPost> {
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: Poppins(
-                      text: "K.Payongdech",
-                      size: 14,
-                      color: C.dark1,
-                      fontWeight: FW.bold,
-                      letterspacing: 0.64,
+                  Expanded(
+                    child: Container(
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 8),
+                        child: Poppins(
+                          text: "K.Payongdech",
+                          size: 14,
+                          maxLines: 1,
+                          overflow: true,
+                          color: C.dark1,
+                          fontWeight: FW.bold,
+                          letterspacing: 0.64,
+                        ),
+                      ),
                     ),
                   ),
-                  // const Padding(
-                  //   padding: EdgeInsets.only(left: 8),
-                  //   child: Icon(
-                  //     Icons.more_horiz,
-                  //     color: C.dark2,
-                  //     size: 24.0,
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -163,11 +197,10 @@ class _ViewPostState extends State<ViewPost> {
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 3.0),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: currentIndex == entry.key
-                                      ? Colors.red
-                                      : Colors.teal,
-                                ),
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: currentIndex == entry.key
+                                        ? C.infoDefault
+                                        : C.disableTextfield),
                               ),
                             );
                           },
@@ -181,7 +214,6 @@ class _ViewPostState extends State<ViewPost> {
                     Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 6, horizontal: 12),
-                      // height: 36,
                       child: Row(
                         children: [
                           isFavorited
