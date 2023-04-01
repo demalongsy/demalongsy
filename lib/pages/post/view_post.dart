@@ -210,12 +210,31 @@ class _ViewPostState extends State<ViewPost> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       color: currentIndex == entry.key
-                                          ? C.infoDefault
-                                          : C.disableTextfield),
+                                          ? C.secondaryDefault
+                                          : C.disableBackground),
                                 ),
                               );
                             },
                           ).toList(),
+                        ),
+                      ),
+                      Positioned(
+                        top: 16,
+                        right: 16,
+                        child: Container(
+                          width: 44,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            color: C.dark3,
+                          ),
+                          child: Center(
+                            child: Poppins(
+                                text: '${currentIndex + 1}/${imageList.length}',
+                                size: 14,
+                                color: C.white,
+                                fontWeight: FW.regular),
+                          ),
                         ),
                       ),
                     ],
