@@ -136,7 +136,7 @@ class _TagsState extends State<Tags> {
             )
           ],
         ),
-        bottomNavigationBar: tags.isNotEmpty
+        bottomNavigationBar: tags.isNotEmpty && tags.length > 1
             ? Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 32),

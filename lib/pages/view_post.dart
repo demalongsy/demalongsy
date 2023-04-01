@@ -36,7 +36,7 @@ class _ViewPostState extends State<ViewPost> {
       "id": 3,
       "image_path":
           'https://static01.nyt.com/images/2022/12/22/fashion/21FASHION-AND-SPORTS-6-a8ea/21FASHION-AND-SPORTS-6-a8ea-mobileMasterAt3x.jpg'
-    }
+    },
   ];
   final CarouselController _carouselController = CarouselController();
   int currentIndex = 0;
@@ -125,6 +125,7 @@ class _ViewPostState extends State<ViewPost> {
                             .toList(),
                         carouselController: _carouselController,
                         options: CarouselOptions(
+                          enlargeCenterPage: true,
                           height: 460,
                           scrollPhysics: const BouncingScrollPhysics(),
                           autoPlay: false,
@@ -155,20 +156,39 @@ class _ViewPostState extends State<ViewPost> {
                             onTap: () =>
                                 _carouselController.animateToPage(entry.key),
                             child: Container(
-                              width: currentIndex == entry.key ? 7 : 7,
+                              width: currentIndex == entry.key ? 12 : 7,
                               height: 7.0,
                               margin:
                                   const EdgeInsets.symmetric(horizontal: 3.0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: currentIndex == entry.key
-                                    ? Colors.red
-                                    : Colors.teal,
+                                    ? C.secondaryDefault
+                                    : C.disableBackground,
                               ),
                             ),
                           );
                         },
                       ).toList(),
+                    ),
+                  ),
+                  Positioned(
+                    top: 16,
+                    right: 16,
+                    child: Container(
+                      width: 44,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: C.dark3,
+                      ),
+                      child: Center(
+                        child: Poppins(
+                            text: '${currentIndex + 1}/${imageList.length}',
+                            size: 14,
+                            color: C.white,
+                            fontWeight: FW.regular),
+                      ),
                     ),
                   ),
                 ],
@@ -258,133 +278,216 @@ class _ViewPostState extends State<ViewPost> {
                     child: GestureDetector(
                       onTap: () {
                         showModalBottomSheet(
-                          shape: const RoundedRectangleBorder(
-                            // <-- SEE HERE
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(25.0),
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              // <-- SEE HERE
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(25.0),
+                              ),
                             ),
-                          ),
-                          context: context,
-                          useRootNavigator: true,
-                          builder: (BuildContext context) {
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(height: 24),
-                                SvgPicture.asset(
-                                  "assets/images/line.svg",
-                                  width: 8,
-                                  height: 4,
-                                  color: C.dark2,
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(bottom: 8),
-                                  child: Poppins(
-                                      text: "Pick to Suggest Items",
-                                      size: 18,
-                                      color: C.dark1,
-                                      fontWeight: FW.bold),
-                                ),
-                                const Divider(color: C.boderAddPhotos),
-                                // ListTile(
-                                //   leading: Container(
-                                //     decoration: BoxDecoration(
-                                //       borderRadius: BorderRadius.circular(8),
-                                //     ),
-                                //     width: 72,
-                                //     height: 72,
-                                //     child: SvgPicture.network(
-                                //         'https://hips.hearstapps.com/hmg-prod/images/fashion-model-naomi-campbell-wears-a-furry-cocktail-dress-news-photo-1656444150.jpg'),
-                                //   ),
-                                // ),
-
-                                // No ListTile
-                                ListTile(
-                                  title: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15, right: 15),
-                                    child: Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 10.0),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 16.0),
-                                            child: const CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                            ),
+                            context: context,
+                            useRootNavigator: true,
+                            builder: (context) => DraggableScrollableSheet(
+                                  expand: false,
+                                  maxChildSize: 0.9,
+                                  minChildSize: 0.32,
+                                  builder:
+                                      (BuildContext context, scrollController) {
+                                    return SingleChildScrollView(
+                                      controller: scrollController,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const SizedBox(
+                                            height: 24,
                                           ),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Row(
-                                                  children: [
-                                                    const Poppins(
-                                                        overflow: false,
-                                                        text: 'Photo 1',
-                                                        size: 16,
-                                                        color: C.dark2,
-                                                        fontWeight: FW.bold),
-                                                    const SizedBox(
-                                                      width: 4,
+                                          SvgPicture.asset(
+                                            "assets/images/line.svg",
+                                            width: 8,
+                                            height: 4,
+                                            color: C.dark2,
+                                          ),
+                                          const SizedBox(
+                                            height: 18,
+                                          ),
+                                          const Padding(
+                                            padding: EdgeInsets.only(bottom: 8),
+                                            child: Poppins(
+                                                text: "Pick to Suggest Items",
+                                                size: 18,
+                                                color: C.dark1,
+                                                fontWeight: FW.bold),
+                                          ),
+                                          const Divider(
+                                              color: C.boderAddPhotos),
+                                          Column(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: ListTile(
+                                                  leading: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8), // Image border
+                                                    child: SizedBox.fromSize(
+                                                      // Image radius
+                                                      child: Image.network(
+                                                        'https://hips.hearstapps.com/hmg-prod/images/fashion-model-naomi-campbell-wears-a-furry-cocktail-dress-news-photo-1656444150.jpg',
+                                                        fit: BoxFit.cover,
+                                                        width: 72,
+                                                        height: 72,
+                                                      ),
                                                     ),
-                                                    Expanded(
-                                                        child: Container()),
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                        color:
-                                                            C.secondaryDefault,
-                                                      ),
-                                                      width: 70,
-                                                      height: 24,
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 16,
-                                                          vertical: 2),
-                                                      child: const Center(
-                                                        child: Poppins(
-                                                            overflow: false,
-                                                            text: 'Pick',
-                                                            size: 16,
-                                                            color: C.dark2,
-                                                            fontWeight:
-                                                                FW.bold),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                                Container(
-                                                  margin: const EdgeInsets.only(
-                                                      top: 5.0),
-                                                  child: const Poppins(
-                                                      overflow: false,
+                                                  ),
+                                                  title: const Poppins(
+                                                      text: 'Photo 1',
+                                                      size: 14,
+                                                      color: C.dark1,
+                                                      fontWeight: FW.bold),
+                                                  subtitle: const Poppins(
                                                       text:
                                                           'Pick to suggest item',
                                                       size: 12,
                                                       color: C.dark1,
                                                       fontWeight: FW.regular),
+                                                  trailing: Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      color: C.secondaryDefault,
+                                                    ),
+                                                    width: 70,
+                                                    height: 24,
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 2),
+                                                    child: const Center(
+                                                        child: Poppins(
+                                                            text: 'Pick',
+                                                            size: 16,
+                                                            color: C.dark2,
+                                                            fontWeight:
+                                                                FW.bold)),
+                                                  ),
+                                                  onTap: () {},
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: ListTile(
+                                                  leading: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8), // Image border
+                                                    child: SizedBox.fromSize(
+                                                      // Image radius
+                                                      child: Image.network(
+                                                        'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg',
+                                                        fit: BoxFit.cover,
+                                                        width: 72,
+                                                        height: 72,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  title: const Poppins(
+                                                      text: 'Photo 1',
+                                                      size: 14,
+                                                      color: C.dark1,
+                                                      fontWeight: FW.bold),
+                                                  subtitle: const Poppins(
+                                                      text:
+                                                          'Pick to suggest item',
+                                                      size: 12,
+                                                      color: C.dark1,
+                                                      fontWeight: FW.regular),
+                                                  trailing: Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      color: C.secondaryDefault,
+                                                    ),
+                                                    width: 70,
+                                                    height: 24,
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 2),
+                                                    child: const Center(
+                                                        child: Poppins(
+                                                            text: 'Pick',
+                                                            size: 16,
+                                                            color: C.dark2,
+                                                            fontWeight:
+                                                                FW.bold)),
+                                                  ),
+                                                  onTap: () {},
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: ListTile(
+                                                  leading: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8), // Image border
+                                                    child: SizedBox.fromSize(
+                                                      // Image radius
+                                                      child: Image.network(
+                                                        'https://static01.nyt.com/images/2022/12/22/fashion/21FASHION-AND-SPORTS-6-a8ea/21FASHION-AND-SPORTS-6-a8ea-mobileMasterAt3x.jpg',
+                                                        fit: BoxFit.cover,
+                                                        width: 72,
+                                                        height: 72,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  title: const Poppins(
+                                                      text: 'Photo 1',
+                                                      size: 14,
+                                                      color: C.dark1,
+                                                      fontWeight: FW.bold),
+                                                  subtitle: const Poppins(
+                                                      text:
+                                                          'Pick to suggest item',
+                                                      size: 12,
+                                                      color: C.dark1,
+                                                      fontWeight: FW.regular),
+                                                  trailing: Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      color: C.secondaryDefault,
+                                                    ),
+                                                    width: 70,
+                                                    height: 24,
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 2),
+                                                    child: const Center(
+                                                        child: Poppins(
+                                                            text: 'Pick',
+                                                            size: 16,
+                                                            color: C.dark2,
+                                                            fontWeight:
+                                                                FW.bold)),
+                                                  ),
+                                                  onTap: () {},
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                                    );
+                                  },
+                                ));
                       },
                       child: Container(
                         padding: const EdgeInsets.only(left: 12),

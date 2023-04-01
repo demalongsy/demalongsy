@@ -219,60 +219,64 @@ class ChatMessage extends StatelessWidget {
       sizeFactor:
           CurvedAnimation(parent: animationController, curve: Curves.easeOut),
       axisAlignment: 0.0,
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 10.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(right: 16.0),
-              child: const CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
+      child: ListTile(
+        title: Container(
+          margin: EdgeInsets.symmetric(vertical: 10.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(right: 16.0),
+                child: const CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
+                ),
               ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: [
-                      Text(
-                        _name,
-                        style: const TextStyle(
-                            fontWeight: FW.bold, color: C.dark2, fontSize: 14),
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: C.primaryDefault,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: [
+                        Text(
+                          _name,
+                          style: const TextStyle(
+                              fontWeight: FW.bold,
+                              color: C.dark2,
+                              fontSize: 14),
                         ),
-                        width: 58,
-                        height: 18,
-                        padding: EdgeInsets.all(2),
-                        child: const Center(
-                          child: Text(
-                            'Creator',
-                            style: TextStyle(fontSize: 12),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: C.primaryDefault,
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 5.0),
-                    child: Text(
-                      text,
-                      style: TextStyle(fontSize: 16),
+                          width: 58,
+                          height: 18,
+                          padding: EdgeInsets.all(2),
+                          child: const Center(
+                            child: Text(
+                              'Creator',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                  ),
-                ],
+                    Container(
+                      margin: const EdgeInsets.only(top: 5.0),
+                      child: Text(
+                        text,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
