@@ -3,17 +3,17 @@ import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/models/account_data.dart';
 import 'package:demalongsy/pages/navbar.dart';
-import 'package:demalongsy/pages/search.dart';
+import 'package:demalongsy/pages/search/search.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../custom/toolkit.dart';
+import '../../custom/toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:demalongsy/pages/search_post.dart';
+import 'package:demalongsy/pages/search/search_post.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:demalongsy/pages/search_account.dart';
+import 'package:demalongsy/pages/search/search_account.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 
 class SearchFirstPage extends StatefulWidget {
@@ -74,7 +74,6 @@ class _SearchState extends State<SearchFirstPage>
                       children: [
                         Expanded(
                           child: SizedBox(
-                            // width: MediaQuery.of(context).size.width,
                             height: 40,
                             child: TextField(
                               onSubmitted: search,
@@ -99,7 +98,6 @@ class _SearchState extends State<SearchFirstPage>
                                         width: 1, color: C.infoDefault),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  // contentPadding: EdgeInsets.symmetric(vertical: 36),
                                   hintText: 'Search...',
                                   hintStyle: const TextStyle(
                                     color: C.disableTextfield,
@@ -113,8 +111,6 @@ class _SearchState extends State<SearchFirstPage>
                                       'assets/images/search-icon-grey.svg',
                                       alignment: Alignment.center,
                                       fit: BoxFit.fill,
-                                      // width: MediaQuery.of(context).size.width,
-                                      // height: MediaQuery.of(context).size.height,
                                     ),
                                   ),
                                   suffixIcon: _searchInput.isNotEmpty
@@ -148,7 +144,7 @@ class _SearchState extends State<SearchFirstPage>
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(right: 12),
+                          padding: const EdgeInsets.only(right: 12),
                           child: GestureDetector(
                             onTap: () => Navigator.of(context).pop(),
                             child: const Icon(
@@ -160,7 +156,6 @@ class _SearchState extends State<SearchFirstPage>
                         ),
                         Expanded(
                           child: SizedBox(
-                            // width: MediaQuery.of(context).size.width,
                             height: 40,
                             child: TextField(
                               onSubmitted: search,
@@ -185,7 +180,6 @@ class _SearchState extends State<SearchFirstPage>
                                         width: 1, color: C.infoDefault),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  // contentPadding: EdgeInsets.symmetric(vertical: 36),
                                   hintText: 'Search...',
                                   hintStyle: const TextStyle(
                                     color: C.disableTextfield,
@@ -199,8 +193,6 @@ class _SearchState extends State<SearchFirstPage>
                                       'assets/images/search-icon-grey.svg',
                                       alignment: Alignment.center,
                                       fit: BoxFit.fill,
-                                      // width: MediaQuery.of(context).size.width,
-                                      // height: MediaQuery.of(context).size.height,
                                     ),
                                   ),
                                   suffixIcon: _searchInput.isNotEmpty
@@ -232,6 +224,11 @@ class _SearchState extends State<SearchFirstPage>
                     )
             ],
           ),
+        ),
+        body: GestureDetector(
+          onTap: (() {
+            FocusScope.of(context).unfocus();
+          }),
         ),
       ),
     );

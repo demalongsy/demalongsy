@@ -1,13 +1,13 @@
 import 'package:demalongsy/custom/key/navigate.dart';
-import 'package:demalongsy/pages/search_first_page.dart';
-import 'package:demalongsy/pages/search_style.dart';
+import 'package:demalongsy/pages/search/search_first_page.dart';
+import 'package:demalongsy/pages/search_similar/search_style.dart';
 
 import '../custom/toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:demalongsy/pages/search.dart';
+import 'package:demalongsy/pages/search/search.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:demalongsy/pages/profile.dart';
+import 'package:demalongsy/pages/profile/profile.dart';
 
 import 'package:demalongsy/widget/header_hompage.dart';
 

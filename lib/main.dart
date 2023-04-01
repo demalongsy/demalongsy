@@ -1,7 +1,7 @@
-import 'package:demalongsy/pages/tags.dart';
+import 'package:demalongsy/pages/choose_style/tags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:demalongsy/pages/login.dart';
+import 'package:demalongsy/pages/auth/login.dart';
 import 'package:demalongsy/pages/navbar.dart';
 
 void main() {
@@ -14,11 +14,7 @@ class MyApp extends StatelessWidget {
 //This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: CupertinoApp(title: 'Flutter Demo', home: const Login()));
-    //home: ProfileScreen(),
-    // home: Tags());
-    // home: ChooseStyle());
-    // home: Loading());
+    return const MaterialApp(
+        home: CupertinoApp(title: 'Flutter Demo', home: Login()));
   }
 }

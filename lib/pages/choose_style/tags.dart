@@ -4,7 +4,7 @@ import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/pages/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../custom/toolkit.dart';
+import '../../custom/toolkit.dart';
 import 'package:flutter/material.dart';
 
 class Tags extends StatefulWidget {

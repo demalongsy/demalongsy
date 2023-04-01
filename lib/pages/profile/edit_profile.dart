@@ -43,7 +43,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return output.isNotEmpty ? true : false;
   }
 
-  // bool showPassword = false;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -51,7 +50,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         child: Scaffold(
           backgroundColor: C.white,
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(50),
+            preferredSize: const Size.fromHeight(50),
             child: AppBar(
               backgroundColor: C.white,
               elevation: 0,
@@ -107,8 +106,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
           ),
           body: SingleChildScrollView(
-            // width: double.infinity,
-            // padding: const EdgeInsets.only(left: 30, right: 30),
             child: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
@@ -123,15 +120,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   const SizedBox(
                     height: 30,
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.only(left: 30, right: 30),
-                    child: Container(
-                      child: const Poppins(
-                          text: "Personal Infomation",
-                          size: 12,
-                          color: C.textDefault,
-                          fontWeight: FW.bold),
-                    ),
+                    child: Poppins(
+                        text: "Personal Infomation",
+                        size: 12,
+                        color: C.textDefault,
+                        fontWeight: FW.bold),
                   ),
                   const Divider(
                     color: Colors.black,
@@ -158,10 +153,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
       child: TextFormField(
         readOnly: true,
         decoration: InputDecoration(
-          icon: Poppins(
+          icon: const Poppins(
               text: "Username", size: 14, color: C.dark2, fontWeight: FW.light),
           hintText: "K. Payoungdech",
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             fontFamily: 'Poppins',
             fontSize: 16,
             fontWeight: FW.light,
@@ -173,7 +168,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 alignment: PlaceholderAlignment.baseline,
                 baseline: TextBaseline.alphabetic,
                 child: Container(
-                    padding: EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(4),
                     constraints: const BoxConstraints(maxWidth: 250),
                     child: const Poppins(
                         text: "Can not be change",
@@ -186,17 +181,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
             preferBelow: false,
             verticalOffset: 10,
-            child: Icon(
+            child: const Icon(
               Icons.info,
               size: 16,
               color: C.dark3,
             ),
           ),
         ),
-        onSaved: (String? value) {
-          // This optional block of code can be used to run
-          // code when the user saves the form.
-        },
+        onSaved: (String? value) {},
         validator: (String? value) {
           return (value != null && value.contains('@'))
               ? 'Do not use the @ char.'
@@ -220,8 +212,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           onChanged: (value) => setState(() => _nameInput = value),
           controller: _nameController,
           keyboardType: TextInputType.multiline,
-          minLines: 1, //Normal textInputField will be displayed
-          maxLines: 5, // when user presses enter it will adapt to it
+          minLines: 1,
+          maxLines: 5,
           decoration: InputDecoration(
             icon: const Poppins(
                 text: "Name        ",
@@ -246,10 +238,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               borderSide: BorderSide(color: C.disableTextfield),
             ),
           ),
-          onSaved: (String? value) {
-            // This optional block of code can be used to run
-            // code when the user saves the form.
-          },
+          onSaved: (String? value) {},
           validator: (String? value) {
             return (value != null && value.contains('@'))
                 ? 'Do not use the @ char.'
@@ -274,11 +263,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
           onChanged: (value) => setState(() => _emailInput = value),
           controller: _emailController,
           keyboardType: TextInputType.multiline,
-          minLines: 1, //Normal textInputField will be displayed
-          maxLines: 5, // when user presses enter it will adapt to it
-
+          minLines: 1,
+          maxLines: 5,
           decoration: InputDecoration(
-            icon: Poppins(
+            icon: const Poppins(
                 text: "Email         ",
                 size: 14,
                 color: C.dark2,
@@ -301,19 +289,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
               borderSide: BorderSide(color: C.disableTextfield),
             ),
           ),
-          onSaved: (String? value) {
-            // This optional block of code can be used to run
-            // code when the user saves the form.
-          },
+          onSaved: (String? value) {},
           validator: (String? value) {
             return (value != null && value.contains('@'))
                 ? 'Do not use the @ char.'
                 : null;
           },
         ),
-        // SizedBox(
-        //   width: 20,
-        // ),
       ),
     );
   }
@@ -355,17 +337,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       color: C.disableTextfield,
                     ),
               enabledBorder: const OutlineInputBorder(
-                // borderRadius: BorderRadius.circular(0),
                 borderSide: BorderSide(color: C.disableField),
               ),
               focusedBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(color: C.dark1),
               ),
-              filled: true, //<-- SEE HERE
-              fillColor: C.disableField, //<-- SEE HERE
-              // suffixText:
-              //     '${(80 - _bioController.text.length).toString()} character(s)',
-              // counterText: '',
+              filled: true,
+              fillColor: C.disableField,
               counterText:
                   '${(80 - _bioController.text.length).toString()} character',
               counterStyle: const TextStyle(
@@ -382,9 +360,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             }
           },
         ),
-        // SizedBox(
-        //   width: 20,
-        // ),
       ),
     );
   }

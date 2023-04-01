@@ -1,14 +1,14 @@
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class OtherPost extends StatefulWidget {
-  const OtherPost({super.key});
+class AnotherPost extends StatefulWidget {
+  const AnotherPost({super.key});
 
   @override
-  State<OtherPost> createState() => _OtherPostState();
+  State<AnotherPost> createState() => _AnotherPostState();
 }
 
-class _OtherPostState extends State<OtherPost> {
+class _AnotherPostState extends State<AnotherPost> {
   @override
   Widget build(BuildContext context) {
     return Container();

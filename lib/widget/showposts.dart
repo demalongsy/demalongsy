@@ -2,7 +2,7 @@ import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
-import 'package:demalongsy/pages/view_post.dart';
+import 'package:demalongsy/pages/post/view_post.dart';
 import 'package:flutter/material.dart';
 
 class ShowPost extends StatefulWidget {

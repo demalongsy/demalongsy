@@ -1,10 +1,10 @@
 import 'package:demalongsy/custom/key/navigate.dart';
-import 'package:demalongsy/pages/create_post.dart';
-import 'package:demalongsy/pages/post_foryou.dart';
-import 'package:demalongsy/pages/post_trending.dart';
-import 'package:demalongsy/pages/search_first_page.dart';
+import 'package:demalongsy/pages/post/create_post.dart';
+import 'package:demalongsy/pages/post/post_foryou.dart';
+import 'package:demalongsy/pages/post/post_trending.dart';
+import 'package:demalongsy/pages/search/search_first_page.dart';
 import 'package:flutter/material.dart';
-import 'package:demalongsy/pages/search.dart';
+import 'package:demalongsy/pages/search/search.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 
