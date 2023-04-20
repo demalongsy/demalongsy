@@ -52,7 +52,7 @@ class _SearchAccountState extends State<SearchAccount> {
                       fontWeight: FW.bold),
                   onTap: () {
                     Navigator.of(context, rootNavigator: true).push(
-                      createTransitionRoute(ViewComment(), 1, 0),
+                      createTransitionRoute(Profile(), 1, 0),
                     );
                   },
                 );
