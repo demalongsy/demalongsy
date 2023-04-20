@@ -15,7 +15,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController _nameController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _bioController = new TextEditingController();
-  // TextEditingController _thumbnail = new TextEditingController();
+
   String _nameInput = '';
   String _emailInput = '';
   String _bioInput = '';
@@ -105,11 +105,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             ),
           ),
-          body: SingleChildScrollView(
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
+          body: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -189,11 +189,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
         ),
         onSaved: (String? value) {},
-        validator: (String? value) {
-          return (value != null && value.contains('@'))
-              ? 'Do not use the @ char.'
-              : null;
-        },
       ),
     );
   }
@@ -239,11 +234,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
           ),
           onSaved: (String? value) {},
-          validator: (String? value) {
-            return (value != null && value.contains('@'))
-                ? 'Do not use the @ char.'
-                : null;
-          },
         ),
       ),
     );
@@ -290,11 +280,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
           ),
           onSaved: (String? value) {},
-          validator: (String? value) {
-            return (value != null && value.contains('@'))
-                ? 'Do not use the @ char.'
-                : null;
-          },
         ),
       ),
     );
@@ -352,13 +337,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 fontWeight: FW.light,
                 color: C.disableTextfield,
               )),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "Please enter forum's content";
-            } else {
-              return null;
-            }
-          },
         ),
       ),
     );
