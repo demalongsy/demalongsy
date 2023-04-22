@@ -1,4 +1,5 @@
 import 'package:demalongsy/pages/post/create_post.dart';
+import 'package:demalongsy/pages/profile/change_password.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -120,8 +121,14 @@ class _Profile extends State<Profile> {
                                           size: 16,
                                           color: C.dark2,
                                           fontWeight: FW.light),
-                                      onTap: () {
+                                      onTap: () async {
                                         Navigator.pop(context);
+                                        Future.delayed(
+                                            Duration(microseconds: 0));
+                                        await Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(createTransitionRoute(
+                                                ChangePasswordPage(), 1, 0));
                                       },
                                     ),
                                   ),
