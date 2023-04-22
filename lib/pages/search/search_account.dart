@@ -36,25 +36,28 @@ class _SearchAccountState extends State<SearchAccount> {
               itemCount: accounts.length,
               itemBuilder: ((context, index) {
                 final account = accounts[index];
-                return ListTile(
-                  leading: Container(
-                    width: 50,
-                    height: 50,
-                    child: CircleAvatar(
-                      radius: 50.0,
-                      backgroundImage: NetworkImage(account.urlImage),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: ListTile(
+                    leading: Container(
+                      width: 50,
+                      height: 50,
+                      child: CircleAvatar(
+                        radius: 50.0,
+                        backgroundImage: NetworkImage(account.urlImage),
+                      ),
                     ),
+                    title: Poppins(
+                        text: account.title,
+                        size: 14,
+                        color: C.dark1,
+                        fontWeight: FW.bold),
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true).push(
+                        createTransitionRoute(Profile(), 1, 0),
+                      );
+                    },
                   ),
-                  title: Poppins(
-                      text: account.title,
-                      size: 14,
-                      color: C.dark1,
-                      fontWeight: FW.bold),
-                  onTap: () {
-                    Navigator.of(context, rootNavigator: true).push(
-                      createTransitionRoute(ViewComment(), 1, 0),
-                    );
-                  },
                 );
               }),
             ),

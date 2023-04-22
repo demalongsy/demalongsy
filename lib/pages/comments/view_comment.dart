@@ -86,7 +86,7 @@ class _ViewCommentState extends State<ViewComment>
                 ),
               ),
               Container(
-                child: _buildTextComposer(), 
+                child: _buildTextComposer(),
               ),
             ],
           ),
