@@ -37,8 +37,6 @@ class _PostScreenState extends State<PostScreen> {
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 200,
                     mainAxisExtent: 298,
-
-                    //childAspectRatio: 3 / 2,
                     crossAxisSpacing: 6,
                     mainAxisSpacing: 6),
                 itemCount: postDesc.length,

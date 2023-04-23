@@ -35,8 +35,14 @@ class _ShowPostState extends State<ShowPost> {
       child: Container(
         //width: 168,
         height: 289,
-        decoration: BoxDecoration(
-            color: C.white, borderRadius: BorderRadius.circular(8)),
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Color(0xFF000000).withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 20,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ], color: C.white, borderRadius: BorderRadius.circular(8)),
         child: Stack(children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
