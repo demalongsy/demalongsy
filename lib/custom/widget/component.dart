@@ -66,7 +66,7 @@ class Button extends StatelessWidget {
                   height: 23,
                 ),
                 const SizedBox(
-                  width: 24,
+                  width: 12,
                 ),
                 Text(
                   text,
