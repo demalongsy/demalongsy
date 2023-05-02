@@ -311,7 +311,7 @@ packages:
     source: hosted
     version: "1.8.0"
   multi_select_flutter:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: multi_select_flutter
       url: "https://pub.dartlang.org"

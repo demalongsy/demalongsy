@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class CreatePost extends StatefulWidget {
   const CreatePost({super.key});
@@ -15,9 +16,52 @@ class CreatePost extends StatefulWidget {
   State<CreatePost> createState() => _CreatePostState();
 }
 
+class Hastag {
+  final int id;
+  final String name;
+
+  Hastag({
+    required this.id,
+    required this.name,
+  });
+}
+
 class _CreatePostState extends State<CreatePost> {
   TextEditingController _titleController = new TextEditingController();
   String _titleInput = '';
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  // mock data
+  static List<Hastag> _hastags = [
+    Hastag(id: 1, name: "Vintage 90s"),
+    Hastag(id: 2, name: "Y2K"),
+    Hastag(id: 3, name: "All black"),
+    Hastag(id: 4, name: "Korean"),
+    Hastag(id: 5, name: "American"),
+    Hastag(id: 6, name: "Minimal"),
+    Hastag(id: 7, name: "Boyish"),
+    Hastag(id: 8, name: "Fairy"),
+    Hastag(id: 9, name: "Business"),
+  ];
+
+  // static List<String> _hastags = [
+  //   ("#Vintage 90s"),
+  //   ("#Y2K"),
+  //   ("#All black"),
+  //   ("#Korean"),
+  //   ("#American"),
+  //   ("#Minimal"),
+  // ];
+
+  final _items = _hastags
+      .map((hastag) => MultiSelectItem<Hastag>(hastag, '#${hastag.name}'))
+      .toList();
+  List<Hastag> _selectedHastags = [];
+  final _multiSelectKey = GlobalKey<FormFieldState>();
 
   // Image
   final ImagePicker _picker = ImagePicker();
@@ -66,46 +110,7 @@ class _CreatePostState extends State<CreatePost> {
     return MaterialApp(
       home: SafeArea(
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
           backgroundColor: C.white,
-          bottomSheet: Padding(
-            padding: const EdgeInsets.only(left: 25, right: 25, bottom: 20),
-            child: SizedBox(
-              height: 48,
-              child: checkAllSpaces(_titleInput) && imageList.isNotEmpty
-                  ? ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                              primary: C.secondaryDefault, // Background color
-                              onPrimary: C
-                                  .secondaryPressed, // Text Color (Foreground color)
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50.0),
-                              ),
-                              elevation: 0.0,
-                              shadowColor: Colors.transparent)
-                          .copyWith(
-                              elevation: ButtonStyleButton.allOrNull(0.0)),
-                      child: const Center(
-                        child: Poppins(
-                            text: "Post",
-                            size: 16,
-                            color: C.dark2,
-                            fontWeight: FW.bold),
-                      ),
-                      onPressed: () {},
-                    )
-                  : const Button(
-                      text: "Post",
-                      fontWeight: FW.bold,
-                      color: C.textDefault2,
-                      size: 16,
-                      boxColor: C.secondaryPressed,
-                      boxHeight: 48,
-                      haveBorder: false,
-                      letterspacing: 0.64,
-                    ),
-            ),
-          ),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(50),
             child: AppBar(
@@ -249,52 +254,49 @@ class _CreatePostState extends State<CreatePost> {
                                                           .withOpacity(0.5)),
                                                 )),
                                                 child: ListTile(
-                                                    onTap: () async {
-                                                      Future.delayed(
-                                                        const Duration(
-                                                            seconds: 5),
-                                                      );
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      await takePhoto();
-                                                    },
-                                                    leading: const Icon(
-                                                      Icons
-                                                          .photo_camera_front_outlined,
-                                                      color: Colors.black,
-                                                    ),
-                                                    title: const Text(
-                                                      "Take a photo",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 14,
-                                                      ),
-                                                    )),
+                                                  onTap: () async {
+                                                    Future.delayed(
+                                                      const Duration(
+                                                          seconds: 5),
+                                                    );
+                                                    Navigator.of(context).pop();
+                                                    await takePhoto();
+                                                  },
+                                                  leading: const Icon(
+                                                    Icons
+                                                        .photo_camera_front_outlined,
+                                                    color: Colors.black,
+                                                  ),
+                                                  title: const Poppins(
+                                                      text: "Take a photo",
+                                                      size: 14,
+                                                      color: C.dark2,
+                                                      fontWeight: FW.regular),
+                                                ),
                                               ),
                                               Container(
                                                 child: ListTile(
-                                                    onTap: () async {
-                                                      Future.delayed(
-                                                        const Duration(
-                                                            seconds: 5),
-                                                      );
+                                                  onTap: () async {
+                                                    Future.delayed(
+                                                      const Duration(
+                                                          seconds: 5),
+                                                    );
 
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      await selectImages();
-                                                    },
-                                                    leading: const Icon(
-                                                      Icons
-                                                          .photo_library_outlined,
-                                                      color: Colors.black,
-                                                    ),
-                                                    title: const Text(
-                                                      "Choose from gallery",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 14,
-                                                      ),
-                                                    )),
+                                                    Navigator.of(context).pop();
+                                                    await selectImages();
+                                                  },
+                                                  leading: const Icon(
+                                                    Icons
+                                                        .photo_library_outlined,
+                                                    color: Colors.black,
+                                                  ),
+                                                  title: const Poppins(
+                                                      text:
+                                                          "Choose from gallery",
+                                                      size: 14,
+                                                      color: C.dark2,
+                                                      fontWeight: FW.regular),
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -434,7 +436,153 @@ class _CreatePostState extends State<CreatePost> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25, right: 25),
+                    child: MultiSelectDialogField<Hastag>(
+                      // Search in dialog
+                      searchable: true,
+                      searchIcon: const Icon(
+                        Icons.search,
+                        size: 18,
+                      ),
+                      searchTextStyle: const TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 14,
+                        fontWeight: FW.light,
+                        color: C.dark2,
+                      ),
+                      // Hight Dialog
+                      dialogHeight: 200,
+                      // List in dialog
+                      items: _items,
+                      itemsTextStyle: const TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 16,
+                        fontWeight: FW.light,
+                        color: C.dark2,
+                      ),
+                      title: const Poppins(
+                          text: "Select Your Hastags",
+                          size: 14,
+                          color: C.dark2,
+                          fontWeight: FW.bold),
+                      selectedColor: C.secondaryDefault,
+                      cancelText: const Text(
+                        "Cancel",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 16,
+                          fontWeight: FW.light,
+                          color: C.disableTextfield,
+                        ),
+                      ),
+                      confirmText: const Text(
+                        "OK",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 16,
+                          fontWeight: FW.bold,
+                          color: C.primaryDefault,
+                        ),
+                      ),
+                      selectedItemsTextStyle: const TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 16,
+                        fontWeight: FW.light,
+                        color: C.dark2,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(40)),
+                        border: Border.all(
+                          color: C.dark2,
+                          width: 1,
+                        ),
+                      ),
+                      buttonIcon: const Icon(
+                        Icons.arrow_drop_down,
+                        color: C.dark2,
+                      ),
+                      buttonText: const Text(
+                        "# Hastags",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                          fontWeight: FW.bold,
+                          color: C.dark2,
+                        ),
+                      ),
+                      onConfirm: (values) {
+                        _selectedHastags = values;
+                      },
+                      chipDisplay: MultiSelectChipDisplay(
+                        chipColor: C.secondaryDefault,
+                        textStyle: const TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                          fontWeight: FW.bold,
+                          color: C.dark2,
+                        ),
+                        icon: const Icon(
+                          Icons.close,
+                          color: C.dark2,
+                          size: 14,
+                        ),
+                        onTap: (value) {
+                          setState(() {
+                            _selectedHastags.remove(value);
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  _selectedHastags.length > 0
+                      ? SizedBox(height: 80)
+                      : SizedBox(height: 130),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 25, right: 25, bottom: 20),
+                    child: SizedBox(
+                      height: 48,
+                      child: checkAllSpaces(_titleInput) &&
+                              imageList.isNotEmpty &&
+                              _selectedHastags.length > 0
+                          ? ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                      primary: C
+                                          .secondaryDefault, // Background color
+                                      onPrimary: C
+                                          .secondaryPressed, // Text Color (Foreground color)
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50.0),
+                                      ),
+                                      elevation: 0.0,
+                                      shadowColor: Colors.transparent)
+                                  .copyWith(
+                                      elevation:
+                                          ButtonStyleButton.allOrNull(0.0)),
+                              child: const Center(
+                                child: Poppins(
+                                    text: "Post",
+                                    size: 16,
+                                    color: C.dark2,
+                                    fontWeight: FW.bold),
+                              ),
+                              onPressed: () {},
+                            )
+                          : const Button(
+                              text: "Post",
+                              fontWeight: FW.bold,
+                              color: C.textDefault2,
+                              size: 16,
+                              boxColor: C.secondaryPressed,
+                              boxHeight: 48,
+                              haveBorder: false,
+                              letterspacing: 0.64,
+                            ),
+                    ),
+                  ),
                 ],
               ),
             ),
