@@ -1,3 +1,5 @@
+import 'dart:convert' as convert;
+import 'package:demalongsy/base_URL/url.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/font.dart';
@@ -7,6 +9,8 @@ import 'package:demalongsy/pages/choose_style/tags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -25,6 +29,7 @@ class _SignUpState extends State<SignUp> {
   bool invisibleForPwd = true;
   bool invisibleForReTypePwd = true;
   bool? isChecked = false;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -395,23 +400,32 @@ class _SignUpState extends State<SignUp> {
                             isChecked == true
                         ? Padding(
                             padding: const EdgeInsets.only(right: 24, left: 24),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const Tags()));
-                                FocusScope.of(context).unfocus();
-                              },
-                              child: const Button(
-                                text: "Sign Up",
-                                fontWeight: FW.bold,
-                                color: C.dark2,
-                                size: 16,
-                                boxColor: C.secondaryDefault,
-                                boxHeight: 48,
-                                haveBorder: false,
-                              ),
-                            ),
-                          )
+                            child: isLoading
+                                ? const CircularProgressIndicator()
+                                : GestureDetector(
+                                    onTap: () async {
+                                      Map<String, String> body = {
+                                        "username": _usrnameController.text,
+                                        "password": _pwdController.text,
+                                      };
+                                      var result = await _signUp(body);
+
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) => Tags()));
+
+                                      FocusScope.of(context).unfocus();
+                                    },
+                                    child: const Button(
+                                      text: "Sign Up",
+                                      fontWeight: FW.bold,
+                                      color: C.dark2,
+                                      size: 16,
+                                      boxColor: C.secondaryDefault,
+                                      boxHeight: 48,
+                                      haveBorder: false,
+                                    ),
+                                  ))
                         : const Padding(
                             padding: EdgeInsets.only(right: 24, left: 24),
                             child: Button(
@@ -433,5 +447,31 @@ class _SignUpState extends State<SignUp> {
         ),
       )),
     ));
+  }
+
+  _signUp(Map<String, String> body) async {
+    try {
+      var url = '${Url.baseurl}/auth/register';
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8'
+      };
+
+      var response = await http.post(Uri.parse(url),
+          headers: header, body: convert.jsonEncode(body));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = convert.jsonDecode(response.body);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', result["token"]);
+        await prefs.setString('user_id', result["user_id"]);
+        await prefs.setString('username', _usrnameController.text);
+
+        return result;
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

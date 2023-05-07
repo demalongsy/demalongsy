@@ -212,9 +212,9 @@ class _LoginState extends State<Login> {
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const Navbar()));
-                            FocusScope.of(context).unfocus();
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) =>  Navbar()));
+                            // FocusScope.of(context).unfocus();
                           },
                           child: const Button(
                             text: "Sign In",

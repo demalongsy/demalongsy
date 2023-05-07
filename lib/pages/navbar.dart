@@ -12,7 +12,7 @@ import 'package:demalongsy/pages/profile/profile.dart';
 import 'package:demalongsy/widget/header_hompage.dart';
 
 class Navbar extends StatefulWidget {
-  const Navbar({super.key});
+  Navbar({Key? key}) : super(key: key);
 
   @override
   State<Navbar> createState() => _NavbarState();
@@ -35,7 +35,7 @@ class _NavbarState extends State<Navbar> {
             case 0:
               return CupertinoTabView(
                 navigatorKey: firstTabNavKey,
-                builder: (BuildContext context) => const HeaderHomePage(),
+                builder: (BuildContext context) => HeaderHomePage(),
               );
 
             case 1:
@@ -61,7 +61,7 @@ class _NavbarState extends State<Navbar> {
                     const Profile(isRootPage: true, isOwner: true),
               );
           }
-          return const HeaderHomePage();
+          return HeaderHomePage();
         },
         tabBar: CupertinoTabBar(
           backgroundColor: C.white,

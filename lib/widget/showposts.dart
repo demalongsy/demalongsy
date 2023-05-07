@@ -1,21 +1,26 @@
+import 'package:demalongsy/base_URL/url.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/pages/post/view_post.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class ShowPost extends StatefulWidget {
   final String topic;
   final String name;
   final String imgAcc;
   final String imgPath;
+  final bool isLiked;
   const ShowPost(
       {Key? key,
       required this.topic,
       required this.name,
       required this.imgAcc,
-      required this.imgPath})
+      required this.imgPath,
+      required this.isLiked})
       : super(key: key);
 
   @override
@@ -24,6 +29,13 @@ class ShowPost extends StatefulWidget {
 
 class _ShowPostState extends State<ShowPost> {
   bool isFavorited = false;
+  @override
+  void initState() {
+    setState(() {
+      isFavorited = widget.isLiked;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,4 +170,27 @@ class _ShowPostState extends State<ShowPost> {
       ),
     );
   }
+
+// _likesPost(Map<String, dynamic> body) async {
+//     try {
+//       // var url = '${Url.baseurl}/profile/selectedTags/${widget.user_id}';
+
+//       Map<String, String> header = {
+//         'Content-Type': 'application/json; charset=UTF-8',
+//         // 'Authorization': 'Bearer ${widget.token}'
+//       };
+
+//       var response = await http.patch(Uri.parse(),
+//           headers: header, body: convert.jsonEncode(body));
+
+//       if (response.statusCode == 200 || response.statusCode == 201) {
+//         print("success");
+//       } else {
+//         print('err ==> ${response.statusCode}');
+//       }
+//     } catch (e) {
+//       print(e);
+//     }
+//   }
+
 }

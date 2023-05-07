@@ -47,7 +47,8 @@ class _PostScreenState extends State<PostScreen> {
                           topic: postDesc[index].topic,
                           name: postDesc[index].name,
                           imgAcc: postDesc[index].imgAcc,
-                          imgPath: postDesc[index].imgPath));
+                          imgPath: postDesc[index].imgPath,
+                          isLiked: true));
                 }),
           ),
         ),

@@ -9,7 +9,7 @@ import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 
 class HeaderHomePage extends StatefulWidget {
-  const HeaderHomePage({super.key});
+  const HeaderHomePage({Key? key}) : super(key: key);
 
   @override
   State<HeaderHomePage> createState() => _HeaderHomePageState();
@@ -121,7 +121,10 @@ class _HeaderHomePageState extends State<HeaderHomePage>
             ),
             body: TabBarView(
               controller: tabController,
-              children: [PostForYou(), PostTrending()],
+              children: [
+                PostForYou(),
+                PostTrending()
+              ],
             )),
       ),
     );

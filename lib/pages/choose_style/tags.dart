@@ -1,4 +1,5 @@
 import 'package:chips_choice_null_safety/chips_choice_null_safety.dart';
+import 'package:demalongsy/base_URL/url.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/pages/navbar.dart';
@@ -6,9 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../custom/toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Tags extends StatefulWidget {
-  const Tags({super.key});
+  const Tags({Key? key}) : super(key: key);
 
   @override
   State<Tags> createState() => _TagsState();
@@ -136,23 +140,19 @@ class _TagsState extends State<Tags> {
             )
           ],
         ),
-        bottomNavigationBar: tags.isNotEmpty && tags.length > 1
+        bottomNavigationBar: tags.isNotEmpty && tags.length > 0
             ? Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
                 child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Navbar()));
-                    // Navigator.of(context).push(
-                    // MaterialPageRoute(builder: (context) => HomePage()));
-                    //------------------------
-                    // Navigator.of(context).push(
-                    //   CupertinoPageRoute<bool>(
-                    //     fullscreenDialog: true,
-                    //     builder: (BuildContext context) => HomePage(),
-                    //   ),
-                    // );
+                  onTap: () async {
+                    Map<String, dynamic> body = {"tags": tags};
+
+                    await _selectTag(body);
+
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Navbar(
+                            )));
                   },
                   child: const Button(
                     text: "Get Start",
@@ -179,5 +179,30 @@ class _TagsState extends State<Tags> {
               ),
       ),
     ));
+  }
+
+  _selectTag(Map<String, dynamic> body) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+      final String? user_id = prefs.getString('user_id');
+      var url = '${Url.baseurl}/profile/selectedTags/${user_id}';
+
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      };
+
+      var response = await http.patch(Uri.parse(url),
+          headers: header, body: convert.jsonEncode(body));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("success");
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }
