@@ -150,9 +150,8 @@ class _TagsState extends State<Tags> {
 
                     await _selectTag(body);
 
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => Navbar(
-                            )));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Navbar()));
                   },
                   child: const Button(
                     text: "Get Start",

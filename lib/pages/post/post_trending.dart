@@ -1,6 +1,6 @@
 import 'package:demalongsy/base_URL/url.dart';
 import 'package:demalongsy/custom/toolkit.dart';
-import 'package:demalongsy/models/data_mockup_for_post.dart';
+
 import 'package:demalongsy/widget/showposts.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -16,7 +16,6 @@ class PostTrending extends StatefulWidget {
 }
 
 class _PostTrendingState extends State<PostTrending> {
-  List<Post> postDesc = allPost;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
@@ -69,6 +68,8 @@ class _PostTrendingState extends State<PostTrending> {
                         imgAcc: data[index]["imgAuthor"],
                         imgPath: data[index]["images"][0],
                         isLiked: data[index]["isLiked"],
+                        block_id: data[index]["id"],
+                        author_id: data[index][" author_id"], tags: data[index]["tags"]
                       );
                     }),
           ),

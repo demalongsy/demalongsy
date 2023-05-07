@@ -25,8 +25,8 @@ class _SearchPostState extends State<SearchPost> {
         ),
       ),
       onTap: () {
-        Navigator.of(context, rootNavigator: false)
-            .push(createTransitionRoute(ViewPost(), 1, 0));
+        // Navigator.of(context, rootNavigator: false)
+        //     .push(createTransitionRoute(ViewPost(), 1, 0));
       },
     );
   }

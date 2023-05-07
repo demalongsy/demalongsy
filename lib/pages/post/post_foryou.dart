@@ -1,5 +1,5 @@
 import 'package:demalongsy/base_URL/url.dart';
-import 'package:demalongsy/models/data_mockup_for_post.dart';
+
 import 'package:demalongsy/pages/search/search.dart';
 import 'package:demalongsy/pages/search/search_first_page.dart';
 import 'package:demalongsy/pages/post/view_post.dart';
@@ -19,7 +19,6 @@ class PostForYou extends StatefulWidget {
 }
 
 class _PostForYouState extends State<PostForYou> {
-  List<Post> postDesc = allPost;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
@@ -70,6 +69,9 @@ class _PostForYouState extends State<PostForYou> {
                         imgAcc: data[index]["imgAuthor"],
                         imgPath: data[index]["images"][0],
                         isLiked: data[index]["isLiked"],
+                        block_id: data[index]["id"],
+                        author_id: data[index]["author_id"],
+                        tags: data[index]["tags"]
                       );
                     }),
           ),

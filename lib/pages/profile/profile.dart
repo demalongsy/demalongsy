@@ -1,3 +1,4 @@
+import 'package:demalongsy/base_URL/url.dart';
 import 'package:demalongsy/pages/post/create_post.dart';
 import 'package:demalongsy/pages/profile/change_password.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,6 +15,10 @@ import 'package:demalongsy/pages/profile/favorite_post.dart';
 import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+import 'package:demalongsy/models/profile_model.dart';
 
 class Profile extends StatefulWidget {
   final bool? isRootPage;
@@ -26,7 +31,40 @@ class Profile extends StatefulWidget {
 }
 
 class _Profile extends State<Profile> {
+  ProfileApi? _data;
   bool isPoptoRoot = false;
+
+  bool isLoading = true;
+
+  Future<void> _getData() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? username = prefs.getString('username');
+      final String? token = prefs.getString('token');
+
+      var url = '${Url.baseurl}/profile/${username}';
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      };
+
+      var response = await http.get(Uri.parse(url));
+      setState(() {
+        _data = profileApiFromJson(response.body);
+        print(_data);
+      });
+    } catch (e) {
+      print(e);
+      isLoading = false;
+    }
+  }
+
+  @override
+  void initState() {
+    _getData();
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -303,7 +341,17 @@ class _Profile extends State<Profile> {
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
-                      profileHeaderWidget(context),
+                      profileHeaderWidget(
+                        context,
+                        (_data?.name).toString(),
+                        (_data?.username).toString(),
+                        (_data?.numWasLiked).toString(),
+                        (_data?.numPostes).toString(),
+                        (_data?.bio ?? "Welcome to Demalondsy!").toString(),
+                        (_data?.img ??
+                                "https://img.freepik.com/free-icon/user_318-159711.jpg")
+                            .toString(),
+                      ),
                     ],
                   ),
                 ),
@@ -344,107 +392,106 @@ class _Profile extends State<Profile> {
       )),
     );
   }
-}
 
-Widget profileHeaderWidget(BuildContext context) {
-  return Container(
-    width: double.infinity,
-    decoration: const BoxDecoration(color: C.white),
-    child: Padding(
-      padding: const EdgeInsets.only(left: 38, right: 38),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: [
-              const CircleAvatar(
-                radius: 45,
-                backgroundColor: Color(0xff74EDED),
-                backgroundImage:
-                    NetworkImage("https://placeimg.com/640/480/people"),
-              ),
-              const SizedBox(
-                width: 28,
-              ),
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Poppins(
-                      text: "K. Payongdech",
-                      maxLines: 1,
-                      size: 18,
-                      color: C.dark1,
-                      fontWeight: FW.bold),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Poppins(
-                      text: "@Dekdee2023_",
-                      size: 12,
-                      color: C.dark1,
-                      fontWeight: FW.light),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: const [
-                      Poppins(
-                          text: "128 ",
-                          size: 12,
-                          color: C.dark1,
-                          fontWeight: FW.bold),
-                      Poppins(
-                          text: "Posts",
-                          size: 12,
-                          color: C.dark1,
-                          fontWeight: FW.light),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      Poppins(
-                          text: "12K ",
-                          size: 12,
-                          color: C.dark1,
-                          fontWeight: FW.bold),
-                      Poppins(
-                          text: "Likes ",
-                          size: 12,
-                          color: C.dark1,
-                          fontWeight: FW.light),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                ],
-              ))
-            ],
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          const Poppins(
-              text:
-                  "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula.",
-              maxLines: 2,
-              size: 14,
-              color: C.dark3,
-              fontWeight: FW.light),
-          const SizedBox(
-            height: 12,
-          ),
-          actions(context),
-          const SizedBox(
-            height: 18,
-          ),
-        ],
+  Widget profileHeaderWidget(BuildContext context, String name, String username,
+      String numLiked, String numPosted, String bio, String img) {
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(color: C.white),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 38, right: 38),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 45,
+                  backgroundColor: Color(0xff74EDED),
+                  backgroundImage: NetworkImage(img),
+                ),
+                const SizedBox(
+                  width: 28,
+                ),
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Poppins(
+                        text: name,
+                        maxLines: 1,
+                        size: 18,
+                        color: C.dark1,
+                        fontWeight: FW.bold),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Poppins(
+                        text: "@" + username,
+                        size: 12,
+                        color: C.dark1,
+                        fontWeight: FW.light),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Poppins(
+                            text: "${numPosted} ",
+                            size: 12,
+                            color: C.dark1,
+                            fontWeight: FW.bold),
+                        const Poppins(
+                            text: "Posts",
+                            size: 12,
+                            color: C.dark1,
+                            fontWeight: FW.light),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        Poppins(
+                            text: "${numLiked} ",
+                            size: 12,
+                            color: C.dark1,
+                            fontWeight: FW.bold),
+                        const Poppins(
+                            text: "Likes ",
+                            size: 12,
+                            color: C.dark1,
+                            fontWeight: FW.light),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                  ],
+                ))
+              ],
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Poppins(
+                text: bio,
+                maxLines: 2,
+                size: 14,
+                color: C.dark3,
+                fontWeight: FW.light),
+            const SizedBox(
+              height: 12,
+            ),
+            actions(context),
+            const SizedBox(
+              height: 18,
+            ),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 Widget actions(BuildContext context) {
@@ -454,9 +501,8 @@ Widget actions(BuildContext context) {
       Expanded(
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-                  primary: C.secondaryDefault, // Background color
-                  onPrimary:
-                      C.secondaryPressed, // Text Color (Foreground color)
+                  primary: C.secondaryDefault,
+                  onPrimary: C.secondaryPressed,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),

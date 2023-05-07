@@ -8,19 +8,27 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class ShowPost extends StatefulWidget {
   final String topic;
   final String name;
   final String imgAcc;
   final String imgPath;
   final bool isLiked;
+  final String block_id;
+  final String author_id;
+  final List<dynamic> tags;
   const ShowPost(
       {Key? key,
       required this.topic,
       required this.name,
       required this.imgAcc,
       required this.imgPath,
-      required this.isLiked})
+      required this.isLiked,
+      required this.block_id,
+      required this.author_id,
+      required this.tags})
       : super(key: key);
 
   @override
@@ -41,8 +49,13 @@ class _ShowPostState extends State<ShowPost> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (() {
-        Navigator.of(context, rootNavigator: false)
-            .push(createTransitionRoute(ViewPost(), 1, 0));
+        Navigator.of(context, rootNavigator: false).push(createTransitionRoute(
+            ViewPost(
+              tags: widget.tags,
+              block_id: widget.block_id,
+            ),
+            1,
+            0));
       }),
       child: Container(
         //width: 168,
@@ -52,7 +65,7 @@ class _ShowPostState extends State<ShowPost> {
             color: Color(0xFF000000).withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 20,
-            offset: Offset(0, 3), // changes position of shadow
+            offset: Offset(0, 3),
           ),
         ], color: C.white, borderRadius: BorderRadius.circular(8)),
         child: Stack(children: [
@@ -63,7 +76,7 @@ class _ShowPostState extends State<ShowPost> {
                 height: 198,
                 //width: 168,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(8),
                       topLeft: Radius.circular(8)),
                   image: DecorationImage(
@@ -85,7 +98,7 @@ class _ShowPostState extends State<ShowPost> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
@@ -97,7 +110,7 @@ class _ShowPostState extends State<ShowPost> {
                       backgroundColor: Color(0xff74EDED),
                       backgroundImage: NetworkImage(widget.imgAcc),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     Poppins(
@@ -125,10 +138,11 @@ class _ShowPostState extends State<ShowPost> {
                   Expanded(child: Container()),
                   isFavorited
                       ? GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             setState(() {
                               isFavorited = false;
                             });
+                            await _unlikesPost();
                           },
                           child: Container(
                             height: 32,
@@ -144,10 +158,11 @@ class _ShowPostState extends State<ShowPost> {
                           ),
                         )
                       : GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             setState(() {
                               isFavorited = true;
                             });
+                            await _likesPost();
                           },
                           child: Container(
                             height: 32,
@@ -171,26 +186,55 @@ class _ShowPostState extends State<ShowPost> {
     );
   }
 
-// _likesPost(Map<String, dynamic> body) async {
-//     try {
-//       // var url = '${Url.baseurl}/profile/selectedTags/${widget.user_id}';
+  _likesPost() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? user_id = prefs.getString('user_id');
+      final String? token = prefs.getString('token');
+      var url =
+          '${Url.baseurl}/profile/liked/?block_id=${widget.block_id}&user_id=${user_id}';
+      print(url);
 
-//       Map<String, String> header = {
-//         'Content-Type': 'application/json; charset=UTF-8',
-//         // 'Authorization': 'Bearer ${widget.token}'
-//       };
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      };
 
-//       var response = await http.patch(Uri.parse(),
-//           headers: header, body: convert.jsonEncode(body));
+      var response = await http.patch(Uri.parse(url), headers: header);
 
-//       if (response.statusCode == 200 || response.statusCode == 201) {
-//         print("success");
-//       } else {
-//         print('err ==> ${response.statusCode}');
-//       }
-//     } catch (e) {
-//       print(e);
-//     }
-//   }
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("success");
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
+  _unlikesPost() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? user_id = prefs.getString('user_id');
+      final String? token = prefs.getString('token');
+      var url =
+          '${Url.baseurl}/profile/unliked/?block_id=${widget.block_id}&user_id=${user_id}';
+      print(url);
+
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      };
+
+      var response = await http.patch(Uri.parse(url), headers: header);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("success");
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }
