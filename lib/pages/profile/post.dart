@@ -40,13 +40,20 @@ class _PostScreenState extends State<PostScreen> {
           return Future<void>.delayed(const Duration(seconds: 2));
         },
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: isLoading == true
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : GridView.builder(
+          child: isLoading == true
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Image.asset(
+                      "assets/images/loading.gif",
+                      height: 45,
+                      width: 45,
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: GridView.builder(
                     shrinkWrap: true,
                     primary: false,
                     physics: NeverScrollableScrollPhysics(),
@@ -60,16 +67,18 @@ class _PostScreenState extends State<PostScreen> {
                     itemBuilder: (BuildContext context, index) {
                       return ShowPost(
                           topic: data[index]["title"],
-                          name: data[index]["username"],
+                          name: data[index]["name"],
                           imgAcc: data[index]["imgAuthor"],
                           imgPath: data[index]["images"][0],
                           isLiked: data[index]["isLiked"],
                           block_id: data[index]["id"],
                           author_id: data[index][" author_id"],
-                          tags: data[index]["tags"]);
+                          tags: data[index]["tags"],
+                          author_username: data[index]["username"],
+                          imgAuthor: data[index]["imgAuthor"]);
                     },
                   ),
-          ),
+                ),
         ),
       ),
     );

@@ -1,12 +1,18 @@
+import 'package:demalongsy/base_URL/url.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert' as convert;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FeedBack extends StatefulWidget {
-  const FeedBack({super.key});
+  final String? name;
+  final String? username;
+  const FeedBack({Key? key, this.name, this.username}) : super(key: key);
 
   @override
   State<FeedBack> createState() => _FeedBackState();
@@ -47,9 +53,17 @@ class _FeedBackState extends State<FeedBack> {
                     ),
                     Expanded(child: Container()),
                     GestureDetector(
-                      onTap: (() {
-                        print(_ratingScore);
-                        print(_feedbackController.text);
+                      onTap: (() async {
+                        Map<String, dynamic> body = {
+                          "name": widget.name,
+                          "username": widget.username,
+                          "rating": _ratingScore,
+                          "desc": _feedbackController.text
+                        };
+
+                        await _sentFeedback(body);
+                        _feedbackController.clear();
+                        Navigator.pop(context);
                       }),
                       child: const Poppins(
                         text: "Send",
@@ -232,5 +246,32 @@ class _FeedBackState extends State<FeedBack> {
         ),
       ),
     );
+  }
+
+  _sentFeedback(Map<String, dynamic> body) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+
+      var url = '${Url.baseurl}/feedbacks';
+
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      };
+
+      var response = await http.post(Uri.parse(url),
+          headers: header, body: convert.jsonEncode(body));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = convert.jsonDecode(response.body);
+
+        return result;
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

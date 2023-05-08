@@ -42,37 +42,46 @@ class _PostTrendingState extends State<PostTrending> {
           return Future<void>.delayed(const Duration(seconds: 2));
         },
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: isLoading == true
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : GridView.builder(
-                    shrinkWrap: true,
-                    primary: false,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 200,
-                            mainAxisExtent: 298,
+          child: isLoading == true
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Image.asset(
+                      "assets/images/loading.gif",
+                      height: 45,
+                      width: 45,
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: GridView.builder(
+                      shrinkWrap: true,
+                      primary: false,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 200,
+                              mainAxisExtent: 298,
 
-                            //childAspectRatio: 3 / 2,
-                            crossAxisSpacing: 6,
-                            mainAxisSpacing: 6),
-                    itemCount: data.length,
-                    itemBuilder: (BuildContext context, index) {
-                      return ShowPost(
-                        topic: data[index]["title"],
-                        name: data[index]["username"],
-                        imgAcc: data[index]["imgAuthor"],
-                        imgPath: data[index]["images"][0],
-                        isLiked: data[index]["isLiked"],
-                        block_id: data[index]["id"],
-                        author_id: data[index][" author_id"], tags: data[index]["tags"]
-                      );
-                    }),
-          ),
+                              //childAspectRatio: 3 / 2,
+                              crossAxisSpacing: 6,
+                              mainAxisSpacing: 6),
+                      itemCount: data.length,
+                      itemBuilder: (BuildContext context, index) {
+                        return ShowPost(
+                            topic: data[index]["title"],
+                            name: data[index]["name"],
+                            imgAcc: data[index]["imgAuthor"],
+                            imgPath: data[index]["images"][0],
+                            isLiked: data[index]["isLiked"],
+                            block_id: data[index]["id"],
+                            author_id: data[index][" author_id"],
+                            tags: data[index]["tags"],
+                            author_username: data[index]["username"],
+                            imgAuthor: data[index]["imgAuthor"]);
+                      }),
+                ),
         ),
       ),
     );

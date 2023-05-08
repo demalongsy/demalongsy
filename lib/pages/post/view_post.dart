@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:demalongsy/base_URL/url.dart';
@@ -6,25 +7,29 @@ import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/pages/another/another_profile.dart';
-import 'package:demalongsy/pages/auth/login.dart';
-import 'package:demalongsy/pages/navbar.dart';
-import 'package:demalongsy/pages/profile/profile.dart';
 import 'package:demalongsy/pages/comments/view_comment.dart';
 import 'package:demalongsy/widget/showposts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+import 'package:demalongsy/models/view_post.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewPost extends StatefulWidget {
   final List<dynamic> tags;
+  final String author_username;
   final String block_id;
-  const ViewPost({Key? key, required this.tags, required this.block_id})
+  final String imgAuthor;
+  final int = 0;
+  const ViewPost(
+      {Key? key,
+      required this.tags,
+      required this.block_id,
+      required this.author_username,
+      required this.imgAuthor})
       : super(key: key);
 
   @override
@@ -32,1022 +37,773 @@ class ViewPost extends StatefulWidget {
 }
 
 class _ViewPostState extends State<ViewPost> {
+  ViewPostDetail? _postDetail;
   List<Map<String, dynamic>> data = [];
   bool isLoading = true;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _getData();
-  }
-
-  List imageList = [
-    {
-      "id": 1,
-      "image_path":
-          'https://hips.hearstapps.com/hmg-prod/images/fashion-model-naomi-campbell-wears-a-furry-cocktail-dress-news-photo-1656444150.jpg'
-    },
-    {
-      "id": 2,
-      "image_path":
-          'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'
-    },
-    {
-      "id": 3,
-      "image_path":
-          'https://static01.nyt.com/images/2022/12/22/fashion/21FASHION-AND-SPORTS-6-a8ea/21FASHION-AND-SPORTS-6-a8ea-mobileMasterAt3x.jpg'
-    },
-    {
-      "id": 4,
-      "image_path":
-          'https://hips.hearstapps.com/hmg-prod/images/fashion-model-naomi-campbell-wears-a-furry-cocktail-dress-news-photo-1656444150.jpg'
-    },
-    {
-      "id": 5,
-      "image_path":
-          'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'
-    },
-    {
-      "id": 6,
-      "image_path":
-          'https://static01.nyt.com/images/2022/12/22/fashion/21FASHION-AND-SPORTS-6-a8ea/21FASHION-AND-SPORTS-6-a8ea-mobileMasterAt3x.jpg'
-    },
-    {
-      "id": 7,
-      "image_path":
-          'https://hips.hearstapps.com/hmg-prod/images/fashion-model-naomi-campbell-wears-a-furry-cocktail-dress-news-photo-1656444150.jpg'
-    },
-    {
-      "id": 8,
-      "image_path":
-          'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'
-    },
-    {
-      "id": 9,
-      "image_path":
-          'https://static01.nyt.com/images/2022/12/22/fashion/21FASHION-AND-SPORTS-6-a8ea/21FASHION-AND-SPORTS-6-a8ea-mobileMasterAt3x.jpg'
-    },
-    {
-      "id": 10,
-      "image_path":
-          'https://hips.hearstapps.com/hmg-prod/images/fashion-model-naomi-campbell-wears-a-furry-cocktail-dress-news-photo-1656444150.jpg'
-    },
-  ];
+  bool isLoadingPost = true;
+  int numLiked = 0;
   final CarouselController _carouselController = CarouselController();
   int currentIndex = 0;
   bool isDeleted = false;
   bool isFavorited = false;
+  String? usrname;
+  String? month;
+  String? date;
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+    _getPostDetail();
+    _getData();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: SafeArea(
         child: Scaffold(
-          backgroundColor: C.white,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60),
-            child: AppBar(
-              backgroundColor: C.white,
-              elevation: 0,
-              title: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: const Icon(
-                      Icons.arrow_back_ios_rounded,
-                      color: C.dark2,
-                      size: 16.0,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context, rootNavigator: false).push(
-                            createTransitionRoute(
-                                const AnotherProfile(), 1, 0));
-                      },
-                      child: Container(
-                        // color: C.dangerDefault,
-                        width: 40,
-                        height: 40,
-                        child: const CircleAvatar(
-                          radius: 50.0,
-                          backgroundImage: NetworkImage(
-                              'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                        ),
+            backgroundColor: C.white,
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(60),
+              child: AppBar(
+                backgroundColor: C.white,
+                elevation: 0,
+                title: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: const Icon(
+                        Icons.arrow_back_ios_rounded,
+                        color: C.dark2,
+                        size: 16.0,
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 8),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context, rootNavigator: false).push(
-                                createTransitionRoute(
-                                    const AnotherProfile(), 1, 0));
-                          },
-                          child: const Poppins(
-                            text: "K.Payongdech",
-                            size: 14,
-                            maxLines: 1,
-                            overflow: true,
-                            color: C.dark1,
-                            fontWeight: FW.bold,
-                            letterspacing: 0.64,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(25.0),
-                          ),
-                        ),
-                        context: context,
-                        useRootNavigator: true,
-                        builder: (BuildContext context) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const SizedBox(height: 24),
-                              SvgPicture.asset(
-                                "assets/images/line.svg",
-                                width: 8,
-                                height: 4,
-                                color: C.dark2,
-                              ),
-                              const SizedBox(height: 24),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 24),
-                                child: GestureDetector(
-                                  child: const Button(
-                                    text: 'Delete Post',
-                                    size: 16,
-                                    hasImg: true,
-                                    pathImg: "assets/images/trash-dark.svg",
-                                    color: C.dark1,
-                                    fontWeight: FW.regular,
-                                    customRadius: true,
-                                    radius: 8,
-                                    boxColor: C.boderAddPhotos,
-                                    boxHeight: 56,
-                                  ),
-                                  onTap: () async {
-                                    Navigator.pop(context);
-                                    Future.delayed(Duration(microseconds: 0));
-                                    await showCupertinoDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return CupertinoAlertDialog(
-                                          title: Column(
-                                            children: const [
-                                              Roboto(
-                                                text: "Are you sure to",
-                                                size: 20,
-                                                color: C.dark2,
-                                                fontWeight: FW.bold,
-                                                letterspacing: 0.64,
-                                              ),
-                                              SizedBox(height: 10),
-                                              Roboto(
-                                                text: "delete post?",
-                                                size: 20,
-                                                color: C.dark2,
-                                                fontWeight: FW.bold,
-                                                letterspacing: 0.64,
-                                              ),
-                                            ],
-                                          ),
-                                          actions: [
-                                            // The "No" button
-                                            CupertinoDialogAction(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Poppins(
-                                                  text: "No",
-                                                  size: 16,
-                                                  color: C.dangerDefault,
-                                                  fontWeight: FW.bold),
-                                            ),
-                                            // The "Yes" button
-                                            CupertinoDialogAction(
-                                              onPressed: () {
-                                                setState(() {
-                                                  isDeleted = true;
-                                                });
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Poppins(
-                                                  text: "Yes",
-                                                  size: 16,
-                                                  color: C.infoDefault,
-                                                  fontWeight: FW.bold),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                              const SizedBox(height: 32),
-                            ],
-                          );
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context, rootNavigator: false).push(
+                              createTransitionRoute(
+                                  AnotherProfile(
+                                      another_username: _postDetail!.username!),
+                                  1,
+                                  0));
                         },
-                      );
-                    },
-                    child: isDeleted == false
-                        ? const Icon(
-                            Icons.more_horiz,
-                            color: C.dark2,
-                            size: 24.0,
+                        child: Container(
+                          // color: C.dangerDefault,
+                          width: 40,
+                          height: 40,
+                          child: CircleAvatar(
+                            radius: 50.0,
+                            backgroundImage: NetworkImage(widget.imgAuthor),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context, rootNavigator: false)
+                                  .push(createTransitionRoute(
+                                      AnotherProfile(
+                                        another_username:
+                                            _postDetail!.username!,
+                                      ),
+                                      1,
+                                      0));
+                            },
+                            child: Poppins(
+                              text: isLoadingPost == true
+                                  ? "..."
+                                  : _postDetail!.name!,
+                              size: 14,
+                              maxLines: 1,
+                              overflow: true,
+                              color: C.dark1,
+                              fontWeight: FW.bold,
+                              letterspacing: 0.64,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    widget.author_username == usrname
+                        ? GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(25.0),
+                                  ),
+                                ),
+                                context: context,
+                                useRootNavigator: true,
+                                builder: (BuildContext context) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const SizedBox(height: 24),
+                                      SvgPicture.asset(
+                                        "assets/images/line.svg",
+                                        width: 8,
+                                        height: 4,
+                                        color: C.dark2,
+                                      ),
+                                      const SizedBox(height: 24),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 24),
+                                        child: GestureDetector(
+                                          child: const Button(
+                                            text: 'Delete Post',
+                                            size: 16,
+                                            hasImg: true,
+                                            pathImg:
+                                                "assets/images/trash-dark.svg",
+                                            color: C.dark1,
+                                            fontWeight: FW.regular,
+                                            customRadius: true,
+                                            radius: 8,
+                                            boxColor: C.boderAddPhotos,
+                                            boxHeight: 56,
+                                          ),
+                                          onTap: () async {
+                                            Navigator.pop(context);
+                                            Future.delayed(
+                                                Duration(microseconds: 0));
+                                            await showCupertinoDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return CupertinoAlertDialog(
+                                                  title: Column(
+                                                    children: const [
+                                                      Roboto(
+                                                        text: "Are you sure to",
+                                                        size: 20,
+                                                        color: C.dark2,
+                                                        fontWeight: FW.bold,
+                                                        letterspacing: 0.64,
+                                                      ),
+                                                      SizedBox(height: 10),
+                                                      Roboto(
+                                                        text: "delete post?",
+                                                        size: 20,
+                                                        color: C.dark2,
+                                                        fontWeight: FW.bold,
+                                                        letterspacing: 0.64,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  actions: [
+                                                    CupertinoDialogAction(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: const Poppins(
+                                                          text: "No",
+                                                          size: 16,
+                                                          color:
+                                                              C.dangerDefault,
+                                                          fontWeight: FW.bold),
+                                                    ),
+                                                    CupertinoDialogAction(
+                                                      onPressed: () async {
+                                                        // await _deletePost(
+                                                        //     _postDetail!
+                                                        //         .blockId!);
+                                                        setState(() {
+                                                          isDeleted = true;
+                                                        });
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: const Poppins(
+                                                          text: "Yes",
+                                                          size: 16,
+                                                          color: C.infoDefault,
+                                                          fontWeight: FW.bold),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(height: 32),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: isDeleted == false
+                                ? const Icon(
+                                    Icons.more_horiz,
+                                    color: C.dark2,
+                                    size: 24.0,
+                                  )
+                                : Container(),
                           )
-                        : Container(),
-                  ),
-                ],
+                        : Container()
+                  ],
+                ),
               ),
             ),
-          ),
-          body: isDeleted == false
-              ? RefreshIndicator(
-                  color: C.primaryDefault,
-                  backgroundColor: C.white,
-                  key: _refreshIndicatorKey,
-                  onRefresh: () async {
-                    return Future<void>.delayed(const Duration(seconds: 2));
-                  },
-                  child: SingleChildScrollView(
+            body: isDeleted == false
+                ? SingleChildScrollView(
                     child: Column(
                       children: [
-                        Stack(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                print(currentIndex);
-                              },
-                              child: Container(
-                                // height: 460,
-                                child: CarouselSlider(
-                                  items: imageList
-                                      .map(
-                                        (item) => Image.network(
-                                          item['image_path'],
-                                          fit: BoxFit.fill,
-                                          width: double.infinity,
-                                          // height: 500,
-                                        ),
-                                      )
-                                      .toList(),
-                                  carouselController: _carouselController,
-                                  options: CarouselOptions(
-                                    height: 460,
-                                    scrollPhysics:
-                                        const BouncingScrollPhysics(),
-                                    autoPlay: false,
-                                    aspectRatio: 2,
-                                    viewportFraction: 1,
-                                    onPageChanged: ((index, reason) {
-                                      setState(
-                                        () {
-                                          currentIndex = index;
-                                        },
-                                      );
-                                    }),
+                        isLoadingPost == true
+                            ? Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 30),
+                                  child: Image.asset(
+                                    "assets/images/loading.gif",
+                                    height: 45,
+                                    width: 45,
                                   ),
                                 ),
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 10,
-                              left: 0,
-                              right: 0,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: imageList.asMap().entries.map(
-                                  (entry) {
-                                    print(entry);
-                                    print(entry.key);
-                                    return GestureDetector(
-                                      onTap: () => _carouselController
-                                          .animateToPage(entry.key),
-                                      child: Container(
-                                        width:
-                                            currentIndex == entry.key ? 7 : 7,
-                                        height: 7.0,
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 3.0),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: currentIndex == entry.key
-                                                ? C.secondaryDefault
-                                                : C.disableBackground),
-                                      ),
-                                    );
-                                  },
-                                ).toList(),
-                              ),
-                            ),
-                            Positioned(
-                              top: 16,
-                              right: 16,
-                              child: Container(
-                                width: 44,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(14),
-                                  color: C.dark3,
-                                ),
-                                child: Center(
-                                  child: Poppins(
-                                      text:
-                                          '${currentIndex + 1}/${imageList.length}',
-                                      size: 14,
-                                      color: C.white,
-                                      fontWeight: FW.regular),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 6, horizontal: 12),
-                              // height: 36,
-                              child: Row(
+                              )
+                            : Column(
                                 children: [
-                                  isFavorited
-                                      ? GestureDetector(
+                                  Stack(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          print(currentIndex);
+                                        },
+                                        child: Container(
+                                          // height: 460,
+                                          child: CarouselSlider(
+                                            items: _postDetail!.images!
+                                                .map(
+                                                  (item) => Image.network(
+                                                    item,
+                                                    fit: BoxFit.fill,
+                                                    width: double.infinity,
+                                                    // height: 500,
+                                                  ),
+                                                )
+                                                .toList(),
+                                            carouselController:
+                                                _carouselController,
+                                            options: CarouselOptions(
+                                              height: 460,
+                                              scrollPhysics:
+                                                  const BouncingScrollPhysics(),
+                                              autoPlay: false,
+                                              aspectRatio: 2,
+                                              viewportFraction: 1,
+                                              onPageChanged: ((index, reason) {
+                                                setState(
+                                                  () {
+                                                    currentIndex = index;
+                                                  },
+                                                );
+                                              }),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 10,
+                                        left: 0,
+                                        right: 0,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: _postDetail!.images!
+                                              .asMap()
+                                              .entries
+                                              .map(
+                                            (entry) {
+                                              return GestureDetector(
+                                                onTap: () => _carouselController
+                                                    .animateToPage(entry.key),
+                                                child: Container(
+                                                  width:
+                                                      currentIndex == entry.key
+                                                          ? 7
+                                                          : 7,
+                                                  height: 7.0,
+                                                  margin: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 3.0),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      color: currentIndex ==
+                                                              entry.key
+                                                          ? C.secondaryDefault
+                                                          : C.disableBackground),
+                                                ),
+                                              );
+                                            },
+                                          ).toList(),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 16,
+                                        right: 16,
+                                        child: Container(
+                                          width: 44,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(14),
+                                            color: C.dark3,
+                                          ),
+                                          child: Center(
+                                            child: Poppins(
+                                                text:
+                                                    '${currentIndex + 1}/${_postDetail?.images?.length}',
+                                                size: 14,
+                                                color: C.white,
+                                                fontWeight: FW.regular),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 6, horizontal: 12),
+                                        // height: 36,
+                                        child: Row(
+                                          children: [
+                                            isFavorited
+                                                ? GestureDetector(
+                                                    onTap: () async {
+                                                      await _unlikesPost();
+                                                      setState(
+                                                        () {
+                                                          numLiked -= 1;
+                                                          isFavorited = false;
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      height: 32,
+                                                      width: 32,
+                                                      decoration: BoxDecoration(
+                                                        color: C.white,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(50),
+                                                      ),
+                                                      child: const Icon(
+                                                        Icons.favorite,
+                                                        color: C.dark1,
+                                                        size: 24,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : GestureDetector(
+                                                    onTap: () async {
+                                                      await _likesPost();
+                                                      setState(() {
+                                                        isFavorited = true;
+                                                        numLiked += 1;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      height: 32,
+                                                      width: 32,
+                                                      decoration: BoxDecoration(
+                                                        color: C.white,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(50),
+                                                      ),
+                                                      child: const Icon(
+                                                        Icons
+                                                            .favorite_outline_rounded,
+                                                        color: C.dark1,
+                                                        size: 24,
+                                                      ),
+                                                    ),
+                                                  ),
+                                            Poppins(
+                                              text: numLiked.toString(),
+                                              size: 14,
+                                              maxLines: 1,
+                                              overflow: true,
+                                              color: C.dark1,
+                                              fontWeight: FW.bold,
+                                              letterspacing: 0.64,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .push(
+                                                  createTransitionRoute(
+                                                      ViewComment(), 1, 0),
+                                                );
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    left: 12),
+                                                decoration: BoxDecoration(
+                                                  color: C.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                ),
+                                                child: SvgPicture.asset(
+                                                  'assets/images/message_filled.svg',
+                                                  width: 24,
+                                                  height: 24,
+                                                ),
+                                              ),
+                                            ),
+                                            Poppins(
+                                              text: _postDetail!.numComment!
+                                                  .toString(),
+                                              size: 14,
+                                              maxLines: 1,
+                                              overflow: true,
+                                              color: C.dark1,
+                                              fontWeight: FW.bold,
+                                              letterspacing: 0.64,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(child: Container()),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 16.0),
+                                        child: GestureDetector(
                                           onTap: () {
-                                            setState(
-                                              () {
-                                                isFavorited = false;
+                                            showModalBottomSheet(
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                // <-- SEE HERE
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                  top: Radius.circular(25.0),
+                                                ),
+                                              ),
+                                              context: context,
+                                              useRootNavigator: true,
+                                              builder: (BuildContext context) {
+                                                return Column(
+                                                  children: [
+                                                    const SizedBox(height: 24),
+                                                    SvgPicture.asset(
+                                                      "assets/images/line.svg",
+                                                      width: 80,
+                                                      height: 4,
+                                                      color: C.dark2,
+                                                    ),
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          bottom: 8),
+                                                      child: Poppins(
+                                                          text:
+                                                              "Pick to Suggest Items",
+                                                          size: 18,
+                                                          color: C.dark1,
+                                                          fontWeight: FW.bold),
+                                                    ),
+                                                    const Divider(
+                                                        color:
+                                                            C.boderAddPhotos),
+                                                    Expanded(
+                                                        child: ListView.builder(
+                                                            shrinkWrap: true,
+                                                            itemCount:
+                                                                _postDetail!
+                                                                    .images!
+                                                                    .length,
+                                                            itemBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    int index) {
+                                                              return ListTile(
+                                                                title: Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left: 15,
+                                                                      right:
+                                                                          15),
+                                                                  child:
+                                                                      Container(
+                                                                    margin: const EdgeInsets
+                                                                            .symmetric(
+                                                                        vertical:
+                                                                            10.0),
+                                                                    child: Row(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: <
+                                                                          Widget>[
+                                                                        Container(
+                                                                          margin:
+                                                                              const EdgeInsets.only(right: 16.0),
+                                                                          child:
+                                                                              CircleAvatar(
+                                                                            backgroundImage:
+                                                                                NetworkImage(_postDetail!.images![index]),
+                                                                          ),
+                                                                        ),
+                                                                        Expanded(
+                                                                          child:
+                                                                              Column(
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Row(
+                                                                                children: [
+                                                                                  Poppins(overflow: false, text: 'Photo ${index + 1}', size: 16, color: C.dark2, fontWeight: FW.bold),
+                                                                                  const SizedBox(
+                                                                                    width: 4,
+                                                                                  ),
+                                                                                  Expanded(child: Container()),
+                                                                                  GestureDetector(
+                                                                                    onTap: () {},
+                                                                                    child: Container(
+                                                                                      decoration: BoxDecoration(
+                                                                                        borderRadius: BorderRadius.circular(20),
+                                                                                        color: C.secondaryDefault,
+                                                                                      ),
+                                                                                      width: 70,
+                                                                                      height: 24,
+                                                                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                                                                                      child: const Center(
+                                                                                        child: Poppins(overflow: false, text: 'Pick', size: 14, color: C.dark2, fontWeight: FW.bold),
+                                                                                      ),
+                                                                                    ),
+                                                                                  )
+                                                                                ],
+                                                                              ),
+                                                                              Container(
+                                                                                margin: const EdgeInsets.only(top: 5.0),
+                                                                                child: const Poppins(overflow: false, text: 'Pick to suggest item', size: 12, color: C.dark1, fontWeight: FW.regular),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }))
+                                                  ],
+                                                );
                                               },
                                             );
                                           },
                                           child: Container(
-                                            height: 32,
-                                            width: 32,
+                                            padding:
+                                                const EdgeInsets.only(left: 12),
                                             decoration: BoxDecoration(
                                               color: C.white,
                                               borderRadius:
                                                   BorderRadius.circular(50),
                                             ),
-                                            child: const Icon(
-                                              Icons.favorite,
-                                              color: C.dark1,
-                                              size: 24,
-                                            ),
-                                          ),
-                                        )
-                                      : GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              isFavorited = true;
-                                            });
-                                          },
-                                          child: Container(
-                                            height: 32,
-                                            width: 32,
-                                            decoration: BoxDecoration(
-                                              color: C.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                            ),
-                                            child: const Icon(
-                                              Icons.favorite_outline_rounded,
-                                              color: C.dark1,
-                                              size: 24,
+                                            child: SvgPicture.asset(
+                                              'assets/images/laundry.svg',
+                                              width: 24,
+                                              height: 24,
                                             ),
                                           ),
                                         ),
-                                  const Poppins(
-                                    text: "1",
-                                    size: 14,
-                                    maxLines: 1,
-                                    overflow: true,
-                                    color: C.dark1,
-                                    fontWeight: FW.bold,
-                                    letterspacing: 0.64,
+                                      )
+                                    ],
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context, rootNavigator: true)
-                                          .push(
-                                        createTransitionRoute(
-                                            ViewComment(), 1, 0),
-                                      );
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.only(left: 12),
-                                      decoration: BoxDecoration(
-                                        color: C.white,
-                                        borderRadius: BorderRadius.circular(50),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16),
+                                        child: Poppins(
+                                            overflow: false,
+                                            text: _postDetail!.title!,
+                                            size: 18,
+                                            color: C.dark2,
+                                            fontWeight: FW.bold),
                                       ),
-                                      child: SvgPicture.asset(
-                                        'assets/images/message_filled.svg',
-                                        width: 24,
-                                        height: 24,
+                                      const SizedBox(
+                                        width: 4,
                                       ),
-                                    ),
-                                  ),
-                                  const Poppins(
-                                    text: "1",
-                                    size: 14,
-                                    maxLines: 1,
-                                    overflow: true,
-                                    color: C.dark1,
-                                    fontWeight: FW.bold,
-                                    letterspacing: 0.64,
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16),
+                                        margin: const EdgeInsets.only(top: 5.0),
+                                        child: Poppins(
+                                          overflow: false,
+                                          text: _postDetail!.desc!,
+                                          size: 14,
+                                          color: C.dark1,
+                                          fontWeight: FW.regular,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16),
+                                        child: Wrap(
+                                            children: _postDetail!.tags!
+                                                .map(
+                                                  (val) => Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 4,
+                                                            right: 4),
+                                                    child: Container(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 2,
+                                                          horizontal: 8),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        color:
+                                                            C.secondaryDefault,
+                                                      ),
+                                                      height: 24,
+                                                      child: Poppins(
+                                                        overflow: false,
+                                                        text: '#${val}',
+                                                        size: 14,
+                                                        color: C.dark3,
+                                                        fontWeight: FW.regular,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                                .toList()),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 16),
+                                        child: Poppins(
+                                          overflow: false,
+                                          text: '${month} ${date}',
+                                          size: 12,
+                                          color: C.dark3,
+                                          fontWeight: FW.bold,
+                                        ),
+                                      ),
+                                      const Divider(
+                                        color: C.boderAddPhotos,
+                                        thickness: 1,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .push(
+                                            createTransitionRoute(
+                                                ViewComment(), 1, 0),
+                                          );
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.centerRight,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          child: Poppins(
+                                            overflow: false,
+                                            text: _postDetail!.numComment! > 0
+                                                ? 'View all ${_postDetail!.numComment} comments'
+                                                : "No comment",
+                                            size: 14,
+                                            color: C.dark3,
+                                            fontWeight: FW.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          Container(
+                                            padding: EdgeInsets.only(
+                                                left: 16, right: 10),
+                                            alignment: Alignment.centerLeft,
+                                            child: const Poppins(
+                                              text: 'K.Payongdech',
+                                              size: 12,
+                                              color: C.dark3,
+                                              fontWeight: FW.bold,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              padding:
+                                                  EdgeInsets.only(right: 12),
+                                              alignment: Alignment.centerRight,
+                                              child: const Poppins(
+                                                text:
+                                                    'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
+                                                size: 16,
+                                                color: C.dark3,
+                                                fontWeight: FW.regular,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 4,
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          Container(
+                                            padding: EdgeInsets.only(
+                                                left: 16, right: 10),
+                                            alignment: Alignment.centerLeft,
+                                            child: const Poppins(
+                                              text: 'K.Payongdech',
+                                              size: 12,
+                                              color: C.dark3,
+                                              fontWeight: FW.bold,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              padding:
+                                                  EdgeInsets.only(right: 12),
+                                              alignment: Alignment.centerRight,
+                                              child: const Poppins(
+                                                text:
+                                                    'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
+                                                size: 16,
+                                                color: C.dark3,
+                                                fontWeight: FW.regular,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 26,
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ),
-                            Expanded(child: Container()),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 16.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                    shape: const RoundedRectangleBorder(
-                                      // <-- SEE HERE
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(25.0),
-                                      ),
-                                    ),
-                                    context: context,
-                                    useRootNavigator: true,
-                                    builder: (BuildContext context) {
-                                      return Column(
-                                        children: [
-                                          const SizedBox(height: 24),
-                                          SvgPicture.asset(
-                                            "assets/images/line.svg",
-                                            width: 8,
-                                            height: 4,
-                                            color: C.dark2,
-                                          ),
-                                          const Padding(
-                                            padding: EdgeInsets.only(bottom: 8),
-                                            child: Poppins(
-                                                text: "Pick to Suggest Items",
-                                                size: 18,
-                                                color: C.dark1,
-                                                fontWeight: FW.bold),
-                                          ),
-                                          const Divider(
-                                              color: C.boderAddPhotos),
-                                          Expanded(
-                                            child: ListView(
-                                              shrinkWrap: true,
-                                              children: [
-                                                ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 10.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  children: [
-                                                                    const Poppins(
-                                                                        overflow:
-                                                                            false,
-                                                                        text:
-                                                                            'Photo 1',
-                                                                        size:
-                                                                            16,
-                                                                        color: C
-                                                                            .dark2,
-                                                                        fontWeight:
-                                                                            FW.bold),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        color: C
-                                                                            .secondaryDefault,
-                                                                      ),
-                                                                      width: 70,
-                                                                      height:
-                                                                          24,
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              16,
-                                                                          vertical:
-                                                                              2),
-                                                                      child:
-                                                                          const Center(
-                                                                        child: Poppins(
-                                                                            overflow:
-                                                                                false,
-                                                                            text:
-                                                                                'Pick',
-                                                                            size:
-                                                                                14,
-                                                                            color:
-                                                                                C.dark2,
-                                                                            fontWeight: FW.bold),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5.0),
-                                                                  child: const Poppins(
-                                                                      overflow:
-                                                                          false,
-                                                                      text:
-                                                                          'Pick to suggest item',
-                                                                      size: 12,
-                                                                      color: C
-                                                                          .dark1,
-                                                                      fontWeight:
-                                                                          FW.regular),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 10.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  children: [
-                                                                    const Poppins(
-                                                                        overflow:
-                                                                            false,
-                                                                        text:
-                                                                            'Photo 1',
-                                                                        size:
-                                                                            16,
-                                                                        color: C
-                                                                            .dark2,
-                                                                        fontWeight:
-                                                                            FW.bold),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        color: C
-                                                                            .secondaryDefault,
-                                                                      ),
-                                                                      width: 70,
-                                                                      height:
-                                                                          24,
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              16,
-                                                                          vertical:
-                                                                              2),
-                                                                      child:
-                                                                          const Center(
-                                                                        child: Poppins(
-                                                                            overflow:
-                                                                                false,
-                                                                            text:
-                                                                                'Pick',
-                                                                            size:
-                                                                                16,
-                                                                            color:
-                                                                                C.dark2,
-                                                                            fontWeight: FW.bold),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5.0),
-                                                                  child: const Poppins(
-                                                                      overflow:
-                                                                          false,
-                                                                      text:
-                                                                          'Pick to suggest item',
-                                                                      size: 12,
-                                                                      color: C
-                                                                          .dark1,
-                                                                      fontWeight:
-                                                                          FW.regular),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 10.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  children: [
-                                                                    const Poppins(
-                                                                        overflow:
-                                                                            false,
-                                                                        text:
-                                                                            'Photo 1',
-                                                                        size:
-                                                                            16,
-                                                                        color: C
-                                                                            .dark2,
-                                                                        fontWeight:
-                                                                            FW.bold),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        color: C
-                                                                            .secondaryDefault,
-                                                                      ),
-                                                                      width: 70,
-                                                                      height:
-                                                                          24,
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              16,
-                                                                          vertical:
-                                                                              2),
-                                                                      child:
-                                                                          const Center(
-                                                                        child: Poppins(
-                                                                            overflow:
-                                                                                false,
-                                                                            text:
-                                                                                'Pick',
-                                                                            size:
-                                                                                16,
-                                                                            color:
-                                                                                C.dark2,
-                                                                            fontWeight: FW.bold),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5.0),
-                                                                  child: const Poppins(
-                                                                      overflow:
-                                                                          false,
-                                                                      text:
-                                                                          'Pick to suggest item',
-                                                                      size: 12,
-                                                                      color: C
-                                                                          .dark1,
-                                                                      fontWeight:
-                                                                          FW.regular),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.only(left: 12),
-                                  decoration: BoxDecoration(
-                                    color: C.white,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: SvgPicture.asset(
-                                    'assets/images/laundry.svg',
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  child: const Poppins(
-                                      overflow: false,
-                                      text: 'มาแต่งตัวจากไอเดียคู่สีกันเถอะ',
-                                      size: 18,
-                                      color: C.dark2,
-                                      fontWeight: FW.bold),
-                                ),
-                                const SizedBox(
-                                  width: 4,
-                                ),
-                              ],
-                            ),
-                            Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              margin: const EdgeInsets.only(top: 5.0),
-                              child: const Poppins(
-                                overflow: false,
-                                text:
-                                    'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
-                                size: 14,
-                                color: C.dark1,
-                                fontWeight: FW.regular,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: Wrap(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 4),
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 2, horizontal: 8),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: C.secondaryDefault,
-                                      ),
-                                      height: 24,
-                                      child: const Poppins(
-                                        overflow: false,
-                                        text: '#MinimalStyle',
-                                        size: 14,
-                                        color: C.dark3,
-                                        fontWeight: FW.regular,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 4),
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 2, horizontal: 8),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: C.secondaryDefault,
-                                      ),
-                                      height: 24,
-                                      child: const Poppins(
-                                        overflow: false,
-                                        text: '#Korea',
-                                        size: 14,
-                                        color: C.dark3,
-                                        fontWeight: FW.regular,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 16),
-                              child: Poppins(
-                                overflow: false,
-                                text: 'Oct 02',
-                                size: 12,
-                                color: C.dark3,
-                                fontWeight: FW.bold,
-                              ),
-                            ),
-                            const Divider(color: C.boderAddPhotos),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context, rootNavigator: true).push(
-                                  createTransitionRoute(ViewComment(), 1, 0),
-                                );
-                              },
-                              child: Container(
-                                alignment: Alignment.centerRight,
-                                padding: EdgeInsets.symmetric(horizontal: 16),
-                                child: const Poppins(
-                                  overflow: false,
-                                  text: 'View all 3 comments',
-                                  size: 14,
-                                  color: C.dark3,
-                                  fontWeight: FW.bold,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.only(left: 16, right: 10),
-                                  alignment: Alignment.centerLeft,
-                                  child: const Poppins(
-                                    text: 'K.Payongdech',
-                                    size: 12,
-                                    color: C.dark3,
-                                    fontWeight: FW.bold,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    padding: EdgeInsets.only(right: 12),
-                                    alignment: Alignment.centerRight,
-                                    child: const Poppins(
-                                      text:
-                                          'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
-                                      size: 16,
-                                      color: C.dark3,
-                                      fontWeight: FW.regular,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.only(left: 16, right: 10),
-                                  alignment: Alignment.centerLeft,
-                                  child: const Poppins(
-                                    text: 'K.Payongdech',
-                                    size: 12,
-                                    color: C.dark3,
-                                    fontWeight: FW.bold,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    padding: EdgeInsets.only(right: 12),
-                                    alignment: Alignment.centerRight,
-                                    child: const Poppins(
-                                      text:
-                                          'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
-                                      size: 16,
-                                      color: C.dark3,
-                                      fontWeight: FW.regular,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 36,
-                            ),
+                          children: [
                             Container(
                               padding: EdgeInsets.only(left: 16),
                               child: const Poppins(
@@ -1058,7 +814,10 @@ class _ViewPostState extends State<ViewPost> {
                                 fontWeight: FW.bold,
                               ),
                             ),
-                            const Divider(color: C.boderAddPhotos),
+                            const Divider(
+                              color: C.boderAddPhotos,
+                              thickness: 1,
+                            ),
                             const SizedBox(
                               height: 20,
                             ),
@@ -1066,8 +825,15 @@ class _ViewPostState extends State<ViewPost> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 13),
                               child: isLoading == true
-                                  ? const Center(
-                                      child: CircularProgressIndicator(),
+                                  ? Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 30),
+                                        child: Image.asset(
+                                          "assets/images/loading.gif",
+                                          height: 45,
+                                          width: 45,
+                                        ),
+                                      ),
                                     )
                                   : GridView.builder(
                                       shrinkWrap: true,
@@ -1084,44 +850,54 @@ class _ViewPostState extends State<ViewPost> {
                                           (BuildContext context, index) {
                                         return ShowPost(
                                             topic: data[index]["title"],
-                                            name: data[index]["username"],
+                                            name: data[index]["name"],
                                             imgAcc: data[index]["imgAuthor"],
                                             imgPath: data[index]["images"][0],
                                             isLiked: data[index]["isLiked"],
                                             block_id: data[index]["id"],
                                             author_id: data[index]
                                                 [" author_id"],
-                                            tags: data[index]["tags"]);
+                                            tags: data[index]["tags"],
+                                            author_username: data[index]
+                                                ["username"],
+                                            imgAuthor: data[index]
+                                                ["imgAuthor"]);
                                       },
                                     ),
                             ),
+                            SizedBox(
+                              height: 5,
+                            )
                           ],
                         ),
                       ],
                     ),
-                  ),
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(),
-                    Column(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/images/trash.svg",
-                        ),
-                        const SizedBox(height: 4),
-                        const Poppins(
-                            text: 'Post is deleted',
-                            size: 14,
-                            color: C.disableTextfield,
-                            fontWeight: FW.regular),
-                      ],
-                    ),
-                    Container(),
-                  ],
-                ),
-        ),
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            "assets/images/trash.svg",
+                          ),
+                          const SizedBox(height: 4),
+                          const Poppins(
+                              text: 'Post is deleted',
+                              size: 14,
+                              color: C.disableTextfield,
+                              fontWeight: FW.regular),
+                        ],
+                      ),
+                      Container(),
+                    ],
+                  )
+
+            //      isDeleted == false
+            //         ?
+
+            ),
       ),
     );
   }
@@ -1151,6 +927,143 @@ class _ViewPostState extends State<ViewPost> {
     } catch (e) {
       print(e);
       isLoading = false;
+    }
+  }
+
+  Future<void> _getPostDetail() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      final String? user_id = prefs.getString('user_id');
+      final String? username = prefs.getString('username');
+      final String? token = prefs.getString('token');
+
+      var url =
+          '${Url.baseurl}/blocks/view/${widget.block_id}?user_id=${user_id}';
+
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      };
+
+      var response = await http.get(Uri.parse(url), headers: header);
+      _postDetail = viewPostDetailFromJson(response.body);
+
+      setState(() {
+        usrname = username;
+        isLoadingPost = false;
+        numLiked = _postDetail!.liked!.length;
+        isFavorited = _postDetail!.isLiked!;
+        var splitDate = _postDetail!.date!.split("/");
+        print(splitDate);
+        date = int.parse(splitDate[1]) < 10
+            ? '0${int.parse(splitDate[1])}'
+            : '${splitDate[1]}';
+        month = int.parse(splitDate[0]) == 1
+            ? 'Jan'
+            : int.parse(splitDate[0]) == 2
+                ? 'Feb'
+                : int.parse(splitDate[0]) == 3
+                    ? 'Mar'
+                    : int.parse(splitDate[0]) == 4
+                        ? 'Apr'
+                        : int.parse(splitDate[0]) == 5
+                            ? 'May'
+                            : int.parse(splitDate[0]) == 6
+                                ? 'Jun'
+                                : int.parse(splitDate[0]) == 7
+                                    ? 'Jul'
+                                    : int.parse(splitDate[0]) == 8
+                                        ? 'Aug'
+                                        : int.parse(splitDate[0]) == 9
+                                            ? 'Sep'
+                                            : int.parse(splitDate[0]) == 10
+                                                ? 'Oct'
+                                                : int.parse(splitDate[0]) == 11
+                                                    ? 'Nov'
+                                                    : 'Dec';
+      });
+    } catch (e) {
+      print(e);
+      isLoadingPost = false;
+    }
+  }
+
+  _deletePost(String block_id) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+      var url = '${Url.baseurl}/blocks/${block_id}';
+
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      };
+
+      var response = await http.delete(
+        Uri.parse(url),
+        headers: header,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var _data = convert.jsonDecode(response.body);
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _likesPost() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? user_id = prefs.getString('user_id');
+      final String? token = prefs.getString('token');
+      var url =
+          '${Url.baseurl}/profile/liked/?block_id=${widget.block_id}&user_id=${user_id}';
+      print(url);
+
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      };
+
+      var response = await http.patch(Uri.parse(url), headers: header);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("success");
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _unlikesPost() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? user_id = prefs.getString('user_id');
+      final String? token = prefs.getString('token');
+      var url =
+          '${Url.baseurl}/profile/unliked/?block_id=${widget.block_id}&user_id=${user_id}';
+      print(url);
+
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      };
+
+      var response = await http.patch(Uri.parse(url), headers: header);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("success");
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
     }
   }
 }

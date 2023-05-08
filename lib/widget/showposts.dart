@@ -18,6 +18,8 @@ class ShowPost extends StatefulWidget {
   final bool isLiked;
   final String block_id;
   final String author_id;
+  final String author_username;
+  final String imgAuthor;
   final List<dynamic> tags;
   const ShowPost(
       {Key? key,
@@ -28,6 +30,8 @@ class ShowPost extends StatefulWidget {
       required this.isLiked,
       required this.block_id,
       required this.author_id,
+      required this.author_username,
+      required this.imgAuthor,
       required this.tags})
       : super(key: key);
 
@@ -53,12 +57,13 @@ class _ShowPostState extends State<ShowPost> {
             ViewPost(
               tags: widget.tags,
               block_id: widget.block_id,
+              author_username: widget.author_username,
+              imgAuthor: widget.imgAuthor,
             ),
             1,
             0));
       }),
       child: Container(
-        //width: 168,
         height: 289,
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(

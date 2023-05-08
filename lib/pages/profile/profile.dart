@@ -19,6 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:demalongsy/models/profile_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   final bool? isRootPage;
@@ -32,27 +33,23 @@ class Profile extends StatefulWidget {
 
 class _Profile extends State<Profile> {
   ProfileApi? _data;
+
   bool isPoptoRoot = false;
 
   bool isLoading = true;
 
-  Future<void> _getData() async {
+  Future<ProfileApi?> _getData() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? username = prefs.getString('username');
-      final String? token = prefs.getString('token');
 
       var url = '${Url.baseurl}/profile/${username}';
-      Map<String, String> header = {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${token}'
-      };
+      ;
 
       var response = await http.get(Uri.parse(url));
-      setState(() {
-        _data = profileApiFromJson(response.body);
-        print(_data);
-      });
+
+      _data = profileApiFromJson(response.body);
+      return _data;
     } catch (e) {
       print(e);
       isLoading = false;
@@ -117,7 +114,6 @@ class _Profile extends State<Profile> {
                         onTap: () {
                           showModalBottomSheet<void>(
                             shape: const RoundedRectangleBorder(
-                              // <-- SEE HERE
                               borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(25.0),
                               ),
@@ -230,13 +226,23 @@ class _Profile extends State<Profile> {
                                           color: C.dark2,
                                           fontWeight: FW.light),
                                       onTap: () async {
+                                        SharedPreferences prefs =
+                                            await SharedPreferences
+                                                .getInstance();
+
+                                        final String? user_id =
+                                            prefs.getString('user_id');
                                         Navigator.pop(context);
                                         Future.delayed(
                                             Duration(microseconds: 0));
                                         await Navigator.of(context,
                                                 rootNavigator: true)
                                             .push(createTransitionRoute(
-                                                FeedBack(), 1, 0));
+                                                FeedBack(
+                                                    name: _data?.name,
+                                                    username: _data?.username),
+                                                1,
+                                                0));
                                       },
                                     ),
                                   ),
@@ -341,62 +347,81 @@ class _Profile extends State<Profile> {
             ),
           ),
         ),
-        body: DefaultTabController(
-          length: 2,
-          child: ExtendedNestedScrollView(
-            onlyOneScrollInBody: true,
-            headerSliverBuilder: (context, _) {
-              return [
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      profileHeaderWidget(
-                        context,
-                        (_data?.name).toString(),
-                        (_data?.username).toString(),
-                        (_data?.numWasLiked).toString(),
-                        (_data?.numPostes).toString(),
-                        (_data?.bio ?? "Welcome to De'malongsy!").toString(),
-                        (_data?.img ??
-                                "https://img.freepik.com/free-icon/user_318-159711.jpg")
-                            .toString(),
-                      ),
-                    ],
-                  ),
-                ),
-                const SliverAppBar(
-                  elevation: 0,
-                  backgroundColor: C.white,
-                  pinned: true,
-                  primary: false,
-                  toolbarHeight: 0,
-                  bottom: TabBar(
-                    indicator: UnderlineTabIndicator(
-                      borderSide: BorderSide(width: 2.0),
-                      insets: EdgeInsets.symmetric(horizontal: 80.0),
-                    ),
-                    tabs: [
-                      Tab(
-                        icon: Icon(
-                          Icons.window,
-                          color: C.dark1,
+        body: FutureBuilder(
+          future: _getData(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              var result = snapshot.data;
+              return DefaultTabController(
+                length: 2,
+                child: ExtendedNestedScrollView(
+                  onlyOneScrollInBody: true,
+                  headerSliverBuilder: (context, _) {
+                    return [
+                      SliverList(
+                        delegate: SliverChildListDelegate(
+                          [
+                            profileHeaderWidget(
+                              context,
+                              (result.name).toString(),
+                              (result.username).toString(),
+                              (result.numWasLiked).toString(),
+                              (result.numPostes).toString(),
+                              (result.bio ?? "Welcome to De'malongsy!")
+                                  .toString(),
+                              (result.img ??
+                                      "https://img.freepik.com/free-icon/user_318-159711.jpg")
+                                  .toString(),
+                            ),
+                          ],
                         ),
                       ),
-                      Tab(
-                        icon: Icon(
-                          Icons.favorite_border_rounded,
-                          color: Colors.black,
+                      const SliverAppBar(
+                        elevation: 0,
+                        backgroundColor: C.white,
+                        pinned: true,
+                        primary: false,
+                        toolbarHeight: 0,
+                        bottom: TabBar(
+                          indicator: UnderlineTabIndicator(
+                            borderSide: BorderSide(width: 2.0),
+                            insets: EdgeInsets.symmetric(horizontal: 80.0),
+                          ),
+                          tabs: [
+                            Tab(
+                              icon: Icon(
+                                Icons.window,
+                                color: C.dark1,
+                              ),
+                            ),
+                            Tab(
+                              icon: Icon(
+                                Icons.favorite_border_rounded,
+                                color: Colors.black,
+                              ),
+                            )
+                          ],
                         ),
                       )
-                    ],
+                    ];
+                  },
+                  body: const TabBarView(
+                    children: [PostScreen(), FavoritePosts()],
                   ),
-                )
-              ];
-            },
-            body: const TabBarView(
-              children: [PostScreen(), FavoritePosts()],
-            ),
-          ),
+                ),
+              );
+            }
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 30),
+                child: Image.asset(
+                  "assets/images/loading.gif",
+                  height: 45,
+                  width: 45,
+                ),
+              ),
+            );
+          },
         ),
       )),
     );
