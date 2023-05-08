@@ -300,7 +300,16 @@ class _Profile extends State<Profile> {
                                                 ),
                                                 // The "Yes" button
                                                 CupertinoDialogAction(
-                                                  onPressed: () {
+                                                  onPressed: () async {
+                                                    SharedPreferences prefs =
+                                                        await SharedPreferences
+                                                            .getInstance();
+                                                    await prefs.remove('token');
+                                                    await prefs
+                                                        .remove('user_id');
+                                                    await prefs
+                                                        .remove('username');
+
                                                     Navigator.pushAndRemoveUntil(
                                                         context,
                                                         MaterialPageRoute(
@@ -347,7 +356,7 @@ class _Profile extends State<Profile> {
                         (_data?.username).toString(),
                         (_data?.numWasLiked).toString(),
                         (_data?.numPostes).toString(),
-                        (_data?.bio ?? "Welcome to Demalondsy!").toString(),
+                        (_data?.bio ?? "Welcome to De'malongsy!").toString(),
                         (_data?.img ??
                                 "https://img.freepik.com/free-icon/user_318-159711.jpg")
                             .toString(),
