@@ -1062,39 +1062,39 @@ class _ViewPostState extends State<ViewPost> {
                             const SizedBox(
                               height: 20,
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 13),
-                              child: isLoading == true
-                                  ? const Center(
-                                      child: CircularProgressIndicator(),
-                                    )
-                                  : GridView.builder(
-                                      shrinkWrap: true,
-                                      primary: false,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      gridDelegate:
-                                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                                              maxCrossAxisExtent: 200,
-                                              mainAxisExtent: 298,
-                                              crossAxisSpacing: 6,
-                                              mainAxisSpacing: 6),
-                                      itemCount: data.length,
-                                      itemBuilder:
-                                          (BuildContext context, index) {
-                                        return ShowPost(
-                                            topic: data[index]["title"],
-                                            name: data[index]["username"],
-                                            imgAcc: data[index]["imgAuthor"],
-                                            imgPath: data[index]["images"][0],
-                                            isLiked: data[index]["isLiked"],
-                                            block_id: data[index]["id"],
-                                            author_id: data[index]
-                                                [" author_id"],
-                                            tags: data[index]["tags"]);
-                                      },
-                                    ),
-                            ),
+                            // Padding(
+                            //   padding:
+                            //       const EdgeInsets.symmetric(horizontal: 13),
+                            //   child: isLoading == true
+                            //       ? const Center(
+                            //           child: CircularProgressIndicator(),
+                            //         )
+                            //       : GridView.builder(
+                            //           shrinkWrap: true,
+                            //           primary: false,
+                            //           physics: NeverScrollableScrollPhysics(),
+                            //           gridDelegate:
+                            //               const SliverGridDelegateWithMaxCrossAxisExtent(
+                            //                   maxCrossAxisExtent: 200,
+                            //                   mainAxisExtent: 298,
+                            //                   crossAxisSpacing: 6,
+                            //                   mainAxisSpacing: 6),
+                            //           itemCount: data.length,
+                            //           itemBuilder:
+                            //               (BuildContext context, index) {
+                            //             return ShowPost(
+                            //                 topic: data[index]["title"],
+                            //                 name: data[index]["username"],
+                            //                 imgAcc: data[index]["imgAuthor"],
+                            //                 imgPath: data[index]["images"][0],
+                            //                 isLiked: data[index]["isLiked"],
+                            //                 block_id: data[index]["id"],
+                            //                 author_id: data[index]
+                            //                     [" author_id"],
+                            //                 tags: data[index]["tags"]);
+                            //           },
+                            //         ),
+                            // ),
                           ],
                         ),
                       ],
