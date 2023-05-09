@@ -45,120 +45,6 @@ class _CommentState extends State<ViewComment> {
     return output.isNotEmpty ? true : false;
   }
 
-  Widget commentChild(data) {
-    return ListView(
-      children: [
-        ListTile(
-          leading: GestureDetector(
-            onTap: () async {
-              // Display the image in large form.
-              print("Comment Clicked");
-            },
-            child: Container(
-              height: 50.0,
-              width: 50.0,
-              decoration: const BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.all(Radius.circular(50))),
-              child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: CommentBox.commentImageParser(
-                      imageURLorPath: const NetworkImage(
-                          "https://i.pinimg.com/564x/77/75/91/7775914a2211e7b57f222155007b66a0.jpg"))),
-            ),
-          ),
-          title: Wrap(
-            children: const [
-              Poppins(
-                  text: 'Anonymoussssssssssssssssssss',
-                  size: 12,
-                  color: C.dark3,
-                  fontWeight: FW.bold),
-              SizedBox(
-                width: 4,
-              ),
-              Button(
-                text: "Creator",
-                fontWeight: FW.bold,
-                color: C.dark1,
-                size: 10,
-                boxColor: C.primaryDefault,
-                boxHeight: 18,
-                haveBorder: false,
-                declareWidth: true,
-                width: 56,
-              ),
-            ],
-          ),
-          subtitle: const Poppins(
-              overflow: false,
-              text:
-                  'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
-              size: 16,
-              color: C.dark1,
-              fontWeight: FW.regular),
-        ),
-        const Divider(
-          color: C.boderAddPhotos,
-          thickness: 1,
-        ),
-        for (var i = 0; i < data.length; i++)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(2.0, 4.0, 2.0, 0.0),
-            child: ListTile(
-              leading: GestureDetector(
-                onTap: () {
-                  // Navigator.of(context, rootNavigator: false).push(
-                  //     createTransitionRoute(
-                  //         AnotherProfile(
-                  //             another_username: _postDetail!.username!),
-                  //         1,
-                  //         0));
-                },
-                child: Container(
-                  height: 50.0,
-                  width: 50.0,
-                  decoration: const BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: CommentBox.commentImageParser(
-                          imageURLorPath: data[i]['pic'])),
-                ),
-              ),
-              title: GestureDetector(
-                onTap: () {
-                  // Navigator.of(context, rootNavigator: false).push(
-                  //     createTransitionRoute(
-                  //         AnotherProfile(
-                  //             another_username: _postDetail!.username!),
-                  //         1,
-                  //         0));
-                },
-                child: Poppins(
-                    text: data[i]['name'],
-                    size: 12,
-                    color: C.dark3,
-                    fontWeight: FW.bold),
-              ),
-              subtitle: Poppins(
-                  overflow: false,
-                  text: data[i]['message'],
-                  size: 16,
-                  color: C.dark1,
-                  fontWeight: FW.regular),
-              trailing: Poppins(
-                  text: data[i]['date'],
-                  size: 12,
-                  color: C.dark3,
-                  fontWeight: FW.regular),
-            ),
-          ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -208,7 +94,127 @@ class _CommentState extends State<ViewComment> {
   Widget Comment() {
     return Column(
       children: [
-        Expanded(child: commentChild(filedata)),
+        Expanded(
+            child: ListView(
+          children: [
+            ListTile(
+              leading: GestureDetector(
+                onTap: () async {
+                  // Display the image in large form.
+                  print("Comment Clicked");
+                },
+                child: Container(
+                  height: 50.0,
+                  width: 50.0,
+                  decoration: const BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.all(Radius.circular(50))),
+                  child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: CommentBox.commentImageParser(
+                          imageURLorPath: const NetworkImage(
+                              "https://i.pinimg.com/564x/77/75/91/7775914a2211e7b57f222155007b66a0.jpg"))),
+                ),
+              ),
+              title: Wrap(
+                children: const [
+                  Poppins(
+                      text: 'Anonymoussssssssssssssssssss',
+                      size: 12,
+                      color: C.dark3,
+                      fontWeight: FW.bold),
+                  SizedBox(
+                    width: 4,
+                  ),
+                  Button(
+                    text: "Creator",
+                    fontWeight: FW.bold,
+                    color: C.dark1,
+                    size: 10,
+                    boxColor: C.primaryDefault,
+                    boxHeight: 18,
+                    haveBorder: false,
+                    declareWidth: true,
+                    width: 56,
+                  ),
+                ],
+              ),
+              subtitle: const Poppins(
+                  overflow: false,
+                  text:
+                      'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
+                  size: 16,
+                  color: C.dark1,
+                  fontWeight: FW.regular),
+            ),
+            const Divider(
+              color: C.boderAddPhotos,
+              thickness: 1,
+            ),
+            filedata.length > 0
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: filedata.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(2.0, 4.0, 2.0, 0.0),
+                        child: ListTile(
+                          leading: GestureDetector(
+                            onTap: () {
+                              // Navigator.of(context, rootNavigator: false).push(
+                              //     createTransitionRoute(
+                              //         AnotherProfile(
+                              //             another_username: _postDetail!.username!),
+                              //         1,
+                              //         0));
+                            },
+                            child: Container(
+                              height: 50.0,
+                              width: 50.0,
+                              decoration: const BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(50))),
+                              child: CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage:
+                                      CommentBox.commentImageParser(
+                                          imageURLorPath: filedata[index]
+                                              ['pic'])),
+                            ),
+                          ),
+                          title: GestureDetector(
+                            onTap: () {
+                              // Navigator.of(context, rootNavigator: false).push(
+                              //     createTransitionRoute(
+                              //         AnotherProfile(
+                              //             another_username: _postDetail!.username!),
+                              //         1,
+                              //         0));
+                            },
+                            child: Poppins(
+                                text: filedata[index]['name'],
+                                size: 12,
+                                color: C.dark3,
+                                fontWeight: FW.bold),
+                          ),
+                          subtitle: Poppins(
+                              overflow: false,
+                              text: filedata[index]['message'],
+                              size: 16,
+                              color: C.dark1,
+                              fontWeight: FW.regular),
+                          trailing: Poppins(
+                              text: filedata[index]['date'],
+                              size: 12,
+                              color: C.dark3,
+                              fontWeight: FW.regular),
+                        ),
+                      );
+                    })
+                : Container()
+          ],
+        )),
         SizedBox.shrink(),
         ListTile(
           tileColor: C.white,
