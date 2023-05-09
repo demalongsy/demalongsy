@@ -35,7 +35,7 @@ class _PostForYouState extends State<PostForYou> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: C.backgroundWhiteIvory,
+      backgroundColor: C.white,
       body: RefreshIndicator(
         color: C.primaryDefault,
         backgroundColor: C.white,
