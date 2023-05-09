@@ -7,6 +7,7 @@ import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/models/data_mockup_for_post.dart';
 import 'package:demalongsy/pages/another/another_profile.dart';
 import 'package:demalongsy/pages/auth/login.dart';
+import 'package:demalongsy/pages/comments/comment.dart';
 import 'package:demalongsy/pages/navbar.dart';
 import 'package:demalongsy/pages/profile/profile.dart';
 import 'package:demalongsy/pages/comments/view_comment.dart';
@@ -432,8 +433,7 @@ class _ViewPostState extends State<ViewPost> {
                                     onTap: () {
                                       Navigator.of(context, rootNavigator: true)
                                           .push(
-                                        createTransitionRoute(
-                                            ViewComment(), 1, 0),
+                                        createTransitionRoute(Comment(), 1, 0),
                                       );
                                     },
                                     child: Container(
@@ -462,1275 +462,148 @@ class _ViewPostState extends State<ViewPost> {
                               ),
                             ),
                             Expanded(child: Container()),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 16.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                    shape: const RoundedRectangleBorder(
-                                      // <-- SEE HERE
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(25.0),
-                                      ),
-                                    ),
-                                    context: context,
-                                    useRootNavigator: true,
-                                    builder: (BuildContext context) {
-                                      return Column(
-                                        children: [
-                                          const SizedBox(height: 24),
-                                          SvgPicture.asset(
-                                            "assets/images/line.svg",
-                                            width: 8,
-                                            height: 4,
-                                            color: C.dark2,
-                                          ),
-                                          const Padding(
-                                            padding: EdgeInsets.only(bottom: 8),
-                                            child: Poppins(
-                                                text: "Pick to Suggest Items",
-                                                size: 18,
-                                                color: C.dark1,
-                                                fontWeight: FW.bold),
-                                          ),
-                                          const Divider(
-                                              color: C.boderAddPhotos),
-                                          Expanded(
-                                            child: ListView(
-                                              shrinkWrap: true,
-                                              children: [
-                                                ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 10.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  children: [
-                                                                    const Poppins(
-                                                                        overflow:
-                                                                            false,
-                                                                        text:
-                                                                            'Photo 1',
-                                                                        size:
-                                                                            16,
-                                                                        color: C
-                                                                            .dark2,
-                                                                        fontWeight:
-                                                                            FW.bold),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        color: C
-                                                                            .secondaryDefault,
-                                                                      ),
-                                                                      width: 70,
-                                                                      height:
-                                                                          24,
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              16,
-                                                                          vertical:
-                                                                              2),
-                                                                      child:
-                                                                          const Center(
-                                                                        child: Poppins(
-                                                                            overflow:
-                                                                                false,
-                                                                            text:
-                                                                                'Pick',
-                                                                            size:
-                                                                                16,
-                                                                            color:
-                                                                                C.dark2,
-                                                                            fontWeight: FW.bold),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5.0),
-                                                                  child: const Poppins(
-                                                                      overflow:
-                                                                          false,
-                                                                      text:
-                                                                          'Pick to suggest item',
-                                                                      size: 12,
-                                                                      color: C
-                                                                          .dark1,
-                                                                      fontWeight:
-                                                                          FW.regular),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 10.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  children: [
-                                                                    const Poppins(
-                                                                        overflow:
-                                                                            false,
-                                                                        text:
-                                                                            'Photo 1',
-                                                                        size:
-                                                                            16,
-                                                                        color: C
-                                                                            .dark2,
-                                                                        fontWeight:
-                                                                            FW.bold),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        color: C
-                                                                            .secondaryDefault,
-                                                                      ),
-                                                                      width: 70,
-                                                                      height:
-                                                                          24,
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              16,
-                                                                          vertical:
-                                                                              2),
-                                                                      child:
-                                                                          const Center(
-                                                                        child: Poppins(
-                                                                            overflow:
-                                                                                false,
-                                                                            text:
-                                                                                'Pick',
-                                                                            size:
-                                                                                16,
-                                                                            color:
-                                                                                C.dark2,
-                                                                            fontWeight: FW.bold),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5.0),
-                                                                  child: const Poppins(
-                                                                      overflow:
-                                                                          false,
-                                                                      text:
-                                                                          'Pick to suggest item',
-                                                                      size: 12,
-                                                                      color: C
-                                                                          .dark1,
-                                                                      fontWeight:
-                                                                          FW.regular),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 10.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  children: [
-                                                                    const Poppins(
-                                                                        overflow:
-                                                                            false,
-                                                                        text:
-                                                                            'Photo 1',
-                                                                        size:
-                                                                            16,
-                                                                        color: C
-                                                                            .dark2,
-                                                                        fontWeight:
-                                                                            FW.bold),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        color: C
-                                                                            .secondaryDefault,
-                                                                      ),
-                                                                      width: 70,
-                                                                      height:
-                                                                          24,
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              16,
-                                                                          vertical:
-                                                                              2),
-                                                                      child:
-                                                                          const Center(
-                                                                        child: Poppins(
-                                                                            overflow:
-                                                                                false,
-                                                                            text:
-                                                                                'Pick',
-                                                                            size:
-                                                                                16,
-                                                                            color:
-                                                                                C.dark2,
-                                                                            fontWeight: FW.bold),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5.0),
-                                                                  child: const Poppins(
-                                                                      overflow:
-                                                                          false,
-                                                                      text:
-                                                                          'Pick to suggest item',
-                                                                      size: 12,
-                                                                      color: C
-                                                                          .dark1,
-                                                                      fontWeight:
-                                                                          FW.regular),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 10.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  children: [
-                                                                    const Poppins(
-                                                                        overflow:
-                                                                            false,
-                                                                        text:
-                                                                            'Photo 1',
-                                                                        size:
-                                                                            16,
-                                                                        color: C
-                                                                            .dark2,
-                                                                        fontWeight:
-                                                                            FW.bold),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        color: C
-                                                                            .secondaryDefault,
-                                                                      ),
-                                                                      width: 70,
-                                                                      height:
-                                                                          24,
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              16,
-                                                                          vertical:
-                                                                              2),
-                                                                      child:
-                                                                          const Center(
-                                                                        child: Poppins(
-                                                                            overflow:
-                                                                                false,
-                                                                            text:
-                                                                                'Pick',
-                                                                            size:
-                                                                                16,
-                                                                            color:
-                                                                                C.dark2,
-                                                                            fontWeight: FW.bold),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5.0),
-                                                                  child: const Poppins(
-                                                                      overflow:
-                                                                          false,
-                                                                      text:
-                                                                          'Pick to suggest item',
-                                                                      size: 12,
-                                                                      color: C
-                                                                          .dark1,
-                                                                      fontWeight:
-                                                                          FW.regular),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 10.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  children: [
-                                                                    const Poppins(
-                                                                        overflow:
-                                                                            false,
-                                                                        text:
-                                                                            'Photo 1',
-                                                                        size:
-                                                                            16,
-                                                                        color: C
-                                                                            .dark2,
-                                                                        fontWeight:
-                                                                            FW.bold),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        color: C
-                                                                            .secondaryDefault,
-                                                                      ),
-                                                                      width: 70,
-                                                                      height:
-                                                                          24,
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              16,
-                                                                          vertical:
-                                                                              2),
-                                                                      child:
-                                                                          const Center(
-                                                                        child: Poppins(
-                                                                            overflow:
-                                                                                false,
-                                                                            text:
-                                                                                'Pick',
-                                                                            size:
-                                                                                16,
-                                                                            color:
-                                                                                C.dark2,
-                                                                            fontWeight: FW.bold),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5.0),
-                                                                  child: const Poppins(
-                                                                      overflow:
-                                                                          false,
-                                                                      text:
-                                                                          'Pick to suggest item',
-                                                                      size: 12,
-                                                                      color: C
-                                                                          .dark1,
-                                                                      fontWeight:
-                                                                          FW.regular),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 10.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  children: [
-                                                                    const Poppins(
-                                                                        overflow:
-                                                                            false,
-                                                                        text:
-                                                                            'Photo 1',
-                                                                        size:
-                                                                            16,
-                                                                        color: C
-                                                                            .dark2,
-                                                                        fontWeight:
-                                                                            FW.bold),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        color: C
-                                                                            .secondaryDefault,
-                                                                      ),
-                                                                      width: 70,
-                                                                      height:
-                                                                          24,
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              16,
-                                                                          vertical:
-                                                                              2),
-                                                                      child:
-                                                                          const Center(
-                                                                        child: Poppins(
-                                                                            overflow:
-                                                                                false,
-                                                                            text:
-                                                                                'Pick',
-                                                                            size:
-                                                                                16,
-                                                                            color:
-                                                                                C.dark2,
-                                                                            fontWeight: FW.bold),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5.0),
-                                                                  child: const Poppins(
-                                                                      overflow:
-                                                                          false,
-                                                                      text:
-                                                                          'Pick to suggest item',
-                                                                      size: 12,
-                                                                      color: C
-                                                                          .dark1,
-                                                                      fontWeight:
-                                                                          FW.regular),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 10.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  children: [
-                                                                    const Poppins(
-                                                                        overflow:
-                                                                            false,
-                                                                        text:
-                                                                            'Photo 1',
-                                                                        size:
-                                                                            16,
-                                                                        color: C
-                                                                            .dark2,
-                                                                        fontWeight:
-                                                                            FW.bold),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        color: C
-                                                                            .secondaryDefault,
-                                                                      ),
-                                                                      width: 70,
-                                                                      height:
-                                                                          24,
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              16,
-                                                                          vertical:
-                                                                              2),
-                                                                      child:
-                                                                          const Center(
-                                                                        child: Poppins(
-                                                                            overflow:
-                                                                                false,
-                                                                            text:
-                                                                                'Pick',
-                                                                            size:
-                                                                                16,
-                                                                            color:
-                                                                                C.dark2,
-                                                                            fontWeight: FW.bold),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5.0),
-                                                                  child: const Poppins(
-                                                                      overflow:
-                                                                          false,
-                                                                      text:
-                                                                          'Pick to suggest item',
-                                                                      size: 12,
-                                                                      color: C
-                                                                          .dark1,
-                                                                      fontWeight:
-                                                                          FW.regular),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 10.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  children: [
-                                                                    const Poppins(
-                                                                        overflow:
-                                                                            false,
-                                                                        text:
-                                                                            'Photo 1',
-                                                                        size:
-                                                                            16,
-                                                                        color: C
-                                                                            .dark2,
-                                                                        fontWeight:
-                                                                            FW.bold),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        color: C
-                                                                            .secondaryDefault,
-                                                                      ),
-                                                                      width: 70,
-                                                                      height:
-                                                                          24,
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              16,
-                                                                          vertical:
-                                                                              2),
-                                                                      child:
-                                                                          const Center(
-                                                                        child: Poppins(
-                                                                            overflow:
-                                                                                false,
-                                                                            text:
-                                                                                'Pick',
-                                                                            size:
-                                                                                16,
-                                                                            color:
-                                                                                C.dark2,
-                                                                            fontWeight: FW.bold),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5.0),
-                                                                  child: const Poppins(
-                                                                      overflow:
-                                                                          false,
-                                                                      text:
-                                                                          'Pick to suggest item',
-                                                                      size: 12,
-                                                                      color: C
-                                                                          .dark1,
-                                                                      fontWeight:
-                                                                          FW.regular),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 10.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  children: [
-                                                                    const Poppins(
-                                                                        overflow:
-                                                                            false,
-                                                                        text:
-                                                                            'Photo 1',
-                                                                        size:
-                                                                            16,
-                                                                        color: C
-                                                                            .dark2,
-                                                                        fontWeight:
-                                                                            FW.bold),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        color: C
-                                                                            .secondaryDefault,
-                                                                      ),
-                                                                      width: 70,
-                                                                      height:
-                                                                          24,
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              16,
-                                                                          vertical:
-                                                                              2),
-                                                                      child:
-                                                                          const Center(
-                                                                        child: Poppins(
-                                                                            overflow:
-                                                                                false,
-                                                                            text:
-                                                                                'Pick',
-                                                                            size:
-                                                                                16,
-                                                                            color:
-                                                                                C.dark2,
-                                                                            fontWeight: FW.bold),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5.0),
-                                                                  child: const Poppins(
-                                                                      overflow:
-                                                                          false,
-                                                                      text:
-                                                                          'Pick to suggest item',
-                                                                      size: 12,
-                                                                      color: C
-                                                                          .dark1,
-                                                                      fontWeight:
-                                                                          FW.regular),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 10.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  children: [
-                                                                    const Poppins(
-                                                                        overflow:
-                                                                            false,
-                                                                        text:
-                                                                            'Photo 1',
-                                                                        size:
-                                                                            16,
-                                                                        color: C
-                                                                            .dark2,
-                                                                        fontWeight:
-                                                                            FW.bold),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        color: C
-                                                                            .secondaryDefault,
-                                                                      ),
-                                                                      width: 70,
-                                                                      height:
-                                                                          24,
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              16,
-                                                                          vertical:
-                                                                              2),
-                                                                      child:
-                                                                          const Center(
-                                                                        child: Poppins(
-                                                                            overflow:
-                                                                                false,
-                                                                            text:
-                                                                                'Pick',
-                                                                            size:
-                                                                                16,
-                                                                            color:
-                                                                                C.dark2,
-                                                                            fontWeight: FW.bold),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5.0),
-                                                                  child: const Poppins(
-                                                                      overflow:
-                                                                          false,
-                                                                      text:
-                                                                          'Pick to suggest item',
-                                                                      size: 12,
-                                                                      color: C
-                                                                          .dark1,
-                                                                      fontWeight:
-                                                                          FW.regular),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                ListTile(
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15),
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 10.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        16.0),
-                                                            child:
-                                                                const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  children: [
-                                                                    const Poppins(
-                                                                        overflow:
-                                                                            false,
-                                                                        text:
-                                                                            'Photo 1',
-                                                                        size:
-                                                                            16,
-                                                                        color: C
-                                                                            .dark2,
-                                                                        fontWeight:
-                                                                            FW.bold),
-                                                                    const SizedBox(
-                                                                      width: 4,
-                                                                    ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Container()),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20),
-                                                                        color: C
-                                                                            .secondaryDefault,
-                                                                      ),
-                                                                      width: 70,
-                                                                      height:
-                                                                          24,
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              16,
-                                                                          vertical:
-                                                                              2),
-                                                                      child:
-                                                                          const Center(
-                                                                        child: Poppins(
-                                                                            overflow:
-                                                                                false,
-                                                                            text:
-                                                                                'Pick',
-                                                                            size:
-                                                                                16,
-                                                                            color:
-                                                                                C.dark2,
-                                                                            fontWeight: FW.bold),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      top: 5.0),
-                                                                  child: const Poppins(
-                                                                      overflow:
-                                                                          false,
-                                                                      text:
-                                                                          'Pick to suggest item',
-                                                                      size: 12,
-                                                                      color: C
-                                                                          .dark1,
-                                                                      fontWeight:
-                                                                          FW.regular),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.only(left: 12),
-                                  decoration: BoxDecoration(
-                                    color: C.white,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: SvgPicture.asset(
-                                    'assets/images/laundry.svg',
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.favorite_outline_rounded,
+                                color: C.dark1,
+                                size: 24,
                               ),
-                            )
+                              onPressed: () {
+                                DraggableScrollableSheet(
+                                  initialChildSize: 0.3,
+                                  maxChildSize: 0.6,
+                                  minChildSize: 0.3,
+                                  builder: (context, ScrollController) {
+                                    return Container(
+                                      decoration: const BoxDecoration(
+                                        color: C.backgroundWhiteIvory,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(36),
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 32),
+                                        child: ListView.builder(
+                                          itemBuilder: ((context, index) {
+                                            return ListTile(
+                                              title: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 15, right: 15),
+                                                child: Container(
+                                                  margin: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 10.0),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      Container(
+                                                        margin: const EdgeInsets
+                                                            .only(right: 16.0),
+                                                        child:
+                                                            const CircleAvatar(
+                                                          backgroundImage:
+                                                              NetworkImage(
+                                                                  'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Row(
+                                                              children: [
+                                                                const Poppins(
+                                                                    overflow:
+                                                                        false,
+                                                                    text:
+                                                                        'Photo 1',
+                                                                    size: 16,
+                                                                    color:
+                                                                        C.dark2,
+                                                                    fontWeight:
+                                                                        FW.bold),
+                                                                const SizedBox(
+                                                                  width: 4,
+                                                                ),
+                                                                Expanded(
+                                                                    child:
+                                                                        Container()),
+                                                                Container(
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            20),
+                                                                    color: C
+                                                                        .secondaryDefault,
+                                                                  ),
+                                                                  width: 70,
+                                                                  height: 24,
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          16,
+                                                                      vertical:
+                                                                          2),
+                                                                  child:
+                                                                      const Center(
+                                                                    child: Poppins(
+                                                                        overflow:
+                                                                            false,
+                                                                        text:
+                                                                            'Pick',
+                                                                        size:
+                                                                            16,
+                                                                        color: C
+                                                                            .dark2,
+                                                                        fontWeight:
+                                                                            FW.bold),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                            Container(
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      top: 5.0),
+                                                              child: const Poppins(
+                                                                  overflow:
+                                                                      false,
+                                                                  text:
+                                                                      'Pick to suggest item',
+                                                                  size: 12,
+                                                                  color:
+                                                                      C.dark1,
+                                                                  fontWeight: FW
+                                                                      .regular),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                              // child: SvgPicture.asset(
+                              //   'assets/images/message_filled.svg',
+                              //   width: 24,
+                              //   height: 24,
+                              // ),
+                            ),
                           ],
                         ),
                         Column(

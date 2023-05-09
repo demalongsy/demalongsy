@@ -123,58 +123,75 @@ class _ViewCommentState extends State<ViewComment>
   }
 
   Widget _buildTextComposer() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-      color: C.white,
-      child: Row(
-        children: [
-          Container(
-            margin: EdgeInsets.only(right: 8.0),
-            child: const CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        color: C.white,
+        child: Row(
+          children: [
+            Container(
+              margin: EdgeInsets.only(right: 8.0),
+              child: const CircleAvatar(
+                backgroundImage: NetworkImage(
+                    'https://i.pinimg.com/736x/7c/06/3e/7c063e231282b24ac6201b1891cf0931.jpg'),
+              ),
             ),
-          ),
-          Expanded(
-            child: SizedBox(
-              height: 40,
-              child: TextField(
-                onSubmitted: _handleSubmitted,
-                controller: _messageController,
-                onChanged: (String text) {
-                  setState(() {
-                    _isComposing = text.length > 0;
-                    _messageInput = text;
-                  });
-                },
-                decoration: InputDecoration(
-                  hintText: "Send a message...",
-                  hintStyle: const TextStyle(
-                    color: C.disableTextfield,
-                  ),
-                  contentPadding:
-                      const EdgeInsets.only(top: 8, bottom: 8, left: 16),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(width: 1, color: C.disableTextfield),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(width: 1, color: C.infoDefault),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  suffix: checkAllSpaces(_messageInput)
-                      ? Container(
-                          margin: const EdgeInsets.all(4.0),
-                          child: GestureDetector(
-                            onTap: _isComposing
-                                ? () => _handleSubmitted(_messageInput)
-                                : null,
+            Expanded(
+              child: SizedBox(
+                height: 40,
+                child: TextField(
+                  onSubmitted: _handleSubmitted,
+                  controller: _messageController,
+                  onChanged: (String text) {
+                    setState(() {
+                      _isComposing = text.length > 0;
+                      _messageInput = text;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Send a message...",
+                    hintStyle: const TextStyle(
+                      color: C.disableTextfield,
+                    ),
+                    contentPadding:
+                        const EdgeInsets.only(top: 8, bottom: 8, left: 16),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(width: 1, color: C.disableTextfield),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(width: 1, color: C.infoDefault),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    suffix: checkAllSpaces(_messageInput)
+                        ? Container(
+                            margin: const EdgeInsets.all(4.0),
+                            child: GestureDetector(
+                              onTap: _isComposing
+                                  ? () => _handleSubmitted(_messageInput)
+                                  : null,
+                              child: const Button(
+                                text: "Send",
+                                fontWeight: FW.bold,
+                                color: C.dark1,
+                                size: 14,
+                                boxColor: C.primaryDefault,
+                                boxHeight: 40,
+                                haveBorder: false,
+                                declareWidth: true,
+                                width: 56,
+                              ),
+                            ),
+                          )
+                        : Container(
+                            margin: const EdgeInsets.all(4.0),
                             child: const Button(
                               text: "Send",
                               fontWeight: FW.bold,
-                              color: C.dark1,
+                              color: C.disableTextfield,
                               size: 14,
                               boxColor: C.primaryDefault,
                               boxHeight: 40,
@@ -183,26 +200,12 @@ class _ViewCommentState extends State<ViewComment>
                               width: 56,
                             ),
                           ),
-                        )
-                      : Container(
-                          margin: const EdgeInsets.all(4.0),
-                          child: const Button(
-                            text: "Send",
-                            fontWeight: FW.bold,
-                            color: C.disableTextfield,
-                            size: 14,
-                            boxColor: C.primaryDefault,
-                            boxHeight: 40,
-                            haveBorder: false,
-                            declareWidth: true,
-                            width: 56,
-                          ),
-                        ),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
