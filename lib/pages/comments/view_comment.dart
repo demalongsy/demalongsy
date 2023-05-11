@@ -3,7 +3,6 @@ import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:comment_box/comment/comment.dart';
 import 'package:flutter/material.dart';
 
 class ViewComment extends StatefulWidget {
@@ -111,7 +110,7 @@ class _CommentState extends State<ViewComment> {
                       borderRadius: BorderRadius.all(Radius.circular(50))),
                   child: CircleAvatar(
                       radius: 50,
-                      backgroundImage: CommentBox.commentImageParser(
+                      backgroundImage: commentImageParser(
                           imageURLorPath: const NetworkImage(
                               "https://i.pinimg.com/564x/77/75/91/7775914a2211e7b57f222155007b66a0.jpg"))),
                 ),
@@ -177,10 +176,8 @@ class _CommentState extends State<ViewComment> {
                                       BorderRadius.all(Radius.circular(50))),
                               child: CircleAvatar(
                                   radius: 50,
-                                  backgroundImage:
-                                      CommentBox.commentImageParser(
-                                          imageURLorPath: filedata[index]
-                                              ['pic'])),
+                                  backgroundImage: commentImageParser(
+                                      imageURLorPath: filedata[index]['pic'])),
                             ),
                           ),
                           title: GestureDetector(
@@ -311,5 +308,23 @@ class _CommentState extends State<ViewComment> {
         )
       ],
     );
+  }
+
+  static ImageProvider commentImageParser({imageURLorPath}) {
+    try {
+      //check if imageURLorPath
+      if (imageURLorPath is String) {
+        if (imageURLorPath.startsWith('http')) {
+          return NetworkImage(imageURLorPath);
+        } else {
+          return AssetImage(imageURLorPath);
+        }
+      } else {
+        return imageURLorPath;
+      }
+    } catch (e) {
+      //throw error
+      throw Exception('Error parsing image: $e');
+    }
   }
 }

@@ -85,13 +85,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
-  comment_box:
-    dependency: "direct main"
-    description:
-      name: comment_box
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.18"
   convert:
     dependency: transitive
     description:
@@ -428,7 +421,7 @@ packages:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.1"
   shared_preferences_android:
     dependency: transitive
     description:
@@ -442,7 +435,7 @@ packages:
       name: shared_preferences_foundation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1"
+    version: "2.2.2"
   shared_preferences_linux:
     dependency: transitive
     description:
