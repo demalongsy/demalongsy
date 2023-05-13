@@ -229,9 +229,9 @@ class _ViewPostState extends State<ViewPost> {
                                                     ),
                                                     CupertinoDialogAction(
                                                       onPressed: () async {
-                                                        // await _deletePost(
-                                                        //     _postDetail!
-                                                        //         .blockId!);
+                                                        await _deletePost(
+                                                            _postDetail!
+                                                                .blockId!);
                                                         setState(() {
                                                           isDeleted = true;
                                                         });
@@ -488,11 +488,21 @@ class _ViewPostState extends State<ViewPost> {
                                                               rootNavigator:
                                                                   true)
                                                           .push(
-                                                        createTransitionRoute(
-                                                            ViewComment(),
-                                                            1,
-                                                            0),
-                                                      );
+                                                            createTransitionRoute(
+                                                                ViewComment(
+                                                                    block_id: widget
+                                                                        .block_id,
+                                                                    imgAuthor:
+                                                                        widget
+                                                                            .imgAuthor,
+                                                                    name: _postDetail!
+                                                                        .name!),
+                                                                1,
+                                                                0),
+                                                          )
+                                                          .then((val) => val
+                                                              ? _getPostDetail()
+                                                              : null);
                                                     },
                                                     child: Container(
                                                       padding:
@@ -753,108 +763,105 @@ class _ViewPostState extends State<ViewPost> {
                                                 fontWeight: FW.bold,
                                               ),
                                             ),
-                                            const Divider(
-                                              color: C.boderAddPhotos,
-                                              thickness: 1,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .push(
-                                                  createTransitionRoute(
-                                                      ViewComment(), 1, 0),
-                                                );
-                                              },
-                                              child: Container(
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 16),
-                                                child: Poppins(
-                                                  overflow: false,
-                                                  text: _postDetail!
-                                                              .numComment! >
-                                                          0
-                                                      ? 'View all ${_postDetail!.numComment} comments'
-                                                      : "No comment",
-                                                  size: 14,
-                                                  color: C.dark3,
-                                                  fontWeight: FW.bold,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 16,
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 16, right: 10),
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: const Poppins(
-                                                    text: 'K.Payongdech',
-                                                    size: 12,
-                                                    color: C.dark3,
-                                                    fontWeight: FW.bold,
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Container(
-                                                    padding: EdgeInsets.only(
-                                                        right: 12),
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: const Poppins(
-                                                      text:
-                                                          'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
-                                                      size: 16,
-                                                      color: C.dark3,
-                                                      fontWeight: FW.regular,
+                                            _postDetail!.numComment! > 0
+                                                ? GestureDetector(
+                                                    onTap: (() {
+                                                      Navigator.of(context,
+                                                              rootNavigator:
+                                                                  true)
+                                                          .push(
+                                                            createTransitionRoute(
+                                                                ViewComment(
+                                                                    block_id: widget
+                                                                        .block_id,
+                                                                    imgAuthor:
+                                                                        widget
+                                                                            .imgAuthor,
+                                                                    name: _postDetail!
+                                                                        .name!),
+                                                                1,
+                                                                0),
+                                                          )
+                                                          .then((val) => val
+                                                              ? _getPostDetail()
+                                                              : null);
+                                                    }),
+                                                    child: Column(
+                                                      children: [
+                                                        const Divider(
+                                                          color:
+                                                              C.boderAddPhotos,
+                                                          thickness: 1,
+                                                        ),
+                                                        Container(
+                                                            alignment: Alignment
+                                                                .centerRight,
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        16),
+                                                            child: Poppins(
+                                                              overflow: false,
+                                                              text:
+                                                                  'View all ${_postDetail!.numComment} comments',
+                                                              size: 14,
+                                                              color: C.dark3,
+                                                              fontWeight:
+                                                                  FW.bold,
+                                                            )),
+                                                        const SizedBox(
+                                                          height: 16,
+                                                        ),
+                                                        Row(
+                                                          children: <Widget>[
+                                                            Container(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      left: 16,
+                                                                      right:
+                                                                          10),
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              child:
+                                                                  const Poppins(
+                                                                text:
+                                                                    'K.Payongdech',
+                                                                size: 12,
+                                                                color: C.dark3,
+                                                                fontWeight:
+                                                                    FW.bold,
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              child: Container(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        right:
+                                                                            12),
+                                                                alignment: Alignment
+                                                                    .centerRight,
+                                                                child:
+                                                                    const Poppins(
+                                                                  text:
+                                                                      'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
+                                                                  size: 16,
+                                                                  color:
+                                                                      C.dark3,
+                                                                  fontWeight: FW
+                                                                      .regular,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 4,
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 4,
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 16, right: 10),
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: const Poppins(
-                                                    text: 'K.Payongdech',
-                                                    size: 12,
-                                                    color: C.dark3,
-                                                    fontWeight: FW.bold,
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Container(
-                                                    padding: EdgeInsets.only(
-                                                        right: 12),
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: const Poppins(
-                                                      text:
-                                                          'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
-                                                      size: 16,
-                                                      color: C.dark3,
-                                                      fontWeight: FW.regular,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 26,
-                                            ),
+                                                  )
+                                                : Container()
                                           ],
                                         ),
                                       ],
@@ -1018,7 +1025,7 @@ class _ViewPostState extends State<ViewPost> {
         numLiked = _postDetail!.liked!.length;
         isFavorited = _postDetail!.isLiked!;
         var splitDate = _postDetail!.date!.split("/");
-        print(splitDate);
+
         date = int.parse(splitDate[1]) < 10
             ? '0${int.parse(splitDate[1])}'
             : '${splitDate[1]}';
@@ -1046,6 +1053,7 @@ class _ViewPostState extends State<ViewPost> {
                                                     ? 'Nov'
                                                     : 'Dec';
       });
+      _getData();
     } catch (e) {
       print(e);
       isLoadingPost = false;

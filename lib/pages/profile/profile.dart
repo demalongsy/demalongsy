@@ -1,4 +1,5 @@
 import 'package:demalongsy/base_URL/url.dart';
+import 'package:demalongsy/pages/comments/view_comment.dart';
 import 'package:demalongsy/pages/post/create_post.dart';
 import 'package:demalongsy/pages/profile/change_password.dart';
 import 'package:demalongsy/widget/showposts.dart';
@@ -456,7 +457,6 @@ class _Profile extends State<Profile> {
                               elevation: 0,
                               backgroundColor: C.white,
                               pinned: true,
-                              primary: false,
                               toolbarHeight: 0,
                               bottom: TabBar(
                                 indicator: UnderlineTabIndicator(
@@ -488,7 +488,6 @@ class _Profile extends State<Profile> {
                               padding: const EdgeInsets.all(10.0),
                               child: GridView.builder(
                                 shrinkWrap: true,
-                                primary: false,
                                 physics: NeverScrollableScrollPhysics(),
                                 gridDelegate:
                                     const SliverGridDelegateWithMaxCrossAxisExtent(

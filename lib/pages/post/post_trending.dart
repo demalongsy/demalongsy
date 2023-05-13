@@ -1,5 +1,7 @@
 import 'package:demalongsy/base_URL/url.dart';
 import 'package:demalongsy/custom/toolkit.dart';
+import 'package:demalongsy/custom/widget/page_transition.dart';
+import 'package:demalongsy/pages/post/view_post.dart';
 
 import 'package:demalongsy/widget/showposts.dart';
 import 'package:flutter/material.dart';
@@ -89,17 +91,32 @@ class _PostTrendingState extends State<PostTrending> {
                               mainAxisSpacing: 6),
                       itemCount: data.length,
                       itemBuilder: (BuildContext context, index) {
-                        return ShowPost(
-                            topic: data[index]["title"],
-                            name: data[index]["name"],
-                            imgAcc: data[index]["imgAuthor"],
-                            imgPath: data[index]["images"][0],
-                            isLiked: data[index]["isLiked"],
-                            block_id: data[index]["id"],
-                            author_id: data[index]["author_id"],
-                            tags: data[index]["tags"],
-                            author_username: data[index]["username"],
-                            imgAuthor: data[index]["imgAuthor"]);
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context, rootNavigator: false)
+                                .push(createTransitionRoute(
+                                    ViewPost(
+                                      tags: data[index]["tags"]!,
+                                      block_id: data[index]["id"]!,
+                                      author_username: data[index]
+                                          ["imgAuthor"]!,
+                                      imgAuthor: data[index]["imgAuthor"]!,
+                                    ),
+                                    1,
+                                    0));
+                          },
+                          child: ShowPost(
+                              topic: data[index]["title"],
+                              name: data[index]["name"],
+                              imgAcc: data[index]["imgAuthor"],
+                              imgPath: data[index]["images"][0],
+                              isLiked: data[index]["isLiked"],
+                              block_id: data[index]["id"],
+                              author_id: data[index]["author_id"],
+                              tags: data[index]["tags"],
+                              author_username: data[index]["username"],
+                              imgAuthor: data[index]["imgAuthor"]),
+                        );
                       }),
                 ),
               ),
