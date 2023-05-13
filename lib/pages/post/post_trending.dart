@@ -22,6 +22,29 @@ class _PostTrendingState extends State<PostTrending> {
   List<Map<String, dynamic>> data = [];
   bool isLoading = true;
 
+  Future<void> _getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? user_id = prefs.getString('user_id');
+
+    setState(() {
+      data.clear();
+    });
+
+    var url = '${Url.baseurl}/blocks/trending?user_id=${user_id}';
+
+    var response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var _data = convert.jsonDecode(response.body);
+
+      (_data["data"] as List).map((e) => data.add(e)).toList();
+
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -29,31 +52,30 @@ class _PostTrendingState extends State<PostTrending> {
     _getData();
   }
 
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: C.white,
-      body: RefreshIndicator(
-        color: C.primaryDefault,
-        backgroundColor: C.white,
-        key: _refreshIndicatorKey,
-        onRefresh: () async {
-          await _getData();
-          return Future<void>.delayed(const Duration(seconds: 2));
-        },
-        child: SingleChildScrollView(
-          child: isLoading == true
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 30),
-                    child: Image.asset(
-                      "assets/images/loading.gif",
-                      height: 45,
-                      width: 45,
-                    ),
-                  ),
-                )
-              : Padding(
+      body: isLoading == true
+          ? Center(
+              child: Image.asset(
+                "assets/images/loading.gif",
+                height: 48,
+                width: 48,
+              ),
+            )
+          : RefreshIndicator(
+              color: C.primaryDefault,
+              backgroundColor: C.white,
+              key: _refreshIndicatorKey,
+              onRefresh: _getData,
+              child: SingleChildScrollView(
+                child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: GridView.builder(
                       shrinkWrap: true,
@@ -63,8 +85,6 @@ class _PostTrendingState extends State<PostTrending> {
                           const SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 200,
                               mainAxisExtent: 298,
-
-                              //childAspectRatio: 3 / 2,
                               crossAxisSpacing: 6,
                               mainAxisSpacing: 6),
                       itemCount: data.length,
@@ -76,39 +96,14 @@ class _PostTrendingState extends State<PostTrending> {
                             imgPath: data[index]["images"][0],
                             isLiked: data[index]["isLiked"],
                             block_id: data[index]["id"],
-                            author_id: data[index][" author_id"],
+                            author_id: data[index]["author_id"],
                             tags: data[index]["tags"],
                             author_username: data[index]["username"],
                             imgAuthor: data[index]["imgAuthor"]);
                       }),
                 ),
-        ),
-      ),
+              ),
+            ),
     );
-  }
-
-  _getData() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String? user_id = prefs.getString('user_id');
-      var url = '${Url.baseurl}/blocks/trending?user_id=${user_id}';
-
-      var response = await http.get(Uri.parse(url));
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        var _data = convert.jsonDecode(response.body);
-        data = [];
-        (_data["data"] as List).map((e) => data.add(e)).toList();
-
-        setState(() {
-          isLoading = false;
-        });
-      } else {
-        print('err ==> ${response.statusCode}');
-      }
-    } catch (e) {
-      print(e);
-      isLoading = false;
-    }
   }
 }

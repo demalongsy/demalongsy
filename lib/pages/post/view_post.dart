@@ -37,6 +37,8 @@ class ViewPost extends StatefulWidget {
 }
 
 class _ViewPostState extends State<ViewPost> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
   ViewPostDetail? _postDetail;
   List<Map<String, dynamic>> data = [];
   bool isLoading = true;
@@ -50,13 +52,25 @@ class _ViewPostState extends State<ViewPost> {
   String? month;
   String? date;
 
+  Future<void> _refresh() async {
+    await _getData();
+    await _getPostDetail();
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-
+    _refresh();
     super.initState();
-    _getPostDetail();
-    _getData();
+  }
+
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -87,7 +101,8 @@ class _ViewPostState extends State<ViewPost> {
                           Navigator.of(context, rootNavigator: false).push(
                               createTransitionRoute(
                                   AnotherProfile(
-                                      another_username: _postDetail!.username!),
+                                      another_username: _postDetail!.username!,
+                                      another_id: _postDetail!.authorId!),
                                   1,
                                   0));
                         },
@@ -108,12 +123,12 @@ class _ViewPostState extends State<ViewPost> {
                           padding: EdgeInsets.only(left: 8),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.of(context, rootNavigator: false)
-                                  .push(createTransitionRoute(
+                              Navigator.of(context, rootNavigator: false).push(
+                                  createTransitionRoute(
                                       AnotherProfile(
-                                        another_username:
-                                            _postDetail!.username!,
-                                      ),
+                                          another_username:
+                                              _postDetail!.username!,
+                                          another_id: _postDetail!.authorId!),
                                       1,
                                       0));
                             },
@@ -256,190 +271,491 @@ class _ViewPostState extends State<ViewPost> {
               ),
             ),
             body: isDeleted == false
-                ? SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        isLoadingPost == true
-                            ? Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 30),
-                                  child: Image.asset(
-                                    "assets/images/loading.gif",
-                                    height: 45,
-                                    width: 45,
-                                  ),
-                                ),
-                              )
-                            : Column(
-                                children: [
-                                  Stack(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          print(currentIndex);
-                                        },
-                                        child: Container(
-                                          // height: 460,
-                                          child: CarouselSlider(
-                                            items: _postDetail!.images!
-                                                .map(
-                                                  (item) => Image.network(
-                                                    item,
-                                                    fit: BoxFit.fill,
-                                                    width: double.infinity,
-                                                    // height: 500,
-                                                  ),
-                                                )
-                                                .toList(),
-                                            carouselController:
-                                                _carouselController,
-                                            options: CarouselOptions(
-                                              height: 460,
-                                              scrollPhysics:
-                                                  const BouncingScrollPhysics(),
-                                              autoPlay: false,
-                                              aspectRatio: 2,
-                                              viewportFraction: 1,
-                                              onPageChanged: ((index, reason) {
-                                                setState(
-                                                  () {
-                                                    currentIndex = index;
-                                                  },
-                                                );
-                                              }),
-                                            ),
-                                          ),
+                ? isLoading
+                    ? Center(
+                        child: Image.asset(
+                          "assets/images/loading.gif",
+                          height: 48,
+                          width: 48,
+                        ),
+                      )
+                    : RefreshIndicator(
+                        color: C.primaryDefault,
+                        backgroundColor: C.white,
+                        key: _refreshIndicatorKey,
+                        onRefresh: _refresh,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              isLoadingPost == true
+                                  ? Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 30),
+                                        child: Image.asset(
+                                          "assets/images/loading.gif",
+                                          height: 45,
+                                          width: 45,
                                         ),
                                       ),
-                                      Positioned(
-                                        bottom: 10,
-                                        left: 0,
-                                        right: 0,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: _postDetail!.images!
-                                              .asMap()
-                                              .entries
-                                              .map(
-                                            (entry) {
-                                              return GestureDetector(
-                                                onTap: () => _carouselController
-                                                    .animateToPage(entry.key),
-                                                child: Container(
-                                                  width:
-                                                      currentIndex == entry.key
-                                                          ? 7
-                                                          : 7,
-                                                  height: 7.0,
-                                                  margin: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 3.0),
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      color: currentIndex ==
-                                                              entry.key
-                                                          ? C.secondaryDefault
-                                                          : C.disableBackground),
-                                                ),
-                                              );
-                                            },
-                                          ).toList(),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        top: 16,
-                                        right: 16,
-                                        child: Container(
-                                          width: 44,
-                                          height: 30,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(14),
-                                            color: C.dark3,
-                                          ),
-                                          child: Center(
-                                            child: Poppins(
-                                                text:
-                                                    '${currentIndex + 1}/${_postDetail?.images?.length}',
-                                                size: 14,
-                                                color: C.white,
-                                                fontWeight: FW.regular),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 6, horizontal: 12),
-                                        // height: 36,
-                                        child: Row(
+                                    )
+                                  : Column(
+                                      children: [
+                                        Stack(
                                           children: [
-                                            isFavorited
-                                                ? GestureDetector(
-                                                    onTap: () async {
-                                                      await _unlikesPost();
+                                            InkWell(
+                                              onTap: () {
+                                                print(currentIndex);
+                                              },
+                                              child: Container(
+                                                // height: 460,
+                                                child: CarouselSlider(
+                                                  items: _postDetail!.images!
+                                                      .map(
+                                                        (item) => Image.network(
+                                                          item,
+                                                          fit: BoxFit.fill,
+                                                          width:
+                                                              double.infinity,
+                                                          // height: 500,
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                                  carouselController:
+                                                      _carouselController,
+                                                  options: CarouselOptions(
+                                                    height: 460,
+                                                    scrollPhysics:
+                                                        const BouncingScrollPhysics(),
+                                                    autoPlay: false,
+                                                    aspectRatio: 2,
+                                                    viewportFraction: 1,
+                                                    onPageChanged:
+                                                        ((index, reason) {
                                                       setState(
                                                         () {
-                                                          numLiked -= 1;
-                                                          isFavorited = false;
+                                                          currentIndex = index;
                                                         },
+                                                      );
+                                                    }),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              bottom: 10,
+                                              left: 0,
+                                              right: 0,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: _postDetail!.images!
+                                                    .asMap()
+                                                    .entries
+                                                    .map(
+                                                  (entry) {
+                                                    return GestureDetector(
+                                                      onTap: () =>
+                                                          _carouselController
+                                                              .animateToPage(
+                                                                  entry.key),
+                                                      child: Container(
+                                                        width: currentIndex ==
+                                                                entry.key
+                                                            ? 7
+                                                            : 7,
+                                                        height: 7.0,
+                                                        margin: const EdgeInsets
+                                                                .symmetric(
+                                                            horizontal: 3.0),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            color: currentIndex ==
+                                                                    entry.key
+                                                                ? C.secondaryDefault
+                                                                : C.disableBackground),
+                                                      ),
+                                                    );
+                                                  },
+                                                ).toList(),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: 16,
+                                              right: 16,
+                                              child: Container(
+                                                width: 44,
+                                                height: 30,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(14),
+                                                  color: C.dark3,
+                                                ),
+                                                child: Center(
+                                                  child: Poppins(
+                                                      text:
+                                                          '${currentIndex + 1}/${_postDetail?.images?.length}',
+                                                      size: 14,
+                                                      color: C.white,
+                                                      fontWeight: FW.regular),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 6,
+                                                      horizontal: 12),
+                                              // height: 36,
+                                              child: Row(
+                                                children: [
+                                                  isFavorited
+                                                      ? GestureDetector(
+                                                          onTap: () async {
+                                                            await _unlikesPost();
+                                                            setState(
+                                                              () {
+                                                                numLiked -= 1;
+                                                                isFavorited =
+                                                                    false;
+                                                              },
+                                                            );
+                                                          },
+                                                          child: Container(
+                                                            height: 32,
+                                                            width: 32,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: C.white,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50),
+                                                            ),
+                                                            child: const Icon(
+                                                              Icons.favorite,
+                                                              color: C.dark1,
+                                                              size: 24,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : GestureDetector(
+                                                          onTap: () async {
+                                                            await _likesPost();
+                                                            setState(() {
+                                                              isFavorited =
+                                                                  true;
+                                                              numLiked += 1;
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                            height: 32,
+                                                            width: 32,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: C.white,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50),
+                                                            ),
+                                                            child: const Icon(
+                                                              Icons
+                                                                  .favorite_outline_rounded,
+                                                              color: C.dark1,
+                                                              size: 24,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                  Poppins(
+                                                    text: numLiked.toString(),
+                                                    size: 14,
+                                                    maxLines: 1,
+                                                    overflow: true,
+                                                    color: C.dark1,
+                                                    fontWeight: FW.bold,
+                                                    letterspacing: 0.64,
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.of(context,
+                                                              rootNavigator:
+                                                                  true)
+                                                          .push(
+                                                        createTransitionRoute(
+                                                            ViewComment(),
+                                                            1,
+                                                            0),
                                                       );
                                                     },
                                                     child: Container(
-                                                      height: 32,
-                                                      width: 32,
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 12),
                                                       decoration: BoxDecoration(
                                                         color: C.white,
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(50),
                                                       ),
-                                                      child: const Icon(
-                                                        Icons.favorite,
-                                                        color: C.dark1,
-                                                        size: 24,
-                                                      ),
-                                                    ),
-                                                  )
-                                                : GestureDetector(
-                                                    onTap: () async {
-                                                      await _likesPost();
-                                                      setState(() {
-                                                        isFavorited = true;
-                                                        numLiked += 1;
-                                                      });
-                                                    },
-                                                    child: Container(
-                                                      height: 32,
-                                                      width: 32,
-                                                      decoration: BoxDecoration(
-                                                        color: C.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(50),
-                                                      ),
-                                                      child: const Icon(
-                                                        Icons
-                                                            .favorite_outline_rounded,
-                                                        color: C.dark1,
-                                                        size: 24,
+                                                      child: SvgPicture.asset(
+                                                        'assets/images/message_filled.svg',
+                                                        width: 24,
+                                                        height: 24,
                                                       ),
                                                     ),
                                                   ),
-                                            Poppins(
-                                              text: numLiked.toString(),
-                                              size: 14,
-                                              maxLines: 1,
-                                              overflow: true,
-                                              color: C.dark1,
-                                              fontWeight: FW.bold,
-                                              letterspacing: 0.64,
+                                                  Poppins(
+                                                    text: _postDetail!
+                                                        .numComment!
+                                                        .toString(),
+                                                    size: 14,
+                                                    maxLines: 1,
+                                                    overflow: true,
+                                                    color: C.dark1,
+                                                    fontWeight: FW.bold,
+                                                    letterspacing: 0.64,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(child: Container()),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 16.0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  showModalBottomSheet(
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                      // <-- SEE HERE
+                                                      borderRadius:
+                                                          BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                            25.0),
+                                                      ),
+                                                    ),
+                                                    context: context,
+                                                    useRootNavigator: true,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return Column(
+                                                        children: [
+                                                          const SizedBox(
+                                                              height: 24),
+                                                          SvgPicture.asset(
+                                                            "assets/images/line.svg",
+                                                            width: 80,
+                                                            height: 4,
+                                                            color: C.dark2,
+                                                          ),
+                                                          const Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    bottom: 8),
+                                                            child: Poppins(
+                                                                text:
+                                                                    "Pick to Suggest Items",
+                                                                size: 18,
+                                                                color: C.dark1,
+                                                                fontWeight:
+                                                                    FW.bold),
+                                                          ),
+                                                          const Divider(
+                                                              color: C
+                                                                  .boderAddPhotos),
+                                                          Expanded(
+                                                              child: ListView
+                                                                  .builder(
+                                                                      shrinkWrap:
+                                                                          true,
+                                                                      itemCount: _postDetail!
+                                                                          .images!
+                                                                          .length,
+                                                                      itemBuilder:
+                                                                          (BuildContext context,
+                                                                              int index) {
+                                                                        return ListTile(
+                                                                          title:
+                                                                              Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.only(left: 15, right: 15),
+                                                                            child:
+                                                                                Container(
+                                                                              margin: const EdgeInsets.symmetric(vertical: 10.0),
+                                                                              child: Row(
+                                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                children: <Widget>[
+                                                                                  Container(
+                                                                                    margin: const EdgeInsets.only(right: 16.0),
+                                                                                    child: CircleAvatar(
+                                                                                      backgroundImage: NetworkImage(_postDetail!.images![index]),
+                                                                                    ),
+                                                                                  ),
+                                                                                  Expanded(
+                                                                                    child: Column(
+                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                      children: <Widget>[
+                                                                                        Row(
+                                                                                          children: [
+                                                                                            Poppins(overflow: false, text: 'Photo ${index + 1}', size: 16, color: C.dark2, fontWeight: FW.bold),
+                                                                                            const SizedBox(
+                                                                                              width: 4,
+                                                                                            ),
+                                                                                            Expanded(child: Container()),
+                                                                                            GestureDetector(
+                                                                                              onTap: () {},
+                                                                                              child: Container(
+                                                                                                decoration: BoxDecoration(
+                                                                                                  borderRadius: BorderRadius.circular(20),
+                                                                                                  color: C.secondaryDefault,
+                                                                                                ),
+                                                                                                width: 70,
+                                                                                                height: 24,
+                                                                                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                                                                                                child: const Center(
+                                                                                                  child: Poppins(overflow: false, text: 'Pick', size: 14, color: C.dark2, fontWeight: FW.bold),
+                                                                                                ),
+                                                                                              ),
+                                                                                            )
+                                                                                          ],
+                                                                                        ),
+                                                                                        Container(
+                                                                                          margin: const EdgeInsets.only(top: 5.0),
+                                                                                          child: const Poppins(overflow: false, text: 'Pick to suggest item', size: 12, color: C.dark1, fontWeight: FW.regular),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      }))
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                child: Container(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 12),
+                                                  decoration: BoxDecoration(
+                                                    color: C.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50),
+                                                  ),
+                                                  child: SvgPicture.asset(
+                                                    'assets/images/laundry.svg',
+                                                    width: 24,
+                                                    height: 24,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16),
+                                              child: Poppins(
+                                                  overflow: false,
+                                                  text: _postDetail!.title!,
+                                                  size: 18,
+                                                  color: C.dark2,
+                                                  fontWeight: FW.bold),
+                                            ),
+                                            const SizedBox(
+                                              width: 4,
+                                            ),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16),
+                                              margin: const EdgeInsets.only(
+                                                  top: 5.0),
+                                              child: Poppins(
+                                                overflow: false,
+                                                text: _postDetail!.desc!,
+                                                size: 14,
+                                                color: C.dark1,
+                                                fontWeight: FW.regular,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 8,
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16),
+                                              child: Wrap(
+                                                  children: _postDetail!.tags!
+                                                      .map(
+                                                        (val) => Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  bottom: 4,
+                                                                  right: 4),
+                                                          child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical: 2,
+                                                                    horizontal:
+                                                                        8),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20),
+                                                              color: C
+                                                                  .secondaryDefault,
+                                                            ),
+                                                            height: 24,
+                                                            child: Poppins(
+                                                              overflow: false,
+                                                              text: '#${val}',
+                                                              size: 14,
+                                                              color: C.dark3,
+                                                              fontWeight:
+                                                                  FW.regular,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                      .toList()),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 12, horizontal: 16),
+                                              child: Poppins(
+                                                overflow: false,
+                                                text: '${month} ${date}',
+                                                size: 12,
+                                                color: C.dark3,
+                                                fontWeight: FW.bold,
+                                              ),
+                                            ),
+                                            const Divider(
+                                              color: C.boderAddPhotos,
+                                              thickness: 1,
                                             ),
                                             GestureDetector(
                                               onTap: () {
@@ -451,428 +767,176 @@ class _ViewPostState extends State<ViewPost> {
                                                 );
                                               },
                                               child: Container(
-                                                padding: const EdgeInsets.only(
-                                                    left: 12),
-                                                decoration: BoxDecoration(
-                                                  color: C.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                ),
-                                                child: SvgPicture.asset(
-                                                  'assets/images/message_filled.svg',
-                                                  width: 24,
-                                                  height: 24,
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 16),
+                                                child: Poppins(
+                                                  overflow: false,
+                                                  text: _postDetail!
+                                                              .numComment! >
+                                                          0
+                                                      ? 'View all ${_postDetail!.numComment} comments'
+                                                      : "No comment",
+                                                  size: 14,
+                                                  color: C.dark3,
+                                                  fontWeight: FW.bold,
                                                 ),
                                               ),
                                             ),
-                                            Poppins(
-                                              text: _postDetail!.numComment!
-                                                  .toString(),
-                                              size: 14,
-                                              maxLines: 1,
-                                              overflow: true,
-                                              color: C.dark1,
-                                              fontWeight: FW.bold,
-                                              letterspacing: 0.64,
+                                            const SizedBox(
+                                              height: 16,
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  padding: EdgeInsets.only(
+                                                      left: 16, right: 10),
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: const Poppins(
+                                                    text: 'K.Payongdech',
+                                                    size: 12,
+                                                    color: C.dark3,
+                                                    fontWeight: FW.bold,
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        right: 12),
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    child: const Poppins(
+                                                      text:
+                                                          'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
+                                                      size: 16,
+                                                      color: C.dark3,
+                                                      fontWeight: FW.regular,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  padding: EdgeInsets.only(
+                                                      left: 16, right: 10),
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: const Poppins(
+                                                    text: 'K.Payongdech',
+                                                    size: 12,
+                                                    color: C.dark3,
+                                                    fontWeight: FW.bold,
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        right: 12),
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    child: const Poppins(
+                                                      text:
+                                                          'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
+                                                      size: 16,
+                                                      color: C.dark3,
+                                                      fontWeight: FW.regular,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 26,
                                             ),
                                           ],
                                         ),
-                                      ),
-                                      Expanded(child: Container()),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 16.0),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            showModalBottomSheet(
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                // <-- SEE HERE
-                                                borderRadius:
-                                                    BorderRadius.vertical(
-                                                  top: Radius.circular(25.0),
-                                                ),
-                                              ),
-                                              context: context,
-                                              useRootNavigator: true,
-                                              builder: (BuildContext context) {
-                                                return Column(
-                                                  children: [
-                                                    const SizedBox(height: 24),
-                                                    SvgPicture.asset(
-                                                      "assets/images/line.svg",
-                                                      width: 80,
-                                                      height: 4,
-                                                      color: C.dark2,
-                                                    ),
-                                                    const Padding(
-                                                      padding: EdgeInsets.only(
-                                                          bottom: 8),
-                                                      child: Poppins(
-                                                          text:
-                                                              "Pick to Suggest Items",
-                                                          size: 18,
-                                                          color: C.dark1,
-                                                          fontWeight: FW.bold),
-                                                    ),
-                                                    const Divider(
-                                                        color:
-                                                            C.boderAddPhotos),
-                                                    Expanded(
-                                                        child: ListView.builder(
-                                                            shrinkWrap: true,
-                                                            itemCount:
-                                                                _postDetail!
-                                                                    .images!
-                                                                    .length,
-                                                            itemBuilder:
-                                                                (BuildContext
-                                                                        context,
-                                                                    int index) {
-                                                              return ListTile(
-                                                                title: Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      left: 15,
-                                                                      right:
-                                                                          15),
-                                                                  child:
-                                                                      Container(
-                                                                    margin: const EdgeInsets
-                                                                            .symmetric(
-                                                                        vertical:
-                                                                            10.0),
-                                                                    child: Row(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: <
-                                                                          Widget>[
-                                                                        Container(
-                                                                          margin:
-                                                                              const EdgeInsets.only(right: 16.0),
-                                                                          child:
-                                                                              CircleAvatar(
-                                                                            backgroundImage:
-                                                                                NetworkImage(_postDetail!.images![index]),
-                                                                          ),
-                                                                        ),
-                                                                        Expanded(
-                                                                          child:
-                                                                              Column(
-                                                                            crossAxisAlignment:
-                                                                                CrossAxisAlignment.start,
-                                                                            children: <Widget>[
-                                                                              Row(
-                                                                                children: [
-                                                                                  Poppins(overflow: false, text: 'Photo ${index + 1}', size: 16, color: C.dark2, fontWeight: FW.bold),
-                                                                                  const SizedBox(
-                                                                                    width: 4,
-                                                                                  ),
-                                                                                  Expanded(child: Container()),
-                                                                                  GestureDetector(
-                                                                                    onTap: () {},
-                                                                                    child: Container(
-                                                                                      decoration: BoxDecoration(
-                                                                                        borderRadius: BorderRadius.circular(20),
-                                                                                        color: C.secondaryDefault,
-                                                                                      ),
-                                                                                      width: 70,
-                                                                                      height: 24,
-                                                                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-                                                                                      child: const Center(
-                                                                                        child: Poppins(overflow: false, text: 'Pick', size: 14, color: C.dark2, fontWeight: FW.bold),
-                                                                                      ),
-                                                                                    ),
-                                                                                  )
-                                                                                ],
-                                                                              ),
-                                                                              Container(
-                                                                                margin: const EdgeInsets.only(top: 5.0),
-                                                                                child: const Poppins(overflow: false, text: 'Pick to suggest item', size: 12, color: C.dark1, fontWeight: FW.regular),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            }))
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                          child: Container(
-                                            padding:
-                                                const EdgeInsets.only(left: 12),
-                                            decoration: BoxDecoration(
-                                              color: C.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                            ),
-                                            child: SvgPicture.asset(
-                                              'assets/images/laundry.svg',
-                                              width: 24,
-                                              height: 24,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
+                                      ],
+                                    ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.only(left: 16),
+                                    child: const Poppins(
+                                      overflow: false,
+                                      text: 'Related Post',
+                                      size: 14,
+                                      color: C.dark3,
+                                      fontWeight: FW.bold,
+                                    ),
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16),
-                                        child: Poppins(
-                                            overflow: false,
-                                            text: _postDetail!.title!,
-                                            size: 18,
-                                            color: C.dark2,
-                                            fontWeight: FW.bold),
-                                      ),
-                                      const SizedBox(
-                                        width: 4,
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16),
-                                        margin: const EdgeInsets.only(top: 5.0),
-                                        child: Poppins(
-                                          overflow: false,
-                                          text: _postDetail!.desc!,
-                                          size: 14,
-                                          color: C.dark1,
-                                          fontWeight: FW.regular,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16),
-                                        child: Wrap(
-                                            children: _postDetail!.tags!
-                                                .map(
-                                                  (val) => Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 4,
-                                                            right: 4),
-                                                    child: Container(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 2,
-                                                          horizontal: 8),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                        color:
-                                                            C.secondaryDefault,
-                                                      ),
-                                                      height: 24,
-                                                      child: Poppins(
-                                                        overflow: false,
-                                                        text: '#${val}',
-                                                        size: 14,
-                                                        color: C.dark3,
-                                                        fontWeight: FW.regular,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                                .toList()),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 12, horizontal: 16),
-                                        child: Poppins(
-                                          overflow: false,
-                                          text: '${month} ${date}',
-                                          size: 12,
-                                          color: C.dark3,
-                                          fontWeight: FW.bold,
-                                        ),
-                                      ),
-                                      const Divider(
-                                        color: C.boderAddPhotos,
-                                        thickness: 1,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context,
-                                                  rootNavigator: true)
-                                              .push(
-                                            createTransitionRoute(
-                                                ViewComment(), 1, 0),
-                                          );
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.centerRight,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16),
-                                          child: Poppins(
-                                            overflow: false,
-                                            text: _postDetail!.numComment! > 0
-                                                ? 'View all ${_postDetail!.numComment} comments'
-                                                : "No comment",
-                                            size: 14,
-                                            color: C.dark3,
-                                            fontWeight: FW.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          Container(
-                                            padding: EdgeInsets.only(
-                                                left: 16, right: 10),
-                                            alignment: Alignment.centerLeft,
-                                            child: const Poppins(
-                                              text: 'K.Payongdech',
-                                              size: 12,
-                                              color: C.dark3,
-                                              fontWeight: FW.bold,
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              padding:
-                                                  EdgeInsets.only(right: 12),
-                                              alignment: Alignment.centerRight,
-                                              child: const Poppins(
-                                                text:
-                                                    'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
-                                                size: 16,
-                                                color: C.dark3,
-                                                fontWeight: FW.regular,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 4,
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          Container(
-                                            padding: EdgeInsets.only(
-                                                left: 16, right: 10),
-                                            alignment: Alignment.centerLeft,
-                                            child: const Poppins(
-                                              text: 'K.Payongdech',
-                                              size: 12,
-                                              color: C.dark3,
-                                              fontWeight: FW.bold,
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              padding:
-                                                  EdgeInsets.only(right: 12),
-                                              alignment: Alignment.centerRight,
-                                              child: const Poppins(
-                                                text:
-                                                    'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
-                                                size: 16,
-                                                color: C.dark3,
-                                                fontWeight: FW.regular,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 26,
-                                      ),
-                                    ],
+                                  const Divider(
+                                    color: C.boderAddPhotos,
+                                    thickness: 1,
                                   ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 13),
+                                    child: isLoading == true
+                                        ? Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 30),
+                                              child: Image.asset(
+                                                "assets/images/loading.gif",
+                                                height: 45,
+                                                width: 45,
+                                              ),
+                                            ),
+                                          )
+                                        : GridView.builder(
+                                            shrinkWrap: true,
+                                            primary: false,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            gridDelegate:
+                                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                                    maxCrossAxisExtent: 200,
+                                                    mainAxisExtent: 298,
+                                                    crossAxisSpacing: 6,
+                                                    mainAxisSpacing: 6),
+                                            itemCount: data.length,
+                                            itemBuilder:
+                                                (BuildContext context, index) {
+                                              return ShowPost(
+                                                  topic: data[index]["title"],
+                                                  name: data[index]["name"],
+                                                  imgAcc: data[index]
+                                                      ["imgAuthor"],
+                                                  imgPath: data[index]["images"]
+                                                      [0],
+                                                  isLiked: data[index]
+                                                      ["isLiked"],
+                                                  block_id: data[index]["id"],
+                                                  author_id: data[index]
+                                                      [" author_id"],
+                                                  tags: data[index]["tags"],
+                                                  author_username: data[index]
+                                                      ["username"],
+                                                  imgAuthor: data[index]
+                                                      ["imgAuthor"]);
+                                            },
+                                          ),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  )
                                 ],
                               ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(left: 16),
-                              child: const Poppins(
-                                overflow: false,
-                                text: 'Related Post',
-                                size: 14,
-                                color: C.dark3,
-                                fontWeight: FW.bold,
-                              ),
-                            ),
-                            const Divider(
-                              color: C.boderAddPhotos,
-                              thickness: 1,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 13),
-                              child: isLoading == true
-                                  ? Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 30),
-                                        child: Image.asset(
-                                          "assets/images/loading.gif",
-                                          height: 45,
-                                          width: 45,
-                                        ),
-                                      ),
-                                    )
-                                  : GridView.builder(
-                                      shrinkWrap: true,
-                                      primary: false,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      gridDelegate:
-                                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                                              maxCrossAxisExtent: 200,
-                                              mainAxisExtent: 298,
-                                              crossAxisSpacing: 6,
-                                              mainAxisSpacing: 6),
-                                      itemCount: data.length,
-                                      itemBuilder:
-                                          (BuildContext context, index) {
-                                        return ShowPost(
-                                            topic: data[index]["title"],
-                                            name: data[index]["name"],
-                                            imgAcc: data[index]["imgAuthor"],
-                                            imgPath: data[index]["images"][0],
-                                            isLiked: data[index]["isLiked"],
-                                            block_id: data[index]["id"],
-                                            author_id: data[index]
-                                                [" author_id"],
-                                            tags: data[index]["tags"],
-                                            author_username: data[index]
-                                                ["username"],
-                                            imgAuthor: data[index]
-                                                ["imgAuthor"]);
-                                      },
-                                    ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            )
-                          ],
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  )
+                      )
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -892,12 +956,7 @@ class _ViewPostState extends State<ViewPost> {
                       ),
                       Container(),
                     ],
-                  )
-
-            //      isDeleted == false
-            //         ?
-
-            ),
+                  )),
       ),
     );
   }
@@ -906,8 +965,11 @@ class _ViewPostState extends State<ViewPost> {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? user_id = prefs.getString('user_id');
+      setState(() {
+        data.clear();
+      });
       var url =
-          '${Url.baseurl}/blocks/related?tags=${widget.tags}&user_id=${user_id}';
+          '${Url.baseurl}/blocks/related/${widget.block_id}?tags=${widget.tags}&user_id=${user_id}';
 
       var response = await http.get(
         Uri.parse(url),
@@ -915,8 +977,9 @@ class _ViewPostState extends State<ViewPost> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var _data = convert.jsonDecode(response.body);
-        data = [];
+
         (_data["data"] as List).map((e) => data.add(e)).toList();
+        print(data);
 
         setState(() {
           isLoading = false;

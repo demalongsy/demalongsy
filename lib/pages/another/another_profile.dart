@@ -1,17 +1,14 @@
 import 'package:demalongsy/base_URL/url.dart';
-import 'package:demalongsy/pages/another/another_fav.dart';
-import 'package:demalongsy/pages/another/another_post.dart';
+import 'package:demalongsy/widget/showposts.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:demalongsy/pages/profile/post.dart';
 import 'package:demalongsy/pages/auth/login.dart';
 import 'package:demalongsy/pages/profile/policy.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/pages/profile/feedback.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/pages/profile/edit_profile.dart';
-import 'package:demalongsy/pages/profile/favorite_post.dart';
 import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
@@ -24,21 +21,27 @@ class AnotherProfile extends StatefulWidget {
   final bool? isRootPage;
   final bool? isOwner;
   final String another_username;
+  final String another_id;
 
   const AnotherProfile(
       {Key? key,
       this.isRootPage,
       this.isOwner = false,
-      required this.another_username})
+      required this.another_username,
+      required this.another_id})
       : super(key: key);
   @override
   _AnotherProfile createState() => _AnotherProfile();
 }
 
 class _AnotherProfile extends State<AnotherProfile> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
   bool isPoptoRoot = false;
   bool isLoading = true;
   ProfileApi? _data;
+  List<Map<String, dynamic>> allPost = [];
+  List<Map<String, dynamic>> dataLikedPosts = [];
 
   Future<void> _getData() async {
     try {
@@ -57,21 +60,80 @@ class _AnotherProfile extends State<AnotherProfile> {
       var response = await http.get(Uri.parse(url), headers: header);
 
       _data = profileApiFromJson(response.body);
-
-      setState(() {
-        isLoading = false;
-      });
     } catch (e) {
       print(e);
       isLoading = false;
     }
   }
 
+  Future<void> _getDataPost() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? user_id = prefs.getString('user_id');
+
+    setState(() {
+      allPost.clear();
+    });
+
+    var url =
+        '${Url.baseurl}/profile/viewprofile/post?user_id=${user_id}&another_id=${widget.another_id}';
+
+    var response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var _data = convert.jsonDecode(response.body);
+
+      (_data["data"] as List).map((e) => allPost.add(e)).toList();
+    } else {
+      print('err ==> ${response.statusCode}');
+    }
+  }
+
+  Future<void> _getDataLikedPosts() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? user_id = prefs.getString('user_id');
+
+    setState(() {
+      dataLikedPosts.clear();
+    });
+
+    var url =
+        '${Url.baseurl}/profile/viewprofile/liked?user_id=${user_id}&another_id=${widget.another_id}';
+
+    var response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var _data = convert.jsonDecode(response.body);
+
+      (_data["data"] as List).map((e) => dataLikedPosts.add(e)).toList();
+
+      setState(() {
+        isLoading = false;
+      });
+    } else {
+      print('err ==> ${response.statusCode}');
+    }
+  }
+
+  Future<void> _refresh() async {
+    await _getData();
+    await _getDataPost();
+    await _getDataLikedPosts();
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   void initState() {
-    _getData();
+    _refresh();
+    setState(() {});
     // TODO: implement initState
     super.initState();
+  }
+
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -119,62 +181,122 @@ class _AnotherProfile extends State<AnotherProfile> {
         ),
         body: isLoading
             ? Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: Image.asset(
-                    "assets/images/loading.gif",
-                    height: 45,
-                    width: 45,
-                  ),
+                child: Image.asset(
+                  "assets/images/loading.gif",
+                  height: 48,
+                  width: 48,
                 ),
               )
-            : DefaultTabController(
-                length: 2,
-                child: ExtendedNestedScrollView(
-                  onlyOneScrollInBody: true,
-                  headerSliverBuilder: (context, _) {
-                    return [
-                      SliverList(
-                        delegate: SliverChildListDelegate(
-                          [
-                            profileHeaderWidget(context),
-                          ],
-                        ),
-                      ),
-                      const SliverAppBar(
-                        elevation: 0,
-                        backgroundColor: C.white,
-                        pinned: true,
-                        primary: false,
-                        toolbarHeight: 0,
-                        bottom: TabBar(
-                          indicator: UnderlineTabIndicator(
-                            borderSide: BorderSide(width: 2.0),
-                            insets: EdgeInsets.symmetric(horizontal: 80.0),
+            : RefreshIndicator(
+                color: C.primaryDefault,
+                backgroundColor: C.white,
+                key: _refreshIndicatorKey,
+                onRefresh: _refresh,
+                child: DefaultTabController(
+                  length: 2,
+                  child: ExtendedNestedScrollView(
+                    onlyOneScrollInBody: true,
+                    headerSliverBuilder: (context, _) {
+                      return [
+                        SliverList(
+                          delegate: SliverChildListDelegate(
+                            [
+                              profileHeaderWidget(context),
+                            ],
                           ),
-                          tabs: [
-                            Tab(
-                              icon: Icon(
-                                Icons.window,
-                                color: C.dark1,
-                              ),
-                            ),
-                            Tab(
-                              icon: Icon(
-                                Icons.favorite_border_rounded,
-                                color: Colors.black,
-                              ),
-                            )
-                          ],
                         ),
-                      )
-                    ];
-                  },
-                  body: TabBarView(
-                    children: [
-                      AnotherPost(another_id: _data!.userId!),
-                      AnotherFavorite(another_id: _data!.userId!)
-                    ],
+                        const SliverAppBar(
+                          elevation: 0,
+                          backgroundColor: C.white,
+                          pinned: true,
+                          primary: false,
+                          toolbarHeight: 0,
+                          bottom: TabBar(
+                            indicator: UnderlineTabIndicator(
+                              borderSide: BorderSide(width: 2.0),
+                              insets: EdgeInsets.symmetric(horizontal: 80.0),
+                            ),
+                            tabs: [
+                              Tab(
+                                icon: Icon(
+                                  Icons.window,
+                                  color: C.dark1,
+                                ),
+                              ),
+                              Tab(
+                                icon: Icon(
+                                  Icons.favorite_border_rounded,
+                                  color: Colors.black,
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ];
+                    },
+                    body: TabBarView(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            primary: false,
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: 200,
+                                    mainAxisExtent: 298,
+                                    crossAxisSpacing: 6,
+                                    mainAxisSpacing: 6),
+                            itemCount: allPost.length,
+                            itemBuilder: (BuildContext context, index) {
+                              return ShowPost(
+                                  topic: allPost[index]["title"],
+                                  name: allPost[index]["name"],
+                                  imgAcc: allPost[index]["imgAuthor"],
+                                  imgPath: allPost[index]["images"][0],
+                                  isLiked: allPost[index]["isLiked"],
+                                  block_id: allPost[index]["id"],
+                                  author_id: allPost[index][" author_id"],
+                                  tags: allPost[index]["tags"],
+                                  author_username: allPost[index]["username"],
+                                  imgAuthor: allPost[index]["imgAuthor"]);
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            primary: false,
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: 200,
+                                    mainAxisExtent: 298,
+                                    crossAxisSpacing: 6,
+                                    mainAxisSpacing: 6),
+                            itemCount: dataLikedPosts.length,
+                            itemBuilder: (BuildContext context, index) {
+                              return ShowPost(
+                                  topic: dataLikedPosts[index]["title"],
+                                  name: dataLikedPosts[index]["name"],
+                                  imgAcc: dataLikedPosts[index]["imgAuthor"],
+                                  imgPath: dataLikedPosts[index]["images"][0],
+                                  isLiked: dataLikedPosts[index]["isLiked"],
+                                  block_id: dataLikedPosts[index]["id"],
+                                  author_id: dataLikedPosts[index]
+                                      [" author_id"],
+                                  tags: dataLikedPosts[index]["tags"],
+                                  author_username: dataLikedPosts[index]
+                                      ["username"],
+                                  imgAuthor: dataLikedPosts[index]
+                                      ["imgAuthor"]);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
