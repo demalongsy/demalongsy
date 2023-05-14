@@ -1,18 +1,21 @@
-import 'dart:math';
-import 'package:demalongsy/custom/key/navigate.dart';
-import 'package:demalongsy/models/account_data.dart';
-import 'package:demalongsy/pages/navbar.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:demalongsy/base_URL/url.dart';
+import 'package:demalongsy/custom/widget/font.dart';
+import 'package:demalongsy/custom/widget/page_transition.dart';
+import 'package:demalongsy/models/all_posts.dart';
+import 'package:demalongsy/models/all_users.dart';
+import 'package:demalongsy/pages/another/another_profile.dart';
 
+import 'package:demalongsy/pages/post/view_post.dart';
+
+import 'package:demalongsy/widget/showposts.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../custom/toolkit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:demalongsy/pages/search/search_post.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:demalongsy/pages/search/search_account.dart';
-import 'package:demalongsy/custom/widget/component.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class Search extends StatefulWidget {
   final String param;
@@ -27,16 +30,83 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
   String _searchInput = '';
   bool x = false;
 
-  List<Account_data> accounts = Account_list;
   late TabController controller;
+  bool isLoading = true;
   bool checkAllSpaces(String input) {
     String output = input.replaceAll(' ', '');
     return output.isNotEmpty ? true : false;
   }
 
+  Future<List<AllUsers>?> getUserList(String query) async {
+    try {
+      var url = '${Url.baseurl}/profile';
+
+      var response = await http.get(
+        Uri.parse(url),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Map<String, dynamic> _data = convert.jsonDecode(response.body);
+        List results = _data["data"];
+
+        return results.map((e) => AllUsers.fromJson(e)).where((val) {
+          final name = val.name.toString().toLowerCase();
+          return name.contains(query.toLowerCase());
+        }).toList();
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<List<AllPosts>?> getPostList(String query) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? user_id = prefs.getString('user_id');
+
+      var url = '${Url.baseurl}/blocks?user_id=${user_id}';
+
+      var response = await http.get(
+        Uri.parse(url),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Map<String, dynamic> _data = convert.jsonDecode(response.body);
+        List results = _data["data"];
+        String tags = '';
+
+        String inTags = query.replaceAll('#', '');
+
+        return results.map((e) => AllPosts.fromJson(e)).where((val) {
+          tags = '';
+          final postTitle = val.title.toString().toLowerCase();
+          final postDesc = val.desc.toString().toLowerCase();
+          final postName = val.name.toString().toLowerCase();
+          final tag = val.tags!.map((obj) {
+            tags = obj.toString().toLowerCase() + tags;
+
+            return tags;
+          });
+
+          return postTitle.contains(query.toLowerCase()) ||
+              postDesc.contains(query.toLowerCase()) ||
+              postName.contains(query.toLowerCase()) ||
+              tag.contains(inTags.toLowerCase());
+        }).toList();
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+
     setState(() {
       _searchController..text = '${widget.param}';
       _searchInput = widget.param;
@@ -72,11 +142,6 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                         color: C.dark2,
                         size: 16.0,
                       ),
-                      // IconButton(
-                      //   icon: const Icon(Icons.arrow_back_ios_rounded,
-                      //       size: 16.0, color: Colors.black),
-                      //   onPressed: () => Navigator.of(context).pop(),
-                      // ),
                     ),
                   ),
                   Expanded(
@@ -84,13 +149,12 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                       // width: MediaQuery.of(context).size.width,
                       height: 40,
                       child: TextFormField(
-                        onChanged: (value) => setState(() {
-                          _searchInput = value;
-                          x = true;
-                          // if (widget.param.isNotEmpty) {
-                          //   _searchInput = widget.param;
-                          // }
-                        }),
+                        onChanged: (value) {
+                          setState(() {
+                            _searchInput = value;
+                            x = true;
+                          });
+                        },
                         controller: _searchController,
                         decoration: InputDecoration(
                             border: InputBorder.none,
@@ -106,7 +170,6 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                                   BorderSide(width: 1, color: C.infoDefault),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            // contentPadding: EdgeInsets.symmetric(vertical: 36),
                             hintText: 'Search...',
                             hintStyle: TextStyle(
                               color: _searchInput.isNotEmpty
@@ -122,8 +185,6 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                                 'assets/images/search-icon-grey.svg',
                                 alignment: Alignment.center,
                                 fit: BoxFit.fill,
-                                // width: MediaQuery.of(context).size.width,
-                                // height: MediaQuery.of(context).size.height,
                               ),
                             ),
                             suffixIcon: _searchInput.isNotEmpty
@@ -154,19 +215,16 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                 ],
               ),
               TabBar(
-                // controller: controller,
                 labelColor: Colors.black,
-                // labelPadding: const EdgeInsets.symmetric(horizontal: 2),
-                indicator: UnderlineTabIndicator(
+                indicator: const UnderlineTabIndicator(
                   borderSide: BorderSide(width: 2.0),
                   insets: EdgeInsets.symmetric(horizontal: 110.0, vertical: 0),
                 ),
                 indicatorColor: C.dark1,
-                labelStyle: TextStyle(fontWeight: FW.bold, fontSize: 14),
+                labelStyle: const TextStyle(fontWeight: FW.bold, fontSize: 14),
                 controller: controller,
                 tabs: const [
                   Tab(
-                    // icon: Icon(Icons.home),
                     text: "Post",
                   ),
                   Tab(
@@ -178,28 +236,103 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
           )),
       body: TabBarView(controller: controller, children: [
         //post
-        SearchPost(),
+        SingleChildScrollView(
+          child: FutureBuilder<List<AllPosts>?>(
+              future: getPostList(_searchInput),
+              builder: (context, snapshot) {
+                var data = snapshot.data;
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: Image.asset(
+                      "assets/images/loading.gif",
+                      height: 48,
+                      width: 48,
+                    ),
+                  );
+                }
+                return Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200,
+                      mainAxisExtent: 298,
+                      crossAxisSpacing: 6,
+                      mainAxisSpacing: 6,
+                    ),
+                    itemCount: data!.length,
+                    itemBuilder: (BuildContext context, index) {
+                      return ShowPost(
+                        topic: data[index].title!,
+                        name: data[index].name!,
+                        imgPath: data[index].images![0],
+                        isLiked: data[index].isLiked!,
+                        block_id: data[index].id!,
+                        author_id: data[index].authorId!,
+                        tags: data[index].tags!,
+                        author_username: data[index].username!,
+                        imgAuthor: data[index].imgAuthor!,
+                      );
+                    },
+                  ),
+                );
+              }),
+        ),
         //account
-        SearchAccount()
+        SingleChildScrollView(
+          child: FutureBuilder<List<AllUsers>?>(
+              future: getUserList(_searchInput),
+              builder: (context, snapshot) {
+                var data = snapshot.data;
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: Image.asset(
+                      "assets/images/loading.gif",
+                      height: 48,
+                      width: 48,
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: data!.length,
+                  itemBuilder: ((context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: ListTile(
+                        leading: Container(
+                          width: 50,
+                          height: 50,
+                          child: CircleAvatar(
+                            radius: 50.0,
+                            backgroundImage: NetworkImage(data[index].images ??
+                                "https://img.freepik.com/free-icon/user_318-159711.jpg"),
+                          ),
+                        ),
+                        title: Poppins(
+                            text: '${data[index].name}',
+                            size: 14,
+                            color: C.dark1,
+                            fontWeight: FW.bold),
+                        onTap: () {
+                          Navigator.of(context, rootNavigator: false).push(
+                              createTransitionRoute(
+                                  AnotherProfile(
+                                      another_username: data[index].username!,
+                                      another_id: data[index].id!),
+                                  1,
+                                  0));
+                        },
+                      ),
+                    );
+                  }),
+                );
+              }),
+        ),
       ]),
     );
-  }
-
-  void searchAccount(String query) {
-    final suggesttions = Account_list.where((account) {
-      final accountTitle = account.title.toLowerCase();
-      final input = query.toLowerCase();
-      return accountTitle.contains(input);
-    }).toList();
-    setState(() => accounts = suggesttions);
-  }
-}
-
-class ScaleSize {
-  static double textScaleFactor(BuildContext context,
-      {double maxTextScaleFactor = 2}) {
-    final width = MediaQuery.of(context).size.width;
-    double val = (width / 1400) * maxTextScaleFactor;
-    return max(1, min(val, maxTextScaleFactor));
   }
 }

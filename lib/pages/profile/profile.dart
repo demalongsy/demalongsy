@@ -500,7 +500,6 @@ class _Profile extends State<Profile> {
                                   return ShowPost(
                                       topic: allPost[index]["title"],
                                       name: allPost[index]["name"],
-                                      imgAcc: allPost[index]["imgAuthor"],
                                       imgPath: allPost[index]["images"][0],
                                       isLiked: allPost[index]["isLiked"],
                                       block_id: allPost[index]["id"],
@@ -529,8 +528,6 @@ class _Profile extends State<Profile> {
                                   return ShowPost(
                                       topic: dataLikedPosts[index]["title"],
                                       name: dataLikedPosts[index]["name"],
-                                      imgAcc: dataLikedPosts[index]
-                                          ["imgAuthor"],
                                       imgPath: dataLikedPosts[index]["images"]
                                           [0],
                                       isLiked: dataLikedPosts[index]["isLiked"],

@@ -41,6 +41,7 @@ class _ViewPostState extends State<ViewPost> {
       GlobalKey<RefreshIndicatorState>();
   ViewPostDetail? _postDetail;
   List<Map<String, dynamic>> data = [];
+  List<Map<String, dynamic>> filedata = [];
   bool isLoading = true;
   bool isLoadingPost = true;
   int numLiked = 0;
@@ -55,6 +56,7 @@ class _ViewPostState extends State<ViewPost> {
   Future<void> _refresh() async {
     await _getData();
     await _getPostDetail();
+    await _getComments();
 
     setState(() {
       isLoading = false;
@@ -303,9 +305,7 @@ class _ViewPostState extends State<ViewPost> {
                                         Stack(
                                           children: [
                                             InkWell(
-                                              onTap: () {
-                                                print(currentIndex);
-                                              },
+                                              onTap: () {},
                                               child: Container(
                                                 // height: 460,
                                                 child: CarouselSlider(
@@ -490,18 +490,19 @@ class _ViewPostState extends State<ViewPost> {
                                                           .push(
                                                             createTransitionRoute(
                                                                 ViewComment(
-                                                                    block_id: widget
-                                                                        .block_id,
-                                                                    imgAuthor:
-                                                                        widget
-                                                                            .imgAuthor,
-                                                                    name: _postDetail!
-                                                                        .name!),
+                                                                  block_id: widget
+                                                                      .block_id,
+                                                                  imgAuthor: widget
+                                                                      .imgAuthor,
+                                                                  name:
+                                                                      _postDetail!
+                                                                          .name!,
+                                                                ),
                                                                 1,
                                                                 0),
                                                           )
                                                           .then((val) => val
-                                                              ? _getPostDetail()
+                                                              ? _refresh()
                                                               : null);
                                                     },
                                                     child: Container(
@@ -783,7 +784,7 @@ class _ViewPostState extends State<ViewPost> {
                                                                 0),
                                                           )
                                                           .then((val) => val
-                                                              ? _getPostDetail()
+                                                              ? _refresh()
                                                               : null);
                                                     }),
                                                     child: Column(
@@ -813,51 +814,64 @@ class _ViewPostState extends State<ViewPost> {
                                                         const SizedBox(
                                                           height: 16,
                                                         ),
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Container(
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      left: 16,
-                                                                      right:
-                                                                          10),
-                                                              alignment: Alignment
-                                                                  .centerLeft,
-                                                              child:
-                                                                  const Poppins(
-                                                                text:
-                                                                    'K.Payongdech',
-                                                                size: 12,
-                                                                color: C.dark3,
-                                                                fontWeight:
-                                                                    FW.bold,
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Container(
-                                                                padding: EdgeInsets
-                                                                    .only(
+                                                        ListView.builder(
+                                                            shrinkWrap: true,
+                                                            physics:
+                                                                NeverScrollableScrollPhysics(),
+                                                            itemCount:
+                                                                filedata.length >
+                                                                        4
+                                                                    ? 3
+                                                                    : filedata
+                                                                        .length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              return Row(
+                                                                children: <
+                                                                    Widget>[
+                                                                  Container(
+                                                                    padding: EdgeInsets.only(
+                                                                        left:
+                                                                            16,
                                                                         right:
-                                                                            12),
-                                                                alignment: Alignment
-                                                                    .centerRight,
-                                                                child:
-                                                                    const Poppins(
-                                                                  text:
-                                                                      'เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16',
-                                                                  size: 16,
-                                                                  color:
-                                                                      C.dark3,
-                                                                  fontWeight: FW
-                                                                      .regular,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 4,
-                                                        ),
+                                                                            10),
+                                                                    child:
+                                                                        Poppins(
+                                                                      text: filedata[
+                                                                              index]
+                                                                          [
+                                                                          'name'],
+                                                                      size: 12,
+                                                                      color: C
+                                                                          .dark3,
+                                                                      fontWeight:
+                                                                          FW.bold,
+                                                                    ),
+                                                                  ),
+                                                                  Expanded(
+                                                                    child:
+                                                                        Container(
+                                                                      padding: EdgeInsets.only(
+                                                                          right:
+                                                                              12),
+                                                                      child:
+                                                                          Poppins(
+                                                                        text: filedata[index]
+                                                                            [
+                                                                            'desc'],
+                                                                        size:
+                                                                            14,
+                                                                        color: C
+                                                                            .dark3,
+                                                                        fontWeight:
+                                                                            FW.regular,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            }),
                                                       ],
                                                     ),
                                                   )
@@ -866,6 +880,7 @@ class _ViewPostState extends State<ViewPost> {
                                         ),
                                       ],
                                     ),
+                              SizedBox(height: 16),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -918,8 +933,6 @@ class _ViewPostState extends State<ViewPost> {
                                               return ShowPost(
                                                   topic: data[index]["title"],
                                                   name: data[index]["name"],
-                                                  imgAcc: data[index]
-                                                      ["imgAuthor"],
                                                   imgPath: data[index]["images"]
                                                       [0],
                                                   isLiked: data[index]
@@ -986,7 +999,6 @@ class _ViewPostState extends State<ViewPost> {
         var _data = convert.jsonDecode(response.body);
 
         (_data["data"] as List).map((e) => data.add(e)).toList();
-        print(data);
 
         setState(() {
           isLoading = false;
@@ -1053,7 +1065,6 @@ class _ViewPostState extends State<ViewPost> {
                                                     ? 'Nov'
                                                     : 'Dec';
       });
-      _getData();
     } catch (e) {
       print(e);
       isLoadingPost = false;
@@ -1093,7 +1104,6 @@ class _ViewPostState extends State<ViewPost> {
       final String? token = prefs.getString('token');
       var url =
           '${Url.baseurl}/profile/liked/?block_id=${widget.block_id}&user_id=${user_id}';
-      print(url);
 
       Map<String, String> header = {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -1119,7 +1129,6 @@ class _ViewPostState extends State<ViewPost> {
       final String? token = prefs.getString('token');
       var url =
           '${Url.baseurl}/profile/unliked/?block_id=${widget.block_id}&user_id=${user_id}';
-      print(url);
 
       Map<String, String> header = {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -1135,6 +1144,41 @@ class _ViewPostState extends State<ViewPost> {
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  Future<void> _getComments() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? username = prefs.getString('username');
+
+      final String? token = prefs.getString('token');
+
+      var url = '${Url.baseurl}/comment/viewcomment/${widget.block_id}';
+
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      };
+
+      var response = await http.get(Uri.parse(url), headers: header);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var _data = convert.jsonDecode(response.body);
+        setState(() {
+          filedata.clear();
+        });
+
+        (_data["data"] as List).map((e) => filedata.add(e)).toList();
+
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 }

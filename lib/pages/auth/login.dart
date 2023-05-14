@@ -1,3 +1,4 @@
+import 'package:demalongsy/base_URL/url.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/pages/navbar.dart';
 import 'package:demalongsy/pages/auth/signup.dart';
@@ -8,6 +9,9 @@ import 'package:demalongsy/custom/widget/component.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -22,6 +26,7 @@ class _LoginState extends State<Login> {
   String _usr = '';
   String _pwd = '';
   bool invisible = true;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -211,10 +216,18 @@ class _LoginState extends State<Login> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         child: GestureDetector(
-                          onTap: () {
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (context) =>  Navbar()));
-                            // FocusScope.of(context).unfocus();
+                          onTap: () async {
+                            Map<String, String> body = {
+                              "username": _usrnameController.text,
+                              "password": _pwdController.text,
+                            };
+                            await _logIn(body);
+
+                            if (isLoading) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Navbar()));
+                              FocusScope.of(context).unfocus();
+                            }
                           },
                           child: const Button(
                             text: "Sign In",
@@ -317,5 +330,35 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  _logIn(Map<String, String> body) async {
+    try {
+      var url = '${Url.baseurl}/auth/login';
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8'
+      };
+
+      var response = await http.post(Uri.parse(url),
+          headers: header, body: convert.jsonEncode(body));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = convert.jsonDecode(response.body);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', result["token"]);
+        await prefs.setString('user_id', result["user_id"]);
+        await prefs.setString('username', _usrnameController.text);
+
+        if (result["msg"] == 'success') {
+          setState(() {
+            isLoading = true;
+          });
+        }
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

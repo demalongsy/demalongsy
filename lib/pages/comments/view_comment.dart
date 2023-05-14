@@ -3,6 +3,7 @@ import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
+import 'package:demalongsy/models/profile_model.dart';
 import 'package:demalongsy/models/view_post.dart';
 import 'package:demalongsy/pages/another/another_profile.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -33,15 +34,36 @@ class _CommentState extends State<ViewComment> {
   String? comment_msg = '';
   ViewPostDetail? _postDetail;
   List<Map<String, dynamic>> filedata = [];
+  ProfileApi? _data;
   bool isLoading = true;
   bool isLoadingPost = true;
   String date = '';
   String month = '';
   String? username = '';
   String? user_id = '';
+  bool isLoadingProfile = true;
   bool checkAllSpaces(String input) {
     String output = input.replaceAll(' ', '');
     return output.isNotEmpty ? true : false;
+  }
+
+  Future<ProfileApi?> _getDataProfile() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? username = prefs.getString('username');
+
+      var url = '${Url.baseurl}/profile/${username}';
+
+      var response = await http.get(Uri.parse(url));
+
+      _data = profileApiFromJson(response.body);
+      setState(() {
+        isLoadingProfile = true;
+      });
+    } catch (e) {
+      print(e);
+      isLoadingProfile = false;
+    }
   }
 
   Future<void> _getPostDetail() async {
@@ -108,6 +130,7 @@ class _CommentState extends State<ViewComment> {
   void initState() {
     _getData();
     _getPostDetail();
+    _getDataProfile();
     setState(() {});
     // TODO: implement initState
     super.initState();
@@ -318,7 +341,11 @@ class _CommentState extends State<ViewComment> {
                 color: Colors.blue,
                 borderRadius: BorderRadius.all(Radius.circular(50))),
             child: CircleAvatar(
-                radius: 50, backgroundImage: NetworkImage(widget.imgAuthor)),
+                radius: 50,
+                backgroundImage: NetworkImage(isLoadingProfile
+                    ? "https://img.freepik.com/free-icon/user_318-159711.jpg"
+                    : _data!.img ??
+                        "https://img.freepik.com/free-icon/user_318-159711.jpg")),
           ),
           title: Form(
             key: formKey,
@@ -358,23 +385,26 @@ class _CommentState extends State<ViewComment> {
                           _postDetail!.username! == username ? true : false,
                       "desc": commentController.text,
                       "author_id": user_id,
-                      "name": widget.name,
-                      "username": username,
-                      "imgAuthor": widget.imgAuthor ??
+                      "name": _data!.name,
+                      "username": _data!.username,
+                      "imgAuthor": _data!.img ??
                           "https://img.freepik.com/free-icon/user_318-159711.jpg"
                     };
                     _sentComments(body);
                     if (formKey.currentState!.validate()) {
                       setState(() {
                         var value = {
-                          'name': widget.name,
-                          'username': username,
-                          'imgAuthor': widget.imgAuthor,
+                          'name': _data!.name,
+                          'username': _data!.username,
+                          'imgAuthor': _data!.img ??
+                              "https://img.freepik.com/free-icon/user_318-159711.jpg",
                           'desc': commentController.text,
                           'date':
                               "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}",
                           'isOwnerPost':
-                              _postDetail!.username! == username ? true : false
+                              _postDetail!.username! == _data!.username
+                                  ? true
+                                  : false
                         };
                         filedata.insert(0, value);
                         comment_msg = '';

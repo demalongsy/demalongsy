@@ -1,19 +1,15 @@
 import 'dart:math';
 import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
-import 'package:demalongsy/models/account_data.dart';
 import 'package:demalongsy/pages/navbar.dart';
 import 'package:demalongsy/pages/search/search.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../custom/toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:demalongsy/pages/search/search_post.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:demalongsy/pages/search/search_account.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 
 class SearchFirstPage extends StatefulWidget {
@@ -30,7 +26,6 @@ class _SearchState extends State<SearchFirstPage>
   String _searchInput = '';
   bool x = false;
 
-  List<Account_data> accounts = Account_list;
   late TabController controller;
   bool checkAllSpaces(String input) {
     String output = input.replaceAll(' ', '');

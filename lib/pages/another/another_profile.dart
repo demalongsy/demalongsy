@@ -240,6 +240,7 @@ class _AnotherProfile extends State<AnotherProfile> {
                           padding: const EdgeInsets.all(10.0),
                           child: GridView.builder(
                             shrinkWrap: true,
+                            primary: false,
                             physics: NeverScrollableScrollPhysics(),
                             gridDelegate:
                                 const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -252,7 +253,6 @@ class _AnotherProfile extends State<AnotherProfile> {
                               return ShowPost(
                                   topic: allPost[index]["title"],
                                   name: allPost[index]["name"],
-                                  imgAcc: allPost[index]["imgAuthor"],
                                   imgPath: allPost[index]["images"][0],
                                   isLiked: allPost[index]["isLiked"],
                                   block_id: allPost[index]["id"],
@@ -267,6 +267,7 @@ class _AnotherProfile extends State<AnotherProfile> {
                           padding: const EdgeInsets.all(10.0),
                           child: GridView.builder(
                             shrinkWrap: true,
+                            primary: false,
                             physics: NeverScrollableScrollPhysics(),
                             gridDelegate:
                                 const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -279,7 +280,6 @@ class _AnotherProfile extends State<AnotherProfile> {
                               return ShowPost(
                                   topic: dataLikedPosts[index]["title"],
                                   name: dataLikedPosts[index]["name"],
-                                  imgAcc: dataLikedPosts[index]["imgAuthor"],
                                   imgPath: dataLikedPosts[index]["images"][0],
                                   isLiked: dataLikedPosts[index]["isLiked"],
                                   block_id: dataLikedPosts[index]["id"],

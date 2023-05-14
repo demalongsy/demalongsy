@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ShowPost extends StatefulWidget {
   final String topic;
   final String name;
-  final String imgAcc;
+
   final String imgPath;
   final bool isLiked;
   final String block_id;
@@ -25,7 +25,6 @@ class ShowPost extends StatefulWidget {
       {Key? key,
       required this.topic,
       required this.name,
-      required this.imgAcc,
       required this.imgPath,
       required this.isLiked,
       required this.block_id,
@@ -113,7 +112,7 @@ class _ShowPostState extends State<ShowPost> {
                     CircleAvatar(
                       radius: 10,
                       backgroundColor: Color(0xff74EDED),
-                      backgroundImage: NetworkImage(widget.imgAcc),
+                      backgroundImage: NetworkImage(widget.imgAuthor),
                     ),
                     const SizedBox(
                       width: 5,
