@@ -1,6 +1,7 @@
 import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/pages/search/search_first_page.dart';
 import 'package:demalongsy/pages/search_similar/search_style.dart';
+import 'package:demalongsy/pages/search_similar/suggest_style.dart';
 
 import '../custom/toolkit.dart';
 import 'package:flutter/material.dart';
@@ -45,15 +46,11 @@ class _NavbarState extends State<Navbar> {
                   isRootPage: true,
                 ),
               );
-
             case 2:
               return CupertinoTabView(
                 navigatorKey: thirdTabNavKey,
-                builder: (BuildContext context) => const SearchStyle(
-                  isRootPage: true,
-                ),
+                builder: (BuildContext context) => SuggestStylePage(),
               );
-
             case 3:
               return CupertinoTabView(
                 navigatorKey: forthTabNavKey,
