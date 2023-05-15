@@ -83,9 +83,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               checkAllSpaces(_bioInput) ||
                               image != null
                           ? GestureDetector(
-                              onTap: () {
-                                print(_nameInput);
-                              },
+                              onTap: () {},
                               child: const Poppins(
                                 text: "Save",
                                 size: 16,

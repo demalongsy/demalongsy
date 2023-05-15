@@ -5,7 +5,7 @@ import 'package:demalongsy/pages/auth/login.dart';
 import 'package:demalongsy/pages/navbar.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

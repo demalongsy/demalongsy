@@ -515,7 +515,6 @@ class _Profile extends State<Profile> {
                               padding: const EdgeInsets.all(10.0),
                               child: GridView.builder(
                                 shrinkWrap: true,
-                                primary: false,
                                 physics: NeverScrollableScrollPhysics(),
                                 gridDelegate:
                                     const SliverGridDelegateWithMaxCrossAxisExtent(

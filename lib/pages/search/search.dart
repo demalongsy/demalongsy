@@ -86,14 +86,13 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
           final postName = val.name.toString().toLowerCase();
           final tag = val.tags!.map((obj) {
             tags = obj.toString().toLowerCase() + tags;
-
-            return tags;
           });
+          print(tag);
 
           return postTitle.contains(query.toLowerCase()) ||
               postDesc.contains(query.toLowerCase()) ||
               postName.contains(query.toLowerCase()) ||
-              tag.contains(inTags.toLowerCase());
+              tags.contains(inTags.toLowerCase());
         }).toList();
       } else {
         print('err ==> ${response.statusCode}');
@@ -117,6 +116,12 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
       initialIndex: 0,
       vsync: this,
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
