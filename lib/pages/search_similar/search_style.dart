@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/main.dart';
@@ -43,6 +44,7 @@ class _SearchStylePageState extends State<SearchStylePage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: NavigationService.searchStyleKey,
       home: SafeArea(
         child: Scaffold(
           backgroundColor: C.primaryDefault,
@@ -167,10 +169,18 @@ class _SearchStylePageState extends State<SearchStylePage> {
                                         Future.delayed(Duration(seconds: 5));
                                         // Navigator.of(context).pop();
                                         await takePhoto(ImageSource.gallery);
-                                        Navigator.of(context,
-                                                rootNavigator: true)
-                                            .push(createTransitionRoute(
-                                                SuggestStylePage(), 1, 0));
+                                        if (image!.path != null) {
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .push(createTransitionRoute(
+                                                  SuggestStylePage(
+                                                      image: image!),
+                                                  1,
+                                                  0));
+                                          setState(() {
+                                            image = null;
+                                          });
+                                        }
                                       },
                                     ),
                                     SizedBox(
@@ -196,6 +206,18 @@ class _SearchStylePageState extends State<SearchStylePage> {
                                         Future.delayed(Duration(seconds: 5));
                                         // Navigator.of(context).pop();
                                         await takePhoto(ImageSource.camera);
+                                        if (image!.path != null) {
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .push(createTransitionRoute(
+                                                  SuggestStylePage(
+                                                      image: image!),
+                                                  1,
+                                                  0));
+                                          setState(() {
+                                            image = null;
+                                          });
+                                        }
                                       },
                                     ),
                                   ],

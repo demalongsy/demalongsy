@@ -6,42 +6,38 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:demalongsy/custom/toolkit.dart';
-import 'package:url_launcher/url_launcher.dart';
-// import 'package:url_launcher/url_launcher.dart';
+//import 'package:url_launcher/url_launcher.dart';
+
 import 'package:demalongsy/custom/widget/font.dart';
 
 class SuggestStylePage extends StatefulWidget {
+  final File image;
+  final bool? isformPost;
+  const SuggestStylePage(
+      {Key? key, required this.image, this.isformPost = false})
+      : super(key: key);
   @override
   _SuggestStylePageState createState() => _SuggestStylePageState();
 }
 
 class _SuggestStylePageState extends State<SuggestStylePage> {
   // Image
-  File? image;
 
-  Future takePhoto(ImageSource source) async {
-    try {
-      final _picker = ImagePicker();
-      final image = await _picker.pickImage(source: source);
-      if (image == null) return;
+  @override
+  void initState() {
+    // TODO: implement initState
 
-      final imageTemporary = File(image.path);
-      setState(() {
-        this.image = imageTemporary;
-      });
-    } on PlatformException catch (e) {
-      print('Failed to pick image $e');
-    }
+    super.initState();
   }
 
-  _launchURL() async {
-    const url = 'https://google.com';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  // _launchURL() async {
+  //   const url = 'https://google.com';
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -98,12 +94,16 @@ class _SuggestStylePageState extends State<SuggestStylePage> {
                     height: 200,
                     width: 160,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16.0),
-                      child: Image.network(
-                        "https://s.isanook.com/wo/0/ui/38/190849/277150081_1212531879516407_7579357549109873866_n.jpg?ip/convert/w0/q80/jpg",
-                        // fit: BoxFit.cover,
-                      ),
-                    ),
+                        borderRadius: BorderRadius.circular(16.0),
+                        child: widget.isformPost ?? false
+                            ? Image.network(
+                                "https://s.isanook.com/wo/0/ui/38/190849/277150081_1212531879516407_7579357549109873866_n.jpg?ip/convert/w0/q80/jpg",
+                                // fit: BoxFit.cover,
+                              )
+                            : Image.file(
+                                widget.image,
+                                // fit: BoxFit.cover,
+                              )),
                   ),
                 ),
                 const SizedBox(
@@ -215,7 +215,7 @@ class _SuggestStylePageState extends State<SuggestStylePage> {
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {
-                            _launchURL();
+                            // _launchURL();
                           },
                           child: Container(
                             padding: EdgeInsets.only(right: 10),
