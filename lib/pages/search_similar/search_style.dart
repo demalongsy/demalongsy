@@ -69,9 +69,10 @@ class _SearchStylePageState extends State<SearchStylePage> {
                   height: 20,
                 ),
                 SvgPicture.asset(
-                  "assets/images/svg-similar-page.svg",
+                  "assets/images/similar_page.svg",
                   width: 180,
                   height: 180,
+
                   // fit: BoxFit.fill,
                 ),
                 const SizedBox(
@@ -174,7 +175,9 @@ class _SearchStylePageState extends State<SearchStylePage> {
                                                   rootNavigator: true)
                                               .push(createTransitionRoute(
                                                   SuggestStylePage(
-                                                      image: image!),
+                                                    image: image!,
+                                                    isFormPost: false,
+                                                  ),
                                                   1,
                                                   0));
                                           setState(() {
@@ -211,7 +214,9 @@ class _SearchStylePageState extends State<SearchStylePage> {
                                                   rootNavigator: true)
                                               .push(createTransitionRoute(
                                                   SuggestStylePage(
-                                                      image: image!),
+                                                    image: image!,
+                                                    isFormPost: false,
+                                                  ),
                                                   1,
                                                   0));
                                           setState(() {
