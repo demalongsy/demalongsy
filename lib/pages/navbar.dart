@@ -49,9 +49,7 @@ class _NavbarState extends State<Navbar> {
             case 2:
               return CupertinoTabView(
                 navigatorKey: thirdTabNavKey,
-                builder: (BuildContext context) => const SearchStyle(
-                  isRootPage: true,
-                ),
+                builder: (BuildContext context) => SearchStylePage(),
               );
 
             case 3:
