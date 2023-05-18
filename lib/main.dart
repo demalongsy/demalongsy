@@ -6,6 +6,7 @@ import 'package:demalongsy/pages/navbar.dart';
 
 void main() {
   runApp(MyApp());
+  ;
 }
 
 class MyApp extends StatelessWidget {

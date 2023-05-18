@@ -23,6 +23,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController _usrnameController = new TextEditingController();
   TextEditingController _pwdController = new TextEditingController();
+  final formKey = GlobalKey<FormState>();
   String _usr = '';
   String _pwd = '';
   bool invisible = true;
@@ -42,6 +43,7 @@ class _LoginState extends State<Login> {
       home: Scaffold(
         backgroundColor: C.primaryDefault,
         body: Form(
+          key: formKey,
           child: SingleChildScrollView(
             child: GestureDetector(
               onTap: (() {

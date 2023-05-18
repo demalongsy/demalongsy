@@ -1,6 +1,7 @@
 import 'package:demalongsy/base_URL/url.dart';
 import 'package:demalongsy/pages/comments/view_comment.dart';
 import 'package:demalongsy/pages/post/create_post.dart';
+import 'package:demalongsy/pages/post/post_foryou.dart';
 import 'package:demalongsy/pages/profile/change_password.dart';
 import 'package:demalongsy/widget/showposts.dart';
 import 'package:flutter_svg/svg.dart';
@@ -431,8 +432,8 @@ class _Profile extends State<Profile> {
                     onRefresh: _refresh,
                     child: DefaultTabController(
                       length: 2,
-                      child: ExtendedNestedScrollView(
-                        onlyOneScrollInBody: true,
+                      child: NestedScrollView(
+                        physics: BouncingScrollPhysics(),
                         headerSliverBuilder: (context, _) {
                           return [
                             SliverList(
@@ -446,7 +447,7 @@ class _Profile extends State<Profile> {
                                     (_data?.numPostes).toString(),
                                     (_data?.bio ?? "Welcome to De'malongsy!")
                                         .toString(),
-                                    (_data?.img ??
+                                    (_data?.imgAuthor ??
                                             "https://img.freepik.com/free-icon/user_318-159711.jpg")
                                         .toString(),
                                   ),
@@ -488,6 +489,7 @@ class _Profile extends State<Profile> {
                               padding: const EdgeInsets.all(10.0),
                               child: GridView.builder(
                                 shrinkWrap: true,
+                                primary: true,
                                 physics: NeverScrollableScrollPhysics(),
                                 gridDelegate:
                                     const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -515,7 +517,8 @@ class _Profile extends State<Profile> {
                               padding: const EdgeInsets.all(10.0),
                               child: GridView.builder(
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
+                                primary: false,
+                                physics: BouncingScrollPhysics(),
                                 gridDelegate:
                                     const SliverGridDelegateWithMaxCrossAxisExtent(
                                         maxCrossAxisExtent: 200,
@@ -549,137 +552,139 @@ class _Profile extends State<Profile> {
           ),
         ));
   }
-}
 
-Widget profileHeaderWidget(BuildContext context, String name, String username,
-    String numLiked, String numPosted, String bio, String img) {
-  return Container(
-    width: double.infinity,
-    decoration: const BoxDecoration(color: C.white),
-    child: Padding(
-      padding: const EdgeInsets.only(left: 38, right: 38),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 45,
-                backgroundColor: Color(0xff74EDED),
-                backgroundImage: NetworkImage(img),
-              ),
-              const SizedBox(
-                width: 28,
-              ),
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Poppins(
-                      text: name,
-                      maxLines: 1,
-                      size: 18,
-                      color: C.dark1,
-                      fontWeight: FW.bold),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Poppins(
-                      text: "@" + username,
-                      size: 12,
-                      color: C.dark1,
-                      fontWeight: FW.light),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Poppins(
-                          text: "${numPosted} ",
-                          size: 12,
-                          color: C.dark1,
-                          fontWeight: FW.bold),
-                      const Poppins(
-                          text: "Posts",
-                          size: 12,
-                          color: C.dark1,
-                          fontWeight: FW.light),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      Poppins(
-                          text: "${numLiked} ",
-                          size: 12,
-                          color: C.dark1,
-                          fontWeight: FW.bold),
-                      const Poppins(
-                          text: "Likes ",
-                          size: 12,
-                          color: C.dark1,
-                          fontWeight: FW.light),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                ],
-              ))
-            ],
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Poppins(
-              text: bio,
-              maxLines: 2,
-              size: 14,
-              color: C.dark3,
-              fontWeight: FW.light),
-          const SizedBox(
-            height: 12,
-          ),
-          actions(context),
-          const SizedBox(
-            height: 18,
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget actions(BuildContext context) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Expanded(
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-                  primary: C.secondaryDefault,
-                  onPrimary: C.secondaryPressed,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  elevation: 0.0,
-                  shadowColor: Colors.transparent)
-              .copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50),
-            child: Poppins(
-                text: "Edit Profile",
-                size: 12,
-                color: C.dark1,
-                fontWeight: FW.bold),
-          ),
-          onPressed: () {
-            Navigator.of(context, rootNavigator: true)
-                .push(createTransitionRoute(EditProfilePage(), 1, 0));
-          },
+  Widget profileHeaderWidget(BuildContext context, String name, String username,
+      String numLiked, String numPosted, String bio, String img) {
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(color: C.white),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 38, right: 38),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 45,
+                  backgroundColor: Color(0xff74EDED),
+                  backgroundImage: NetworkImage(img),
+                ),
+                const SizedBox(
+                  width: 28,
+                ),
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Poppins(
+                        text: name,
+                        maxLines: 1,
+                        size: 18,
+                        color: C.dark1,
+                        fontWeight: FW.bold),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Poppins(
+                        text: "@" + username,
+                        size: 12,
+                        color: C.dark1,
+                        fontWeight: FW.light),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Poppins(
+                            text: "${numPosted} ",
+                            size: 12,
+                            color: C.dark1,
+                            fontWeight: FW.bold),
+                        const Poppins(
+                            text: "Posts",
+                            size: 12,
+                            color: C.dark1,
+                            fontWeight: FW.light),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        Poppins(
+                            text: "${numLiked} ",
+                            size: 12,
+                            color: C.dark1,
+                            fontWeight: FW.bold),
+                        const Poppins(
+                            text: "Likes ",
+                            size: 12,
+                            color: C.dark1,
+                            fontWeight: FW.light),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                  ],
+                ))
+              ],
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Poppins(
+                text: bio,
+                maxLines: 2,
+                size: 14,
+                color: C.dark3,
+                fontWeight: FW.light),
+            const SizedBox(
+              height: 12,
+            ),
+            actions(context),
+            const SizedBox(
+              height: 18,
+            ),
+          ],
         ),
       ),
-    ],
-  );
+    );
+  }
+
+  Widget actions(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                    primary: C.secondaryDefault,
+                    onPrimary: C.secondaryPressed,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    elevation: 0.0,
+                    shadowColor: Colors.transparent)
+                .copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 50),
+              child: Poppins(
+                  text: "Edit Profile",
+                  size: 12,
+                  color: C.dark1,
+                  fontWeight: FW.bold),
+            ),
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true)
+                  .push(createTransitionRoute(EditProfilePage(), 1, 0))
+                  .then((val) => val ? _refresh() : null);
+              ;
+            },
+          ),
+        ),
+      ],
+    );
+  }
 }

@@ -13,7 +13,7 @@ class ProfileApi {
   String? password;
   String? name;
   String? bio;
-  String? img;
+  String? imgAuthor;
   String? username;
   List<String>? tags;
   List<String>? liked;
@@ -26,7 +26,7 @@ class ProfileApi {
     this.password,
     this.name,
     this.bio,
-    this.img,
+    this.imgAuthor,
     this.username,
     this.tags,
     this.liked,
@@ -40,7 +40,7 @@ class ProfileApi {
         password: json["password"],
         name: json["name"],
         bio: json["bio"],
-        img: json["img"],
+        imgAuthor: json["imgAuthor"],
         username: json["username"],
         tags: json["tags"] == null
             ? []
@@ -58,7 +58,7 @@ class ProfileApi {
         "password": password,
         "name": name,
         "bio": bio,
-        "img": img,
+        "imgAuthor": imgAuthor,
         "username": username,
         "tags": tags == null ? [] : List<dynamic>.from(tags!.map((x) => x)),
         "liked": liked == null ? [] : List<dynamic>.from(liked!.map((x) => x)),

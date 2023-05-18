@@ -1,10 +1,15 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:demalongsy/base_URL/url.dart';
+import 'package:demalongsy/models/profile_model.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -15,13 +20,47 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController _nameController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _bioController = new TextEditingController();
+  ProfileApi? _data;
+  bool isLoading = true;
+  final formKey = GlobalKey<FormState>();
 
   String _nameInput = '';
   String _emailInput = '';
   String _bioInput = '';
+  String _usernameInput = '';
+  bool isLoadingCreatePost = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
 
   // Image
   File? image;
+
+  Future<ProfileApi?> _getData() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? username = prefs.getString('username');
+
+      var url = '${Url.baseurl}/profile/${username}';
+
+      var response = await http.get(Uri.parse(url));
+
+      _data = profileApiFromJson(response.body);
+      setState(() {
+        isLoading = false;
+        setState(() {
+          _nameController..text = _data!.name!;
+          _bioController..text = _data?.bio ?? 'Welcome to Demalongsy!';
+        });
+      });
+    } catch (e) {
+      print(e);
+      isLoading = false;
+    }
+  }
 
   Future takePhoto(ImageSource source) async {
     try {
@@ -65,7 +104,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             size: 16.0,
                           ),
                           onTap: () {
-                            Navigator.of(context).pop();
+                            Navigator.pop(context, true);
                           }),
                       const Padding(
                         padding: EdgeInsets.only(left: 20),
@@ -83,7 +122,43 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               checkAllSpaces(_bioInput) ||
                               image != null
                           ? GestureDetector(
-                              onTap: () {},
+                              onTap: () async {
+                                if (_bioInput.isEmpty &&
+                                    _nameInput.isNotEmpty) {
+                                  Map<dynamic, dynamic> body = {
+                                    'name': _nameController.text,
+                                  };
+                                  await _editProfile(body, image);
+                                }
+
+                                if (_bioInput.isNotEmpty &&
+                                    _nameInput.isNotEmpty) {
+                                  Map<dynamic, dynamic> body = {
+                                    'name': _nameController.text,
+                                    'bio': _bioController.text,
+                                  };
+                                  await _editProfile(body, image);
+                                }
+
+                                if (_bioInput.isNotEmpty &&
+                                    _nameInput.isEmpty) {
+                                  Map<dynamic, dynamic> body = {
+                                    'bio': _bioController.text,
+                                  };
+                                  await _editProfile(body, image);
+                                }
+
+                                if (_nameInput.isEmpty &&
+                                    _bioInput.isEmpty &&
+                                    image!.path != null) {
+                                  Map<dynamic, dynamic> body = {};
+                                  await _editProfile(body, image);
+                                }
+
+                                if (isLoadingCreatePost) {
+                                  Navigator.pop(context, true);
+                                }
+                              },
                               child: const Poppins(
                                 text: "Save",
                                 size: 16,
@@ -103,40 +178,45 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             ),
           ),
-          body: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).unfocus();
-            },
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  profilePhoto(),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 30, right: 30),
-                    child: Poppins(
-                        text: "Personal Infomation",
-                        size: 12,
-                        color: C.textDefault,
-                        fontWeight: FW.bold),
-                  ),
-                  const Divider(
-                    color: Colors.black,
-                  ),
-                  TextFieldUsername(),
-                  TextFieldName(""),
-                  TextFieldEmail("K. Payoungdech"),
-                  TextFieldBio("Fantastic to start to use application!"),
-                  const SizedBox(
-                    height: 80,
-                  ),
-                ],
+          body: Form(
+            key: formKey,
+            child: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    profilePhoto(),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 30, right: 30),
+                      child: Poppins(
+                          text: "Personal Infomation",
+                          size: 12,
+                          color: C.textDefault,
+                          fontWeight: FW.bold),
+                    ),
+                    const Divider(
+                      color: Colors.black,
+                    ),
+                    TextFieldUsername(),
+                    TextFieldName(""),
+                    //TextFieldEmail("K. Payoungdech"),
+                    TextFieldBio(isLoading
+                        ? "Welcome to De'malongsy"
+                        : _data?.bio ?? "Welcome to De'malongsy!"),
+                    const SizedBox(
+                      height: 80,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -153,7 +233,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         decoration: InputDecoration(
           icon: const Poppins(
               text: "Username", size: 14, color: C.dark2, fontWeight: FW.light),
-          hintText: "K. Payoungdech",
+          hintText: isLoading ? '...' : '@${_data!.username}',
           hintStyle: const TextStyle(
             fontFamily: 'Poppins',
             fontSize: 16,
@@ -213,7 +293,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 size: 14,
                 color: C.dark2,
                 fontWeight: FW.light),
-            hintText: placeholder == "" ? "Name" : "      " + placeholder,
+            hintText: isLoading ? "..." : "${_data!.name}",
             hintStyle: placeholder != ""
                 ? const TextStyle(
                     fontFamily: 'Poppins',
@@ -352,12 +432,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ? Container(
                     width: 98,
                     height: 98,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.cover,
                         image: NetworkImage(
-                          "https://s.isanook.com/wo/0/ui/38/190849/277150081_1212531879516407_7579357549109873866_n.jpg?ip/convert/w0/q80/jpg",
+                          isLoading
+                              ? 'https://img.freepik.com/free-icon/user_318-159711.jpg'
+                              : _data?.imgAuthor ??
+                                  'https://img.freepik.com/free-icon/user_318-159711.jpg',
                         ),
                       ),
                     ),
@@ -462,6 +545,46 @@ class _EditProfilePageState extends State<EditProfilePage> {
         },
       ),
     );
+  }
+
+  _editProfile(Map<dynamic, dynamic> body, File? file) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    final String? user_id = prefs.getString('user_id');
+
+    var url = '${Url.baseurl}/profile/edit/$user_id';
+
+    var req = http.MultipartRequest(
+      'PATCH',
+      Uri.parse(url),
+    );
+
+    req.headers['Authorization'] = 'Bearer $token';
+
+    if (body.isNotEmpty) {
+      body.forEach((key, value) {
+        req.fields[key] = value;
+      });
+    }
+
+    if (file != null) {
+      var stream = http.ByteStream(Stream.castFrom(file.openRead()));
+      var length = await file.length();
+      var multipartFile =
+          http.MultipartFile('imgAuthor', stream, length, filename: file.path);
+
+      req.files.add(multipartFile);
+    }
+
+    var response = await req.send();
+    if (response.statusCode == 200) {
+      print('Files uploaded successfully');
+      setState(() {
+        isLoadingCreatePost = true;
+      });
+    } else {
+      print('Error uploading files: ${response.statusCode}');
+    }
   }
 }
 

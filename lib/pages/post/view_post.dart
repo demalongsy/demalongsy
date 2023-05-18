@@ -820,7 +820,7 @@ class _ViewPostState extends State<ViewPost> {
                                                                 NeverScrollableScrollPhysics(),
                                                             itemCount:
                                                                 filedata.length >
-                                                                        4
+                                                                        3
                                                                     ? 3
                                                                     : filedata
                                                                         .length,

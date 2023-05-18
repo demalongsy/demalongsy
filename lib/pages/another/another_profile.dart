@@ -319,7 +319,7 @@ class _AnotherProfile extends State<AnotherProfile> {
                 CircleAvatar(
                   radius: 45,
                   backgroundColor: Color(0xff74EDED),
-                  backgroundImage: NetworkImage(_data?.img ??
+                  backgroundImage: NetworkImage(_data?.imgAuthor ??
                       "https://img.freepik.com/free-icon/user_318-159711.jpg"),
                 ),
                 const SizedBox(

@@ -58,7 +58,7 @@ class _CommentState extends State<ViewComment> {
 
       _data = profileApiFromJson(response.body);
       setState(() {
-        isLoadingProfile = true;
+        isLoadingProfile = false;
       });
     } catch (e) {
       print(e);
@@ -344,7 +344,7 @@ class _CommentState extends State<ViewComment> {
                 radius: 50,
                 backgroundImage: NetworkImage(isLoadingProfile
                     ? "https://img.freepik.com/free-icon/user_318-159711.jpg"
-                    : _data!.img ??
+                    : _data!.imgAuthor ??
                         "https://img.freepik.com/free-icon/user_318-159711.jpg")),
           ),
           title: Form(
@@ -387,7 +387,7 @@ class _CommentState extends State<ViewComment> {
                       "author_id": user_id,
                       "name": _data!.name,
                       "username": _data!.username,
-                      "imgAuthor": _data!.img ??
+                      "imgAuthor": _data!.imgAuthor ??
                           "https://img.freepik.com/free-icon/user_318-159711.jpg"
                     };
                     _sentComments(body);
@@ -396,7 +396,7 @@ class _CommentState extends State<ViewComment> {
                         var value = {
                           'name': _data!.name,
                           'username': _data!.username,
-                          'imgAuthor': _data!.img ??
+                          'imgAuthor': _data!.imgAuthor ??
                               "https://img.freepik.com/free-icon/user_318-159711.jpg",
                           'desc': commentController.text,
                           'date':
