@@ -115,43 +115,45 @@ class _CommentState extends State<ViewComment> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: C.white,
-        elevation: 0,
-        title: Row(
-          children: [
-            GestureDetector(
-              child: const Icon(
-                Icons.arrow_back_ios_rounded,
-                color: C.dark2,
-                size: 16.0,
+    return MaterialApp(
+      home: SafeArea(
+          child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: C.white,
+          elevation: 0,
+          title: Row(
+            children: [
+              GestureDetector(
+                child: const Icon(
+                  Icons.arrow_back_ios_rounded,
+                  color: C.dark2,
+                  size: 16.0,
+                ),
+                onTap: () {
+                  Navigator.pop(context, true);
+                },
               ),
-              onTap: () {
-                Navigator.pop(context, true);
-              },
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            const Poppins(
-                text: 'Comments',
-                size: 20,
-                color: C.dark1,
-                fontWeight: FW.bold),
-          ],
+              const SizedBox(
+                width: 20,
+              ),
+              const Poppins(
+                  text: 'Comments',
+                  size: 20,
+                  color: C.dark1,
+                  fontWeight: FW.bold),
+            ],
+          ),
         ),
-      ),
-      body: Container(
-        child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-            ),
-            child: Comment()),
-      ),
-    ));
+        body: Container(
+          child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Comment()),
+        ),
+      )),
+    );
   }
 
   Widget Comment() {
@@ -309,87 +311,103 @@ class _CommentState extends State<ViewComment> {
           ),
         )),
         SizedBox.shrink(),
-        ListTile(
-          tileColor: C.white,
-          leading: Container(
-            height: 40.0,
-            width: 40.0,
-            decoration: const BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.all(Radius.circular(50))),
-            child: CircleAvatar(
-                radius: 50, backgroundImage: NetworkImage(widget.imgAuthor)),
-          ),
-          title: Form(
-            key: formKey,
-            child: TextFormField(
-              onChanged: (value) {
-                setState(() {
-                  comment_msg = value;
-                });
-              },
-              cursorColor: C.dark1,
-              style: TextStyle(color: C.dark1),
-              controller: commentController,
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(width: 1, color: C.disableTextfield),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(width: 1, color: C.infoDefault),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                hintText: 'Send a message...',
-              ),
-              validator: (value) =>
-                  value!.isEmpty ? 'Comment cannot be blank' : null,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: ListTile(
+            tileColor: C.white,
+            leading: Container(
+              height: 40.0,
+              width: 40.0,
+              decoration: const BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.all(Radius.circular(50))),
+              child: CircleAvatar(
+                  radius: 50, backgroundImage: NetworkImage(widget.imgAuthor)),
             ),
-          ),
-          trailing: checkAllSpaces(comment_msg!)
-              ? GestureDetector(
-                  onTap: () async {
-                    Map<String, dynamic> body = {
-                      "reply_block_id": _postDetail!.blockId,
-                      "isOwnerPost":
-                          _postDetail!.username! == username ? true : false,
-                      "desc": commentController.text,
-                      "author_id": user_id,
-                      "name": widget.name,
-                      "username": username,
-                      "imgAuthor": widget.imgAuthor ??
-                          "https://img.freepik.com/free-icon/user_318-159711.jpg"
-                    };
-                    _sentComments(body);
-                    if (formKey.currentState!.validate()) {
-                      setState(() {
-                        var value = {
-                          'name': widget.name,
-                          'username': username,
-                          'imgAuthor': widget.imgAuthor,
-                          'desc': commentController.text,
-                          'date':
-                              "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}",
-                          'isOwnerPost':
-                              _postDetail!.username! == username ? true : false
-                        };
-                        filedata.insert(0, value);
-                        comment_msg = '';
-                      });
+            title: Form(
+              key: formKey,
+              child: TextFormField(
+                onChanged: (value) {
+                  setState(() {
+                    comment_msg = value;
+                  });
+                },
+                cursorColor: C.dark1,
+                style: TextStyle(color: C.dark1),
+                controller: commentController,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(width: 1, color: C.disableTextfield),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(width: 1, color: C.infoDefault),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  hintText: 'Send a message...',
+                ),
+                validator: (value) =>
+                    value!.isEmpty ? 'Comment cannot be blank' : null,
+              ),
+            ),
+            trailing: checkAllSpaces(comment_msg!)
+                ? GestureDetector(
+                    onTap: () async {
+                      Map<String, dynamic> body = {
+                        "reply_block_id": _postDetail!.blockId,
+                        "isOwnerPost":
+                            _postDetail!.username! == username ? true : false,
+                        "desc": commentController.text,
+                        "author_id": user_id,
+                        "name": widget.name,
+                        "username": username,
+                        "imgAuthor": widget.imgAuthor ??
+                            "https://img.freepik.com/free-icon/user_318-159711.jpg"
+                      };
+                      _sentComments(body);
+                      if (formKey.currentState!.validate()) {
+                        setState(() {
+                          var value = {
+                            'name': widget.name,
+                            'username': username,
+                            'imgAuthor': widget.imgAuthor,
+                            'desc': commentController.text,
+                            'date':
+                                "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}",
+                            'isOwnerPost': _postDetail!.username! == username
+                                ? true
+                                : false
+                          };
+                          filedata.insert(0, value);
+                          comment_msg = '';
+                        });
 
-                      commentController.clear();
-                      FocusScope.of(context).unfocus();
-                    } else {
-                      print("Not validated");
-                    }
-                  },
-                  child: const Button(
+                        commentController.clear();
+                        FocusScope.of(context).unfocus();
+                      } else {
+                        print("Not validated");
+                      }
+                    },
+                    child: const Button(
+                      text: "Send",
+                      fontWeight: FW.bold,
+                      color: C.dark1,
+                      size: 14,
+                      boxColor: C.primaryDefault,
+                      boxHeight: 40,
+                      haveBorder: false,
+                      declareWidth: true,
+                      width: 56,
+                    ),
+                  )
+                : const Button(
                     text: "Send",
                     fontWeight: FW.bold,
-                    color: C.dark1,
+                    color: C.disableTextfield,
                     size: 14,
                     boxColor: C.primaryDefault,
                     boxHeight: 40,
@@ -397,18 +415,7 @@ class _CommentState extends State<ViewComment> {
                     declareWidth: true,
                     width: 56,
                   ),
-                )
-              : const Button(
-                  text: "Send",
-                  fontWeight: FW.bold,
-                  color: C.disableTextfield,
-                  size: 14,
-                  boxColor: C.primaryDefault,
-                  boxHeight: 40,
-                  haveBorder: false,
-                  declareWidth: true,
-                  width: 56,
-                ),
+          ),
         )
       ],
     );
