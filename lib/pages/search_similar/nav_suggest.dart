@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/pages/search_similar/search_style.dart';
 import 'package:demalongsy/pages/search_similar/similar_style.dart';
-import 'package:demalongsy/pages/search_similar/suggest_style.dart';
+import 'package:demalongsy/pages/suggest/suggest_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -50,12 +50,13 @@ class _Nav_SuggestState extends State<Nav_Suggest> {
                 topRight: Radius.circular(24),
               ),
             ),
-            child: GestureDetector(
-              onTap: (() {
-                Navigator.of(context, rootNavigator: true)
-                    .push(createTransitionRoute(SuggestStylePage(), 1, 0));
-              }),
-              child: Center(
+            child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                      createTransitionRoute(
+                          SuggestStylePage(image: widget.image), 1, 0));
+                },
                 child: Wrap(
                   children: [
                     const Poppins(

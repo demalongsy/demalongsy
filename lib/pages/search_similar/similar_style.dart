@@ -1,13 +1,21 @@
 import 'dart:io';
+
+import 'package:demalongsy/custom/widget/page_transition.dart';
+import 'package:demalongsy/pages/search_similar/widget_similar.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 //import 'package:url_launcher/url_launcher.dart';
 
 import 'package:demalongsy/custom/widget/font.dart';
 
+import 'package:tflite/tflite.dart';
+
+import '../suggest/suggest_style.dart';
+
 class SimilarStylePage extends StatefulWidget {
   final File? image;
   final bool isformPost;
+
   const SimilarStylePage({Key? key, this.image, required this.isformPost})
       : super(key: key);
   @override
@@ -15,23 +23,32 @@ class SimilarStylePage extends StatefulWidget {
 }
 
 class _SimilarStylePageState extends State<SimilarStylePage> {
+  List? _outputs;
+  File? _image;
+  bool _loading = false;
+
   // Image
 
   @override
   void initState() {
-    // TODO: implement initState
-
     super.initState();
+    _loading = true;
+
+    loadModel().then((value) {
+      setState(() {
+        _loading = false;
+      });
+    });
+
+    classifyImage(widget.image!);
   }
 
-  // _launchURL() async {
-  //   const url = 'https://google.com';
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
+  loadModel() async {
+    await Tflite.loadModel(
+      model: "assets/model2/model.tflite",
+      labels: "assets/model2/labels.txt",
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,17 +106,12 @@ class _SimilarStylePageState extends State<SimilarStylePage> {
                       width: 160,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
-                        child: widget.isformPost ?? false
-                            ? Image.network(
-                                "https://s.isanook.com/wo/0/ui/38/190849/277150081_1212531879516407_7579357549109873866_n.jpg?ip/convert/w0/q80/jpg",
-                                // fit: BoxFit.cover,
-                              )
-                            : Image.file(
-                                widget.image!,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
+                        child: Image.file(
+                          widget.image!,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.fill,
+                        ),
 
                         // ClipRRect(
                       )),
@@ -122,76 +134,43 @@ class _SimilarStylePageState extends State<SimilarStylePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 30,
-                    ),
-                    Container(
-                      width: 115,
-                      height: 115,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                        // shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                            "https://s.isanook.com/wo/0/ui/38/190849/277150081_1212531879516407_7579357549109873866_n.jpg?ip/convert/w0/q80/jpg",
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: C.secondaryDefault,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.only(
-                                  left: 8, right: 8, top: 3, bottom: 3),
-                              child: Poppins(
-                                text: "Givenchy",
-                                size: 18,
-                                color: C.textDefault,
-                                fontWeight: FW.bold,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(right: 10),
-                            child: Poppins(
-                              overflow: true,
-                              maxLines: 2,
-                              text:
-                                  "Silk women pants inspire from 90s styleeeeeeeeeeeeeeee",
-                              size: 12,
-                              color: C.textDefault,
-                              fontWeight: FW.light,
-                              letterspacing: 0.64,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                _loading
+                    ? Container(
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator(),
+                      )
+                    : _outputs != null
+                        ? WidgetSimilar(
+                            id: _outputs![0]['label'].toString().substring(
+                                2, _outputs![0]['label'].toString().length))
+                        : Container()
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  classifyImage(File image) async {
+    var output = await Tflite.runModelOnImage(
+      path: image.path,
+      numResults: 2,
+      threshold: 0.5,
+      imageMean: 127.5,
+      imageStd: 127.5,
+    );
+
+    setState(() {
+      _loading = false;
+      _outputs = output;
+    });
+    print(_outputs);
+  }
+
+  @override
+  void dispose() {
+    Tflite.close();
+    super.dispose();
   }
 }
