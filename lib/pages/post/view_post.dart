@@ -89,7 +89,7 @@ class _ViewPostState extends State<ViewPost> {
                 title: Row(
                   children: [
                     GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
+                      onTap: () => Navigator.pop(context, true),
                       child: const Icon(
                         Icons.arrow_back_ios_rounded,
                         color: C.dark2,

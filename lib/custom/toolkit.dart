@@ -37,6 +37,8 @@ class C {
   static const disableBackground = Color(0xFF9E9E9E);
   static const disableText = Color(0xFFFAFAFA);
   static const boderAddPhotos = Color(0xFFDEDEDE);
+  static const nav = Color(0xFFF3E3F3);
+   static const nav_tag = Color(0xFF505050);
 }
 
 class FW {

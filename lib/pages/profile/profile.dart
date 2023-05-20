@@ -2,6 +2,7 @@ import 'package:demalongsy/base_URL/url.dart';
 import 'package:demalongsy/pages/comments/view_comment.dart';
 import 'package:demalongsy/pages/post/create_post.dart';
 import 'package:demalongsy/pages/post/post_foryou.dart';
+import 'package:demalongsy/pages/post/view_post.dart';
 import 'package:demalongsy/pages/profile/change_password.dart';
 import 'package:demalongsy/widget/showposts.dart';
 import 'package:flutter_svg/svg.dart';
@@ -135,7 +136,9 @@ class _Profile extends State<Profile> {
             floatingActionButton: FloatingActionButton(
               onPressed: () {
                 Navigator.of(context, rootNavigator: true)
-                    .push(createTransitionRoute(CreatePost(), 1, 0));
+                    .push(createTransitionRoute(CreatePost(), 1, 0))
+                    .then((val) => val ? _refresh() : null);
+                ;
               },
               backgroundColor: C.primaryDefault,
               elevation: 3,
@@ -489,7 +492,7 @@ class _Profile extends State<Profile> {
                               padding: const EdgeInsets.all(10.0),
                               child: GridView.builder(
                                 shrinkWrap: true,
-                                primary: true,
+                                primary: false,
                                 physics: NeverScrollableScrollPhysics(),
                                 gridDelegate:
                                     const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -499,17 +502,181 @@ class _Profile extends State<Profile> {
                                         mainAxisSpacing: 6),
                                 itemCount: allPost.length,
                                 itemBuilder: (BuildContext context, index) {
-                                  return ShowPost(
-                                      topic: allPost[index]["title"],
-                                      name: allPost[index]["name"],
-                                      imgPath: allPost[index]["images"][0],
-                                      isLiked: allPost[index]["isLiked"],
-                                      block_id: allPost[index]["id"],
-                                      author_id: allPost[index][" author_id"],
-                                      tags: allPost[index]["tags"],
-                                      author_username: allPost[index]
-                                          ["username"],
-                                      imgAuthor: allPost[index]["imgAuthor"]);
+                                  return GestureDetector(
+                                      onTap: (() {
+                                        _refresh();
+                                        Navigator.of(context,
+                                                rootNavigator: false)
+                                            .push(createTransitionRoute(
+                                                ViewPost(
+                                                    tags: allPost[index]
+                                                        ["tags"],
+                                                    block_id: allPost[index]
+                                                        ["id"],
+                                                    author_username:
+                                                        allPost[index]
+                                                            ["username"],
+                                                    imgAuthor: allPost[index]
+                                                        ["imgAuthor"]),
+                                                1,
+                                                0));
+                                      }),
+                                      child: Container(
+                                        height: 289,
+                                        decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Color(0xFF000000)
+                                                    .withOpacity(0.1),
+                                                spreadRadius: 1,
+                                                blurRadius: 20,
+                                                offset: Offset(0, 3),
+                                              ),
+                                            ],
+                                            color: C.white,
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        child: Stack(children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            children: [
+                                              Container(
+                                                height: 198,
+                                                //width: 168,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  8),
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  8)),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          allPost[index]
+                                                              ["images"][0]),
+                                                      fit: BoxFit.fill),
+                                                ),
+                                              ),
+                                              Container(
+                                                height: 57,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(7.0),
+                                                  child: Poppins(
+                                                    text: allPost[index]
+                                                        ["title"],
+                                                    size: 14,
+                                                    color: C.dark1,
+                                                    fontWeight: FW.bold,
+                                                    letterspacing: 0.64,
+                                                    maxLines: 2,
+                                                    fontRespon: false,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 7),
+                                                child: Row(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      radius: 10,
+                                                      backgroundColor:
+                                                          Color(0xff74EDED),
+                                                      backgroundImage:
+                                                          NetworkImage(allPost[
+                                                                  index]
+                                                              ["imgAuthor"]),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Poppins(
+                                                      text: allPost[index]
+                                                          ["name"],
+                                                      size: 10,
+                                                      color: C.dark1,
+                                                      fontWeight: FW.regular,
+                                                      letterspacing: 0.64,
+                                                      maxLines: 1,
+                                                      fontRespon: false,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              width: 168,
+                                              height: 40,
+                                              child: Row(
+                                                children: [
+                                                  Expanded(child: Container()),
+                                                  Expanded(child: Container()),
+                                                  allPost[index]["isLiked"]
+                                                      ? GestureDetector(
+                                                          onTap: () async {
+                                                            await _unlikesPost(
+                                                                allPost[index]
+                                                                    ["id"]);
+                                                            _refresh();
+                                                          },
+                                                          child: Container(
+                                                            height: 32,
+                                                            width: 32,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: C.white,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50),
+                                                            ),
+                                                            child: const Icon(
+                                                              Icons.favorite,
+                                                              color: C.dark1,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : GestureDetector(
+                                                          onTap: () async {
+                                                            await _likesPost(
+                                                                allPost[index]
+                                                                    ["id"]);
+                                                            _refresh();
+                                                          },
+                                                          child: Container(
+                                                            height: 32,
+                                                            width: 32,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: C.white,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50),
+                                                            ),
+                                                            child: const Icon(
+                                                              Icons
+                                                                  .favorite_outline_rounded,
+                                                              color: C.dark1,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ]),
+                                      ));
                                 },
                               ),
                             ),
@@ -518,7 +685,7 @@ class _Profile extends State<Profile> {
                               child: GridView.builder(
                                 shrinkWrap: true,
                                 primary: false,
-                                physics: BouncingScrollPhysics(),
+                                physics: NeverScrollableScrollPhysics(),
                                 gridDelegate:
                                     const SliverGridDelegateWithMaxCrossAxisExtent(
                                         maxCrossAxisExtent: 200,
@@ -527,20 +694,190 @@ class _Profile extends State<Profile> {
                                         mainAxisSpacing: 6),
                                 itemCount: dataLikedPosts.length,
                                 itemBuilder: (BuildContext context, index) {
-                                  return ShowPost(
-                                      topic: dataLikedPosts[index]["title"],
-                                      name: dataLikedPosts[index]["name"],
-                                      imgPath: dataLikedPosts[index]["images"]
-                                          [0],
-                                      isLiked: dataLikedPosts[index]["isLiked"],
-                                      block_id: dataLikedPosts[index]["id"],
-                                      author_id: dataLikedPosts[index]
-                                          [" author_id"],
-                                      tags: dataLikedPosts[index]["tags"],
-                                      author_username: dataLikedPosts[index]
-                                          ["username"],
-                                      imgAuthor: dataLikedPosts[index]
-                                          ["imgAuthor"]);
+                                  return GestureDetector(
+                                      onTap: (() {
+                                        _refresh();
+                                        Navigator.of(context,
+                                                rootNavigator: false)
+                                            .push(createTransitionRoute(
+                                                ViewPost(
+                                                    tags: dataLikedPosts[index]
+                                                        ["tags"],
+                                                    block_id:
+                                                        dataLikedPosts[index]
+                                                            ["id"],
+                                                    author_username:
+                                                        dataLikedPosts[index]
+                                                            ["username"],
+                                                    imgAuthor:
+                                                        dataLikedPosts[index]
+                                                            ["imgAuthor"]),
+                                                1,
+                                                0))
+                                            .then((val) =>
+                                                val ? _refresh() : _refresh());
+                                      }),
+                                      child: Container(
+                                        height: 289,
+                                        decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Color(0xFF000000)
+                                                    .withOpacity(0.1),
+                                                spreadRadius: 1,
+                                                blurRadius: 20,
+                                                offset: Offset(0, 3),
+                                              ),
+                                            ],
+                                            color: C.white,
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        child: Stack(children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            children: [
+                                              Container(
+                                                height: 198,
+                                                //width: 168,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  8),
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  8)),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          dataLikedPosts[index]
+                                                              ["images"][0]),
+                                                      fit: BoxFit.fill),
+                                                ),
+                                              ),
+                                              Container(
+                                                height: 57,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(7.0),
+                                                  child: Poppins(
+                                                    text: dataLikedPosts[index]
+                                                        ["title"],
+                                                    size: 14,
+                                                    color: C.dark1,
+                                                    fontWeight: FW.bold,
+                                                    letterspacing: 0.64,
+                                                    maxLines: 2,
+                                                    fontRespon: false,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 7),
+                                                child: Row(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      radius: 10,
+                                                      backgroundColor:
+                                                          Color(0xff74EDED),
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                              dataLikedPosts[
+                                                                      index][
+                                                                  "imgAuthor"]),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Poppins(
+                                                      text:
+                                                          dataLikedPosts[index]
+                                                              ["name"],
+                                                      size: 10,
+                                                      color: C.dark1,
+                                                      fontWeight: FW.regular,
+                                                      letterspacing: 0.64,
+                                                      maxLines: 1,
+                                                      fontRespon: false,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              width: 168,
+                                              height: 40,
+                                              child: Row(
+                                                children: [
+                                                  Expanded(child: Container()),
+                                                  Expanded(child: Container()),
+                                                  dataLikedPosts[index]
+                                                          ["isLiked"]
+                                                      ? GestureDetector(
+                                                          onTap: () async {
+                                                            await _unlikesPost(
+                                                                dataLikedPosts[
+                                                                        index]
+                                                                    ["id"]);
+                                                            _refresh();
+                                                          },
+                                                          child: Container(
+                                                            height: 32,
+                                                            width: 32,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: C.white,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50),
+                                                            ),
+                                                            child: const Icon(
+                                                              Icons.favorite,
+                                                              color: C.dark1,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : GestureDetector(
+                                                          onTap: () async {
+                                                            await _likesPost(
+                                                                dataLikedPosts[
+                                                                        index]
+                                                                    ["id"]);
+                                                            _refresh();
+                                                          },
+                                                          child: Container(
+                                                            height: 32,
+                                                            width: 32,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: C.white,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50),
+                                                            ),
+                                                            child: const Icon(
+                                                              Icons
+                                                                  .favorite_outline_rounded,
+                                                              color: C.dark1,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ]),
+                                      ));
                                 },
                               ),
                             ),
@@ -686,5 +1023,57 @@ class _Profile extends State<Profile> {
         ),
       ],
     );
+  }
+
+  _likesPost(String id) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? user_id = prefs.getString('user_id');
+      final String? token = prefs.getString('token');
+      var url =
+          '${Url.baseurl}/profile/liked/?block_id=${id}&user_id=${user_id}';
+      print(url);
+
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      };
+
+      var response = await http.patch(Uri.parse(url), headers: header);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("success");
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _unlikesPost(String id) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? user_id = prefs.getString('user_id');
+      final String? token = prefs.getString('token');
+      var url =
+          '${Url.baseurl}/profile/unliked/?block_id=${id}&user_id=${user_id}';
+      print(url);
+
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      };
+
+      var response = await http.patch(Uri.parse(url), headers: header);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("success");
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

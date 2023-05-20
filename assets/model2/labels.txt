@@ -1,6 +1,6 @@
-0 Dior_Bags
-1 Dior_Skirts
-2 Gucci_Shoes
-3 Gucci_T-Shirts
-4 YSL_Dresses
-5 YSL_Jackets
+0 k
+1 y
+2 l
+3 u
+4 l
+5 p

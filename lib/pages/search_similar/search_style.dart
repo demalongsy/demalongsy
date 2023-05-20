@@ -4,7 +4,8 @@ import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/main.dart';
-import 'package:demalongsy/pages/search_similar/suggest_style.dart';
+import 'package:demalongsy/pages/search_similar/nav_suggest.dart';
+import 'package:demalongsy/pages/search_similar/similar_style.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -170,13 +171,13 @@ class _SearchStylePageState extends State<SearchStylePage> {
                                         Future.delayed(Duration(seconds: 5));
                                         // Navigator.of(context).pop();
                                         await takePhoto(ImageSource.gallery);
-                                        if (image!.path != null) {
+                                        if (image?.path != null) {
                                           Navigator.of(context,
                                                   rootNavigator: true)
                                               .push(createTransitionRoute(
-                                                  SuggestStylePage(
+                                                  Nav_Suggest(
                                                     image: image!,
-                                                    isFormPost: false,
+                                                    isformPost: false,
                                                   ),
                                                   1,
                                                   0));
@@ -209,13 +210,13 @@ class _SearchStylePageState extends State<SearchStylePage> {
                                         Future.delayed(Duration(seconds: 5));
                                         // Navigator.of(context).pop();
                                         await takePhoto(ImageSource.camera);
-                                        if (image!.path != null) {
+                                        if (image?.path != null) {
                                           Navigator.of(context,
                                                   rootNavigator: true)
                                               .push(createTransitionRoute(
-                                                  SuggestStylePage(
+                                                  Nav_Suggest(
                                                     image: image!,
-                                                    isFormPost: false,
+                                                    isformPost: false,
                                                   ),
                                                   1,
                                                   0));
