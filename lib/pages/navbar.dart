@@ -140,7 +140,7 @@ class _NavbarState extends State<Navbar> {
                   NavigationService.profileKey.currentState!
                       .popUntil((r) => r.isFirst);
                   forthTabNavKey.currentState!.popUntil((r) => r.isFirst);
-                 
+
                   break;
               }
             }
@@ -150,13 +150,4 @@ class _NavbarState extends State<Navbar> {
       ),
     );
   }
-
-
-
-
-
-
-
-
-  
 }

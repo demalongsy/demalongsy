@@ -141,8 +141,7 @@ class _SimilarStylePageState extends State<SimilarStylePage> {
                       )
                     : _outputs != null
                         ? WidgetSimilar(
-                            id: _outputs![0]['label'].toString().substring(
-                                2, _outputs![0]['label'].toString().length))
+                            id: _outputs![0]['label'].toString().substring(2))
                         : Container()
               ],
             ),

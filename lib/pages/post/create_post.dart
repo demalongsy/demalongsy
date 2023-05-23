@@ -116,7 +116,7 @@ class _CreatePostState extends State<CreatePost> {
       setState(
         () {
           selectedImages.map((e) {
-            if (imageList.length < 10) {
+            if (imageList.length < 5) {
               imageList.add(File(e.path));
             }
           }).toList();
@@ -214,7 +214,8 @@ class _CreatePostState extends State<CreatePost> {
                                 backgroundColor: Color(0xff74EDED),
                                 backgroundImage: NetworkImage(isLoading
                                     ? "https://img.freepik.com/free-icon/user_318-159711.jpg"
-                                    : _data!.imgAuthor!),
+                                    : _data?.imgAuthor ??
+                                        'https://img.freepik.com/free-icon/user_318-159711.jpg'),
                               ),
                               const SizedBox(
                                 width: 16,
@@ -629,7 +630,8 @@ class _CreatePostState extends State<CreatePost> {
                                     'name': _data!.name,
                                     'username': _data!.username,
                                     'author_id': _data!.userId,
-                                    'imgAuthor': _data!.imgAuthor,
+                                    'imgAuthor': _data!.imgAuthor ??
+                                        'https://img.freepik.com/free-icon/user_318-159711.jpg',
                                     'title': _titleController.text,
                                     'desc': _descController.text,
                                     'tags': '${hashtagStrings}'
