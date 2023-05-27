@@ -305,32 +305,35 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: data!.length,
                   itemBuilder: ((context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: ListTile(
-                        leading: Container(
-                          width: 50,
-                          height: 50,
-                          child: CircleAvatar(
-                            radius: 50.0,
-                            backgroundImage: NetworkImage(data[index].images ??
-                                "https://img.freepik.com/free-icon/user_318-159711.jpg"),
+                    return InkWell(
+                      onTap: () {
+                        // Navigator.of(context, rootNavigator: false).push(
+                        //     createTransitionRoute(
+                        //         AnotherProfile(
+                        //             another_username: data[index].username!,
+                        //             another_id: data[index].id!),
+                        //         1,
+                        //         0));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: ListTile(
+                          leading: Container(
+                            width: 50,
+                            height: 50,
+                            child: CircleAvatar(
+                              radius: 50.0,
+                              backgroundImage: NetworkImage(data[index]
+                                      .images ??
+                                  "https://img.freepik.com/free-icon/user_318-159711.jpg"),
+                            ),
                           ),
+                          title: Poppins(
+                              text: '${data[index].name}',
+                              size: 14,
+                              color: C.dark1,
+                              fontWeight: FW.bold),
                         ),
-                        title: Poppins(
-                            text: '${data[index].name}',
-                            size: 14,
-                            color: C.dark1,
-                            fontWeight: FW.bold),
-                        onTap: () {
-                          Navigator.of(context, rootNavigator: false).push(
-                              createTransitionRoute(
-                                  AnotherProfile(
-                                      another_username: data[index].username!,
-                                      another_id: data[index].id!),
-                                  1,
-                                  0));
-                        },
                       ),
                     );
                   }),

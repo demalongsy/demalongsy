@@ -1,5 +1,6 @@
 import 'package:demalongsy/base_URL/url.dart';
 import 'package:demalongsy/models/similar_product.dart';
+import 'package:demalongsy/widget/showstyle.dart';
 import 'package:flutter/material.dart';
 import 'package:demalongsy/custom/toolkit.dart';
 //import 'package:url_launcher/url_launcher.dart';
@@ -56,68 +57,99 @@ class _WidgetSimilarState extends State<WidgetSimilar> {
               width: 48,
             ),
           )
-        : Row(
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(
-                width: 30,
-              ),
-              Container(
-                width: 115,
-                height: 115,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 30,
                   ),
-                  // shape: BoxShape.circle,
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                      data!.image!,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: C.secondaryDefault,
-                        borderRadius: BorderRadius.circular(50),
+                  Container(
+                    width: 115,
+                    height: 115,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 8, right: 8, top: 3, bottom: 3),
-                        child: Poppins(
-                          text: data!.productBrand!,
-                          size: 18,
-                          color: C.textDefault,
-                          fontWeight: FW.bold,
+                      // shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          data!.image!,
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: C.secondaryDefault,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 8, right: 8, top: 3, bottom: 3),
+                            child: Poppins(
+                              text: data!.productBrand!,
+                              size: 18,
+                              color: C.textDefault,
+                              fontWeight: FW.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Poppins(
+                            overflow: true,
+                            maxLines: 2,
+                            text: data!.description!,
+                            size: 12,
+                            color: C.textDefault,
+                            fontWeight: FW.light,
+                            letterspacing: 0.64,
+                          ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Poppins(
-                        overflow: true,
-                        maxLines: 2,
-                        text: data!.description!,
-                        size: 12,
-                        color: C.textDefault,
-                        fontWeight: FW.light,
-                        letterspacing: 0.64,
-                      ),
-                    )
-                  ],
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 45,
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 30),
+                child: Poppins(
+                  text: "Style guide",
+                  size: 12,
+                  color: C.textDefault,
+                  fontWeight: FW.bold,
                 ),
               ),
+              const Divider(
+                color: Colors.black,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: 2,
+                itemBuilder: ((context, index) {
+                  return ShowStyle();
+                }),
+              )
             ],
           );
   }

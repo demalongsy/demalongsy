@@ -4,7 +4,7 @@ import 'package:demalongsy/custom/key/navigate.dart';
 import 'package:demalongsy/custom/widget/component.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/main.dart';
-import 'package:demalongsy/pages/search_similar/nav_suggest.dart';
+
 import 'package:demalongsy/pages/search_similar/similar_style.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -175,7 +175,7 @@ class _SearchStylePageState extends State<SearchStylePage> {
                                           Navigator.of(context,
                                                   rootNavigator: true)
                                               .push(createTransitionRoute(
-                                                  Nav_Suggest(
+                                                  SimilarStylePage(
                                                     image: image!,
                                                     isformPost: false,
                                                   ),
@@ -214,7 +214,7 @@ class _SearchStylePageState extends State<SearchStylePage> {
                                           Navigator.of(context,
                                                   rootNavigator: true)
                                               .push(createTransitionRoute(
-                                                  Nav_Suggest(
+                                                  SimilarStylePage(
                                                     image: image!,
                                                     isformPost: false,
                                                   ),

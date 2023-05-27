@@ -8,8 +8,6 @@ import 'package:demalongsy/custom/widget/font.dart';
 import 'package:demalongsy/custom/widget/page_transition.dart';
 import 'package:demalongsy/pages/another/another_profile.dart';
 import 'package:demalongsy/pages/comments/view_comment.dart';
-
-import 'package:demalongsy/pages/search_similar/nav_suggest.dart';
 import 'package:demalongsy/pages/search_similar/similar_style.dart';
 import 'package:demalongsy/pages/suggest/suggest_style.dart';
 import 'package:demalongsy/widget/showposts.dart';
@@ -93,7 +91,9 @@ class _ViewPostState extends State<ViewPost> {
                 title: Row(
                   children: [
                     GestureDetector(
-                      onTap: () => Navigator.pop(context, true),
+                      onTap: () {
+                        Navigator.pop(context, true);
+                      },
                       child: const Icon(
                         Icons.arrow_back_ios_rounded,
                         color: C.dark2,

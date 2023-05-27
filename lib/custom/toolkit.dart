@@ -38,7 +38,10 @@ class C {
   static const disableText = Color(0xFFFAFAFA);
   static const boderAddPhotos = Color(0xFFDEDEDE);
   static const nav = Color(0xFFF3E3F3);
-   static const nav_tag = Color(0xFF505050);
+  static const nav_tag = Color(0xFF505050);
+  static const styletag = Color(0xFFFFFFFF);
+  static const styleguide = Color(0xFFF5FFD6);
+  
 }
 
 class FW {
