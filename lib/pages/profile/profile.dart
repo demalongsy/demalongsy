@@ -5,6 +5,7 @@ import 'package:demalongsy/pages/post/post_foryou.dart';
 import 'package:demalongsy/pages/post/view_post.dart';
 import 'package:demalongsy/pages/profile/change_password.dart';
 import 'package:demalongsy/widget/showposts.dart';
+import 'package:demalongsy/widget/showstyle.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -434,7 +435,7 @@ class _Profile extends State<Profile> {
                     key: _refreshIndicatorKey,
                     onRefresh: _refresh,
                     child: DefaultTabController(
-                      length: 2,
+                      length: 3,
                       child: NestedScrollView(
                         physics: BouncingScrollPhysics(),
                         headerSliverBuilder: (context, _) {
@@ -478,6 +479,12 @@ class _Profile extends State<Profile> {
                                   Tab(
                                     icon: Icon(
                                       Icons.favorite_border_rounded,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Tab(
+                                    icon: Icon(
+                                      Icons.bookmark_border_outlined,
                                       color: Colors.black,
                                     ),
                                   )
@@ -881,6 +888,17 @@ class _Profile extends State<Profile> {
                                 },
                               ),
                             ),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: 2,
+                                itemBuilder: ((context, index) {
+                                  return ShowStyle();
+                                }),
+                              ),
+                            )
                           ],
                         ),
                       ),
