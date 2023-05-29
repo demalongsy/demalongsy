@@ -29,6 +29,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String _bioInput = '';
   String _usernameInput = '';
   bool isLoadingCreatePost = false;
+  bool isChecked = false;
 
   @override
   void initState() {
@@ -123,6 +124,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               image != null
                           ? GestureDetector(
                               onTap: () async {
+                                setState(() {
+                                  isChecked = true;
+                                });
+
                                 if (_bioInput.isEmpty &&
                                     _nameInput.isNotEmpty) {
                                   Map<dynamic, dynamic> body = {
@@ -159,13 +164,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   Navigator.pop(context, true);
                                 }
                               },
-                              child: const Poppins(
-                                text: "Save",
-                                size: 16,
-                                color: C.primaryDefault,
-                                fontWeight: FW.bold,
-                                letterspacing: 0.64,
-                              ),
+                              child: isChecked
+                                  ? CircularProgressIndicator()
+                                  : Poppins(
+                                      text: "Save",
+                                      size: 16,
+                                      color: C.primaryDefault,
+                                      fontWeight: FW.bold,
+                                      letterspacing: 0.64,
+                                    ),
                             )
                           : const Poppins(
                               text: "Save",
@@ -581,6 +588,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       print('Files uploaded successfully');
       setState(() {
         isLoadingCreatePost = true;
+        isChecked = false;
       });
     } else {
       print('Error uploading files: ${response.statusCode}');

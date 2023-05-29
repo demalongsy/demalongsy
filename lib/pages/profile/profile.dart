@@ -495,7 +495,7 @@ class _Profile extends State<Profile> {
                               child: GridView.builder(
                                 shrinkWrap: true,
                                 primary: false,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: BouncingScrollPhysics(),
                                 gridDelegate:
                                     const SliverGridDelegateWithMaxCrossAxisExtent(
                                         maxCrossAxisExtent: 200,
@@ -687,7 +687,7 @@ class _Profile extends State<Profile> {
                               child: GridView.builder(
                                 shrinkWrap: true,
                                 primary: false,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: BouncingScrollPhysics(),
                                 gridDelegate:
                                     const SliverGridDelegateWithMaxCrossAxisExtent(
                                         maxCrossAxisExtent: 200,
@@ -888,7 +888,7 @@ class _Profile extends State<Profile> {
                               child: ListView.builder(
                                 primary: false,
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: BouncingScrollPhysics(),
                                 itemCount: allStyle.length,
                                 itemBuilder: ((context, index) {
                                   return Padding(

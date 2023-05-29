@@ -40,6 +40,7 @@ class _CreatePostState extends State<CreatePost> {
   ProfileApi? _data;
   bool isLoading = true;
   bool isLoadingCreatePost = false;
+  bool isChecked = false;
 
   Future<ProfileApi?> _getData() async {
     try {
@@ -618,14 +619,19 @@ class _CreatePostState extends State<CreatePost> {
                                     .copyWith(
                                         elevation:
                                             ButtonStyleButton.allOrNull(0.0)),
-                                child: const Center(
-                                  child: Poppins(
-                                      text: "Post",
-                                      size: 16,
-                                      color: C.dark2,
-                                      fontWeight: FW.bold),
+                                child: Center(
+                                  child: isChecked
+                                      ? CircularProgressIndicator()
+                                      : Poppins(
+                                          text: "Post",
+                                          size: 16,
+                                          color: C.dark2,
+                                          fontWeight: FW.bold),
                                 ),
                                 onPressed: () async {
+                                  setState(() {
+                                    isChecked = true;
+                                  });
                                   Map<dynamic, dynamic> body = {
                                     'name': _data!.name,
                                     'username': _data!.username,
@@ -697,6 +703,7 @@ class _CreatePostState extends State<CreatePost> {
       print('Files uploaded successfully');
       setState(() {
         isLoadingCreatePost = true;
+        isChecked = false;
       });
     } else {
       print('Error uploading files: ${response.statusCode}');
