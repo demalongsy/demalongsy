@@ -115,7 +115,7 @@ class _SearchStylePageState extends State<SearchStylePage> {
                                           right: 12,
                                           left: 12),
                                       child: Poppins(
-                                          text: "#Similar Products",
+                                          text: "#Suggest Items",
                                           size: 14,
                                           color: C.textDefault,
                                           fontWeight: FW.light),
@@ -128,7 +128,7 @@ class _SearchStylePageState extends State<SearchStylePage> {
                                 const Poppins(
                                   textAlign: TextAlign.center,
                                   text:
-                                      "One cool feature that We suggest is \n the ability to recommend similar \n products  and their sources.",
+                                      "One cool feature that We suggest is \n the ability to recommend suitable \n products  and their sources.",
                                   size: 14,
                                   color: C.disableTextfield,
                                   fontWeight: FW.light,

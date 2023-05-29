@@ -122,7 +122,7 @@ class _SimilarStylePageState extends State<SimilarStylePage> {
                 const Padding(
                   padding: EdgeInsets.only(left: 30),
                   child: Poppins(
-                    text: "Your similar items list",
+                    text: "Your suggest items list",
                     size: 12,
                     color: C.textDefault,
                     fontWeight: FW.bold,
@@ -139,10 +139,20 @@ class _SimilarStylePageState extends State<SimilarStylePage> {
                         alignment: Alignment.center,
                         child: CircularProgressIndicator(),
                       )
-                    : _outputs != null
+                    : _outputs != null && _outputs!.length > 0
                         ? WidgetSimilar(
-                            id: _outputs![0]['label'].toString().substring(2))
-                        : Container()
+                            color:
+                                _outputs![0]['label'].toString().substring(2),
+                            image: widget.image!,
+                          )
+                        : Center(
+                            child: Poppins(
+                              text: "There is no data in the system.",
+                              size: 14,
+                              color: C.textDefault,
+                              fontWeight: FW.bold,
+                            ),
+                          )
               ],
             ),
           ),
@@ -164,7 +174,6 @@ class _SimilarStylePageState extends State<SimilarStylePage> {
       _loading = false;
       _outputs = output;
     });
-    print(_outputs);
   }
 
   @override

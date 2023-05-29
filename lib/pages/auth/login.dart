@@ -28,6 +28,9 @@ class _LoginState extends State<Login> {
   String _pwd = '';
   bool invisible = true;
   bool isLoading = false;
+  bool isChecked = false;
+  bool hasProblem = false;
+  String msg = '';
 
   @override
   void initState() {
@@ -35,6 +38,13 @@ class _LoginState extends State<Login> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    super.dispose();
   }
 
   @override
@@ -48,6 +58,9 @@ class _LoginState extends State<Login> {
             child: GestureDetector(
               onTap: (() {
                 FocusScope.of(context).unfocus();
+                setState(() {
+                  hasProblem = false;
+                });
               }),
               child: Stack(
                 children: [
@@ -116,14 +129,28 @@ class _LoginState extends State<Login> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          const BorderSide(color: C.white),
+                                      borderSide: hasProblem
+                                          ? BorderSide(
+                                              color: C.dangerDefault, width: 2)
+                                          : const BorderSide(color: C.white),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
+                            hasProblem
+                                ? Padding(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: Poppins(
+                                      text: msg,
+                                      color: C.dangerDefault,
+                                      fontWeight: FontWeight.normal,
+                                      size: 12,
+                                      letterspacing: 0.2,
+                                    ),
+                                  )
+                                : Container()
                           ],
                         ),
                       ),
@@ -203,107 +230,73 @@ class _LoginState extends State<Login> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          const BorderSide(color: C.white),
+                                      borderSide: hasProblem
+                                          ? BorderSide(
+                                              color: C.dangerDefault, width: 2)
+                                          : const BorderSide(color: C.white),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
+                            hasProblem
+                                ? Padding(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: Poppins(
+                                      text: msg,
+                                      color: C.dangerDefault,
+                                      fontWeight: FontWeight.normal,
+                                      size: 12,
+                                      letterspacing: 0.2,
+                                    ),
+                                  )
+                                : Container()
                           ],
                         ),
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height / 40),
+                      SizedBox(height: MediaQuery.of(context).size.height / 30),
                       Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         child: GestureDetector(
                           onTap: () async {
+                            setState(() {
+                              isChecked = true;
+                            });
                             Map<String, String> body = {
                               "username": _usrnameController.text,
                               "password": _pwdController.text,
                             };
                             await _logIn(body);
-
+                            FocusScope.of(context).unfocus();
                             if (isLoading) {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => Navbar()));
-                              FocusScope.of(context).unfocus();
                             }
                           },
-                          child: const Button(
-                            text: "Sign In",
-                            fontWeight: FW.bold,
-                            color: C.dark2,
-                            size: 16,
-                            letterspacing: 0.64,
-                            boxColor: C.primaryDefault,
-                            boxHeight: 48,
-                            haveBorder: false,
-                          ),
+                          child: isChecked
+                              ? CircularProgressIndicator()
+                              : Button(
+                                  text: "Sign In",
+                                  fontWeight: FW.bold,
+                                  color: C.dark2,
+                                  size: 16,
+                                  letterspacing: 0.64,
+                                  boxColor: C.primaryDefault,
+                                  boxHeight: 48,
+                                  haveBorder: false,
+                                ),
                         ),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height / 27),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20),
-                              child: Divider(
-                                color: C.white,
-                                thickness: 1,
-                                height: 3,
-                              ),
-                            ),
-                          ),
-                          Poppins(
-                            text: " Or login with ",
-                            size: 14,
-                            color: C.white,
-                            fontWeight: FW.regular,
-                            letterspacing: 0.4,
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(right: 20),
-                              child: Divider(
-                                color: C.white,
-                                thickness: 1,
-                                height: 3,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                       SizedBox(height: MediaQuery.of(context).size.height / 27),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: GestureDetector(
-                          onTap: () {},
-                          child: const Button(
-                            text: "Google",
-                            fontWeight: FW.regular,
-                            color: C.white,
-                            size: 16,
-                            letterspacing: 0.64,
-                            boxColor: C.dark2,
-                            boxHeight: 48,
-                            haveBorder: false,
-                            hasImg: true,
-                            pathImg: "assets/images/G.svg",
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height / 9.5),
                       Wrap(
                         alignment: WrapAlignment.spaceEvenly,
                         children: [
                           const Poppins(
                             text: "Don't have an account ? ",
                             size: 14,
-                            color: C.textDefault,
+                            color: C.white,
                             fontWeight: FW.regular,
                             letterspacing: 0.4,
                           ),
@@ -315,7 +308,7 @@ class _LoginState extends State<Login> {
                             child: const Poppins(
                               text: "Sign up",
                               size: 14,
-                              color: C.textDefault,
+                              color: C.white,
                               fontWeight: FW.bold,
                               letterspacing: 0.4,
                               underline: true,
@@ -343,9 +336,9 @@ class _LoginState extends State<Login> {
 
       var response = await http.post(Uri.parse(url),
           headers: header, body: convert.jsonEncode(body));
+      var result = convert.jsonDecode(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var result = convert.jsonDecode(response.body);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', result["token"]);
         await prefs.setString('user_id', result["user_id"]);
@@ -354,9 +347,16 @@ class _LoginState extends State<Login> {
         if (result["msg"] == 'success') {
           setState(() {
             isLoading = true;
+            isChecked = false;
           });
         }
       } else {
+        setState(() {
+          isChecked = false;
+          hasProblem = true;
+          msg = result["msg"];
+        });
+
         print('err ==> ${response.statusCode}');
       }
     } catch (e) {

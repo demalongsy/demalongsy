@@ -43,8 +43,10 @@ class _Profile extends State<Profile> {
   ProfileApi? _data;
   List<Map<String, dynamic>> allPost = [];
   List<Map<String, dynamic>> dataLikedPosts = [];
+  List<Map<String, dynamic>> allStyle = [];
 
   bool isPoptoRoot = false;
+  bool isSaved = true;
 
   bool isLoading = true;
 
@@ -61,6 +63,26 @@ class _Profile extends State<Profile> {
     } catch (e) {
       print(e);
       isLoading = false;
+    }
+  }
+
+  Future<void> _getDataStyle() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? user_id = prefs.getString('user_id');
+
+    var url = '${Url.baseurl}/profile/saved/style?user_id=${user_id}';
+
+    var response = await http.get(Uri.parse(url));
+    setState(() {
+      allStyle.clear();
+    });
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var _data = convert.jsonDecode(response.body);
+
+      (_data["data"] as List).map((e) => allStyle.add(e)).toList();
+    } else {
+      print('err ==> ${response.statusCode}');
     }
   }
 
@@ -106,6 +128,7 @@ class _Profile extends State<Profile> {
     await _getData();
     await _getDataPost();
     await _getDataLikedPosts();
+    await _getDataStyle();
     setState(() {
       isLoading = false;
     });
@@ -204,34 +227,6 @@ class _Profile extends State<Profile> {
                                             size: 18,
                                             color: C.dark1,
                                             fontWeight: FW.bold),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 15, right: 15),
-                                        child: ListTile(
-                                          leading: SvgPicture.asset(
-                                            "assets/images/lock-solid.svg",
-                                            width: 23,
-                                            height: 23,
-                                            color: C.dark2,
-                                          ),
-                                          title: const Poppins(
-                                              text: "Change Password",
-                                              size: 16,
-                                              color: C.dark2,
-                                              fontWeight: FW.light),
-                                          onTap: () async {
-                                            Navigator.pop(context);
-                                            Future.delayed(
-                                                Duration(microseconds: 0));
-                                            await Navigator.of(context,
-                                                    rootNavigator: true)
-                                                .push(createTransitionRoute(
-                                                    ChangePasswordPage(),
-                                                    1,
-                                                    0));
-                                          },
-                                        ),
                                       ),
                                       const Padding(
                                         padding: EdgeInsets.only(
@@ -891,11 +886,154 @@ class _Profile extends State<Profile> {
                             Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: ListView.builder(
+                                primary: false,
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
-                                itemCount: 2,
+                                itemCount: allStyle.length,
                                 itemBuilder: ((context, index) {
-                                  return ShowStyle();
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 20, right: 30),
+                                    child: Stack(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const SizedBox(
+                                                  width: 30,
+                                                ),
+                                                Container(
+                                                  width: 115,
+                                                  height: 145,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(10),
+                                                    ),
+                                                    // shape: BoxShape.circle,
+                                                    image: DecorationImage(
+                                                      fit: BoxFit.fill,
+                                                      image: NetworkImage(
+                                                        allStyle[index]
+                                                            ["image"],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                right: 10),
+                                                        child: Row(
+                                                          children: [
+                                                            Expanded(
+                                                                child:
+                                                                    Container()),
+                                                            Expanded(
+                                                                child:
+                                                                    Container()),
+                                                            GestureDetector(
+                                                              onTap: () async {
+                                                                await _unSaveStyle(
+                                                                    allStyle[
+                                                                            index]
+                                                                        ["id"]);
+                                                                await _refresh();
+                                                                setState(() {
+                                                                  isSaved =
+                                                                      false;
+                                                                });
+                                                              },
+                                                              child: Container(
+                                                                height: 32,
+                                                                width: 32,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: C
+                                                                      .styletag,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              50),
+                                                                ),
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons
+                                                                      .bookmark,
+                                                                  color:
+                                                                      C.dark1,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: C
+                                                              .secondaryDefault,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(50),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 8,
+                                                                  right: 8,
+                                                                  bottom: 3),
+                                                          child: Poppins(
+                                                            text: "Style match",
+                                                            size: 18,
+                                                            color:
+                                                                C.textDefault,
+                                                            fontWeight: FW.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                right: 10),
+                                                        child: Poppins(
+                                                          overflow: true,
+                                                          maxLines: 2,
+                                                          text:
+                                                              "Style guide of your result suggest item.",
+                                                          size: 12,
+                                                          color: C.textDefault,
+                                                          fontWeight: FW.light,
+                                                          letterspacing: 0.64,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  // ShowStyle()
                                 }),
                               ),
                             )
@@ -1076,6 +1214,57 @@ class _Profile extends State<Profile> {
       final String? token = prefs.getString('token');
       var url =
           '${Url.baseurl}/profile/unliked/?block_id=${id}&user_id=${user_id}';
+      print(url);
+
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      };
+
+      var response = await http.patch(Uri.parse(url), headers: header);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("success");
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _saveStyle(id) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? user_id = prefs.getString('user_id');
+      final String? token = prefs.getString('token');
+      var url = '${Url.baseurl}/similarStyle/saved?id=${id}&user_id=${user_id}';
+      print(url);
+
+      Map<String, String> header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      };
+
+      var response = await http.patch(Uri.parse(url), headers: header);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("success");
+      } else {
+        print('err ==> ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _unSaveStyle(String id) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? user_id = prefs.getString('user_id');
+      final String? token = prefs.getString('token');
+      var url =
+          '${Url.baseurl}/similarStyle/unsaved?id=${id}&user_id=${user_id}';
       print(url);
 
       Map<String, String> header = {

@@ -31,6 +31,9 @@ class _SignUpState extends State<SignUp> {
   bool invisibleForReTypePwd = true;
   bool? isChecked = false;
   bool isLoading = false;
+  bool isOK = false;
+  bool hasProblem = false;
+  String msg = '';
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +46,9 @@ class _SignUpState extends State<SignUp> {
             child: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
+                setState(() {
+                  hasProblem = false;
+                });
               },
               child: Stack(
                 children: [
@@ -148,14 +154,29 @@ class _SignUpState extends State<SignUp> {
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            const BorderSide(color: C.dark1),
+                                        borderSide: hasProblem
+                                            ? BorderSide(
+                                                color: C.dangerDefault,
+                                                width: 2)
+                                            : const BorderSide(color: C.dark1),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
+                              hasProblem
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: Poppins(
+                                        text: msg,
+                                        color: C.dangerDefault,
+                                        fontWeight: FW.regular,
+                                        size: 12,
+                                        letterspacing: 0.2,
+                                      ),
+                                    )
+                                  : Container()
                             ],
                           ),
                         ),
@@ -346,6 +367,58 @@ class _SignUpState extends State<SignUp> {
                             ],
                           ),
                         ),
+                        _pwd.isNotEmpty || _retypepwd.isNotEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.only(left: 24),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 15),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.check_circle_rounded,
+                                          color: _pwd.length >= 8
+                                              ? C.secondaryHover
+                                              : C.disableBackground,
+                                          size: 20,
+                                        ),
+                                        Poppins(
+                                          text:
+                                              " The password must have at least 8 characters. ",
+                                          color: C.textDefault,
+                                          fontWeight: FontWeight.normal,
+                                          size: 12,
+                                          letterspacing: 0.1,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.check_circle_rounded,
+                                          color: _pwd.compareTo(_retypepwd) == 0
+                                              ? C.secondaryHover
+                                              : C.disableBackground,
+                                          size: 20,
+                                        ),
+                                        SizedBox(
+                                          width: 4,
+                                        ),
+                                        Poppins(
+                                          text:
+                                              "Password and confirm password does not match.",
+                                          color: C.textDefault,
+                                          fontWeight: FW.light,
+                                          size: 12,
+                                          letterspacing: 0.1,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )
+                            : Container(),
                         SizedBox(
                             height: MediaQuery.of(context).size.height / 27),
                         Padding(
@@ -410,34 +483,42 @@ class _SignUpState extends State<SignUp> {
                             ],
                           ),
                         ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height / 8),
+                        _pwd.isNotEmpty || _retypepwd.isNotEmpty
+                            ? SizedBox(
+                                height: MediaQuery.of(context).size.height / 15)
+                            : SizedBox(
+                                height: MediaQuery.of(context).size.height / 8),
                         _usr.isNotEmpty &&
                                 _pwd.isNotEmpty &&
+                                _pwd.length >= 8 &&
                                 _retypepwd.isNotEmpty &&
                                 _pwd.compareTo(_retypepwd) == 0 &&
                                 isChecked == true
                             ? Padding(
                                 padding:
                                     const EdgeInsets.only(right: 24, left: 24),
-                                child: isLoading
-                                    ? const CircularProgressIndicator()
-                                    : GestureDetector(
-                                        onTap: () async {
-                                          Map<String, String> body = {
-                                            "username": _usrnameController.text,
-                                            "password": _pwdController.text,
-                                          };
-                                          var result = await _signUp(body);
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    setState(() {
+                                      isOK = true;
+                                    });
+                                    Map<String, String> body = {
+                                      "username": _usrnameController.text,
+                                      "password": _pwdController.text,
+                                    };
+                                    await _signUp(body);
 
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Tags()));
-
-                                          FocusScope.of(context).unfocus();
-                                        },
-                                        child: const Button(
+                                    if (isLoading) {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) => Tags()));
+                                    }
+                                    FocusScope.of(context).unfocus();
+                                  },
+                                  child: isOK
+                                      ? Center(
+                                          child: CircularProgressIndicator())
+                                      : const Button(
                                           text: "Sign Up",
                                           fontWeight: FW.bold,
                                           color: C.dark2,
@@ -446,7 +527,7 @@ class _SignUpState extends State<SignUp> {
                                           boxHeight: 48,
                                           haveBorder: false,
                                         ),
-                                      ))
+                                ))
                             : const Padding(
                                 padding: EdgeInsets.only(right: 24, left: 24),
                                 child: Button(
@@ -479,16 +560,29 @@ class _SignUpState extends State<SignUp> {
 
       var response = await http.post(Uri.parse(url),
           headers: header, body: convert.jsonEncode(body));
+      var result = convert.jsonDecode(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var result = convert.jsonDecode(response.body);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', result["token"]);
         await prefs.setString('user_id', result["user_id"]);
         await prefs.setString('username', _usrnameController.text);
 
-        return result;
+        if (result["msg"] == 'success') {
+          setState(() {
+            isLoading = true;
+            isOK = false;
+          });
+        }
       } else {
+        setState(() {
+          isOK = false;
+          isLoading = false;
+          hasProblem = true;
+          msg = result["msg"];
+        });
+
+        print('err ==> ${response.statusCode}');
         print('err ==> ${response.statusCode}');
       }
     } catch (e) {
