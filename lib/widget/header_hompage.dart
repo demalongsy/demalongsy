@@ -71,7 +71,7 @@ class _HeaderHomePageState extends State<HeaderHomePage>
                       isScrollable: false,
                       unselectedLabelColor: C.dark2,
                       unselectedLabelStyle: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           fontFamily: 'Poppins',
                           fontWeight: FW.regular),
                       indicator: BoxDecoration(
@@ -121,10 +121,7 @@ class _HeaderHomePageState extends State<HeaderHomePage>
             ),
             body: TabBarView(
               controller: tabController,
-              children: [
-                PostForYou(),
-                PostTrending()
-              ],
+              children: [PostForYou(), PostTrending()],
             )),
       ),
     );
