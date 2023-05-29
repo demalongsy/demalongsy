@@ -306,35 +306,32 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                   itemCount: data!.length,
                   itemBuilder: ((context, index) {
                     return InkWell(
-                      onTap: () {
-                        // Navigator.of(context, rootNavigator: false).push(
-                        //     createTransitionRoute(
-                        //         AnotherProfile(
-                        //             another_username: data[index].username!,
-                        //             another_id: data[index].id!),
-                        //         1,
-                        //         0));
-                      },
+                      onTap: () {},
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: ListTile(
-                          leading: Container(
-                            width: 50,
-                            height: 50,
-                            child: CircleAvatar(
-                              radius: 50.0,
-                              backgroundImage: NetworkImage(data[index]
-                                      .images ??
-                                  "https://img.freepik.com/free-icon/user_318-159711.jpg"),
-                            ),
-                          ),
-                          title: Poppins(
-                              text: '${data[index].name}',
-                              size: 14,
-                              color: C.dark1,
-                              fontWeight: FW.bold),
-                        ),
-                      ),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 24),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 50,
+                                height: 50,
+                                child: CircleAvatar(
+                                  radius: 50.0,
+                                  backgroundImage: NetworkImage(data[index]
+                                          .images ??
+                                      "https://img.freepik.com/free-icon/user_318-159711.jpg"),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Poppins(
+                                  text: '${data[index].name}',
+                                  size: 14,
+                                  color: C.dark1,
+                                  fontWeight: FW.bold),
+                            ],
+                          )),
                     );
                   }),
                 );
